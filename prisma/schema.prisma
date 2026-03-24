@@ -1,0 +1,400 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==================== Auth (NextAuth) ====================
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ==================== Core Entities ====================
+
+enum UserRole {
+  CLIENT
+  DEVELOPER
+  ADMIN
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  emailVerified    DateTime?
+  name             String?
+  avatar           String?
+  role             UserRole  @default(CLIENT)
+  locale           String    @default("en")
+  hashedPassword   String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  accounts         Account[]
+  developerProfile DeveloperProfile?
+  clientProjects   Project[]        @relation("ClientProjects")
+  conversations    Conversation[]
+  applications     Application[]
+  clientContracts  Contract[]       @relation("ClientContracts")
+  devContracts     Contract[]       @relation("DevContracts")
+  deliverables     Deliverable[]
+  notifications    Notification[]
+}
+
+enum ProfileStatus {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+model DeveloperProfile {
+  id                     String        @id @default(cuid())
+  userId                 String        @unique
+  displayName            String
+  title                  String?
+  bio                    String?       @db.Text
+  githubUrl              String?
+  portfolioUrl           String?
+  hourlyRate             Decimal?      @db.Decimal(10, 2)
+  currency               String        @default("USD")
+  aiRating               Decimal?      @db.Decimal(3, 2)
+  verifiedAt             DateTime?
+  status                 ProfileStatus @default(PENDING_REVIEW)
+  stripeConnectAccountId String?
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills         DeveloperSkill[]
+  availabilities Availability[]
+}
+
+model SkillTag {
+  id       String @id @default(cuid())
+  name     String @unique
+  category String
+  localeZh String
+  localeEn String
+
+  developerSkills DeveloperSkill[]
+  projectSkills   ProjectSkill[]
+}
+
+model DeveloperSkill {
+  profileId  String
+  skillTagId String
+  profile    DeveloperProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  skillTag   SkillTag         @relation(fields: [skillTagId], references: [id], onDelete: Cascade)
+
+  @@id([profileId, skillTagId])
+}
+
+model ProjectSkill {
+  projectId  String
+  skillTagId String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skillTag   SkillTag @relation(fields: [skillTagId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, skillTagId])
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  BUSY
+  TENTATIVE
+  BLOCKED
+}
+
+model Availability {
+  id        String             @id @default(cuid())
+  profileId String
+  date      DateTime           @db.Date
+  startTime String
+  endTime   String
+  status    AvailabilityStatus @default(AVAILABLE)
+  note      String?
+
+  profile DeveloperProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, date])
+}
+
+// ==================== Projects ====================
+
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+  IN_PROGRESS
+  DELIVERED
+  COMPLETED
+  CANCELLED
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  clientId    String
+  title       String
+  description String        @db.Text
+  budget      Decimal?      @db.Decimal(12, 2)
+  currency    String        @default("USD")
+  category    String?
+  aiSummary   String?       @db.Text
+  status      ProjectStatus @default(DRAFT)
+  visibility  String        @default("PUBLIC")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  client        User           @relation("ClientProjects", fields: [clientId], references: [id])
+  skills        ProjectSkill[]
+  conversations Conversation[]
+  applications  Application[]
+  contracts     Contract[]
+
+  @@index([status, createdAt])
+}
+
+// ==================== AI Conversations ====================
+
+enum ConversationStatus {
+  DISCOVERY
+  CONFIRMATION
+  MATCHING
+  PUBLISHED
+  ABANDONED
+}
+
+model Conversation {
+  id            String             @id @default(cuid())
+  userId        String
+  projectId     String?
+  status        ConversationStatus @default(DISCOVERY)
+  modelProvider String             @default("claude")
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id])
+  project  Project?  @relation(fields: [projectId], references: [id])
+  messages Message[]
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+model Message {
+  id             String      @id @default(cuid())
+  conversationId String
+  role           MessageRole
+  content        String      @db.Text
+  metadata       Json?
+  createdAt      DateTime    @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
+}
+
+// ==================== Applications ====================
+
+enum ApplicationStatus {
+  PENDING
+  SHORTLISTED
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+model Application {
+  id           String            @id @default(cuid())
+  projectId    String
+  developerId  String
+  coverLetter  String?           @db.Text
+  proposedRate Decimal?          @db.Decimal(10, 2)
+  status       ApplicationStatus @default(PENDING)
+  aiScore      Decimal?          @db.Decimal(5, 2)
+  createdAt    DateTime          @default(now())
+
+  project   Project @relation(fields: [projectId], references: [id])
+  developer User    @relation(fields: [developerId], references: [id])
+
+  @@unique([projectId, developerId])
+}
+
+// ==================== Contracts ====================
+
+enum ContractStatus {
+  DRAFT
+  PENDING_SIGN
+  ACTIVE
+  DELIVERED
+  COMPLETED
+  DISPUTED
+  CANCELLED
+}
+
+model Contract {
+  id                String         @id @default(cuid())
+  projectId         String
+  clientId          String
+  developerId       String
+  title             String
+  terms             Json
+  totalAmount       Decimal        @db.Decimal(12, 2)
+  currency          String         @default("USD")
+  status            ContractStatus @default(DRAFT)
+  signedByClient    Boolean        @default(false)
+  signedByDeveloper Boolean        @default(false)
+  signedAt          DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  project      Project       @relation(fields: [projectId], references: [id])
+  client       User          @relation("ClientContracts", fields: [clientId], references: [id])
+  developer    User          @relation("DevContracts", fields: [developerId], references: [id])
+  milestones   Milestone[]
+  payments     Payment[]
+  deliverables Deliverable[]
+}
+
+enum MilestoneStatus {
+  PENDING
+  IN_PROGRESS
+  DELIVERED
+  ACCEPTED
+  REJECTED
+}
+
+model Milestone {
+  id          String          @id @default(cuid())
+  contractId  String
+  title       String
+  description String?         @db.Text
+  amount      Decimal         @db.Decimal(12, 2)
+  dueDate     DateTime?
+  order       Int
+  status      MilestoneStatus @default(PENDING)
+
+  contract     Contract      @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  payments     Payment[]
+  deliverables Deliverable[]
+}
+
+// ==================== Payments ====================
+
+enum PaymentProvider {
+  STRIPE
+  ALIPAY
+  WECHAT_PAY
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  HELD
+  RELEASED
+  REFUNDED
+  FAILED
+}
+
+model Payment {
+  id                String          @id @default(cuid())
+  contractId        String
+  milestoneId       String?
+  amount            Decimal         @db.Decimal(12, 2)
+  currency          String          @default("USD")
+  provider          PaymentProvider @default(STRIPE)
+  providerPaymentId String?
+  providerEventId   String?         @unique
+  status            PaymentStatus   @default(PENDING)
+  paidAt            DateTime?
+  createdAt         DateTime        @default(now())
+
+  contract  Contract   @relation(fields: [contractId], references: [id])
+  milestone Milestone? @relation(fields: [milestoneId], references: [id])
+}
+
+model ProcessedWebhookEvent {
+  id              String   @id @default(cuid())
+  providerEventId String   @unique
+  provider        String
+  processedAt     DateTime @default(now())
+}
+
+// ==================== Deliverables ====================
+
+enum DeliverableStatus {
+  SUBMITTED
+  ACCEPTED
+  REJECTED
+}
+
+model Deliverable {
+  id            String            @id @default(cuid())
+  contractId    String
+  milestoneId   String?
+  title         String
+  fileUrl       String?
+  description   String?           @db.Text
+  uploadedBy    String
+  status        DeliverableStatus @default(SUBMITTED)
+  reviewComment String?           @db.Text
+  createdAt     DateTime          @default(now())
+
+  contract  Contract   @relation(fields: [contractId], references: [id])
+  milestone Milestone? @relation(fields: [milestoneId], references: [id])
+  uploader  User       @relation(fields: [uploadedBy], references: [id])
+}
+
+// ==================== Notifications ====================
+
+enum NotificationType {
+  PROJECT_INVITE
+  APPLICATION_RECEIVED
+  APPLICATION_ACCEPTED
+  CONTRACT_READY
+  PAYMENT_RECEIVED
+  DELIVERY_SUBMITTED
+  GENERAL
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType @default(GENERAL)
+  title     String
+  body      String           @db.Text
+  link      String?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read, createdAt])
+}
