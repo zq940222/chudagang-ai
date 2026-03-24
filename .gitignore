@@ -50,3 +50,4 @@ prisma/migrations/
 
 # superpowers
 .superpowers/
+.idea/
