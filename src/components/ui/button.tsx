@@ -13,7 +13,7 @@ const buttonVariants = cva(
         secondary:
           "bg-surface-container-highest text-on-surface rounded-md hover:bg-surface-container-high",
         tertiary:
-          "text-on-surface hover:text-accent-cyan bg-transparent",
+          "text-on-surface hover:text-accent-cyan bg-transparent rounded-md",
         destructive:
           "bg-error text-on-primary rounded-md hover:opacity-90",
       },
