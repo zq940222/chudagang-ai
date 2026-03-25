@@ -9,6 +9,7 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL ?? "";
   const pool = new pg.Pool({ connectionString });
+  // @ts-expect-error -- pg types mismatch between @types/pg and @prisma/adapter-pg bundled types
   const adapter = new PrismaPg(pool);
   return new PrismaClient({
     adapter,
