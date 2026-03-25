@@ -23,6 +23,8 @@ export async function createContractFromApplication(applicationId: string) {
           title: true,
           description: true,
           clientId: true,
+          budget: true,
+          currency: true,
         },
       },
       developer: {
@@ -54,14 +56,23 @@ export async function createContractFromApplication(applicationId: string) {
     return { error: "Contract already exists for this application" };
   }
 
+  // Determine total amount from proposed rate or project budget
+  const totalAmount = application.proposedRate
+    ? Number(application.proposedRate)
+    : application.project.budget
+      ? Number(application.project.budget)
+      : 0;
+
+  if (totalAmount <= 0) return { error: "Contract amount must be positive" };
+
   // Generate AI contract terms
   const terms = await generateContractTerms({
     projectTitle: application.project.title,
     projectDescription: application.project.description,
     developerName: application.developer.name ?? "Developer",
     clientName: session.user.name ?? "Client",
-    totalAmount: Number(application.proposedRate),
-    currency: "USD",
+    totalAmount,
+    currency: application.project.currency,
   });
 
   const contract = await db.contract.create({
@@ -71,8 +82,8 @@ export async function createContractFromApplication(applicationId: string) {
       developerId: application.developerId,
       title: `Contract for ${application.project.title}`,
       terms: terms as any,
-      totalAmount: application.proposedRate,
-      currency: "USD",
+      totalAmount,
+      currency: application.project.currency,
       status: "PENDING_SIGN",
     },
   });
@@ -87,7 +98,7 @@ export async function createContractFromApplication(applicationId: string) {
   await db.notification.create({
     data: {
       userId: application.developerId,
-      type: "CONTRACT_CREATED",
+      type: "CONTRACT_READY",
       title: "New Contract",
       body: `A contract has been created for "${application.project.title}". Please review and sign.`,
       link: `/dashboard/developer/contracts/${contract.id}`,
@@ -167,7 +178,7 @@ export async function signContract(contractId: string) {
   await db.notification.create({
     data: {
       userId: counterpartyId,
-      type: bothSigned ? "CONTRACT_SIGNED" : "CONTRACT_SIGNED",
+      type: bothSigned ? "CONTRACT_READY" : "CONTRACT_READY",
       title: bothSigned ? "Contract Active" : "Contract Signed",
       body: notificationBody,
       link: isClient
@@ -311,7 +322,7 @@ export async function transitionContract(
     await db.notification.create({
       data: {
         userId: counterpartyId,
-        type: "CONTRACT_UPDATE",
+        type: "GENERAL",
         title: notificationTitles[newStatus],
         body: notificationBodies[newStatus],
         link: isClient
@@ -338,14 +349,13 @@ export async function getContract(
           id: true,
           title: true,
           description: true,
-          status: true,
+          category: true,
         },
       },
       client: {
         select: {
           id: true,
           name: true,
-          email: true,
           avatar: true,
         },
       },
@@ -353,7 +363,6 @@ export async function getContract(
         select: {
           id: true,
           name: true,
-          email: true,
           avatar: true,
         },
       },
@@ -430,5 +439,18 @@ export async function getMyContracts(
     orderBy: { createdAt: "desc" },
   });
 
-  return { data: contracts as ContractCardData[] };
+  return {
+    data: contracts.map((c) => ({
+      id: c.id,
+      title: c.title,
+      projectTitle: c.project.title,
+      projectId: c.projectId,
+      counterpartyName:
+        role === "client" ? c.developer.name : c.client.name,
+      totalAmount: Number(c.totalAmount),
+      currency: c.currency,
+      status: c.status,
+      createdAt: c.createdAt.toISOString(),
+    })),
+  };
 }
