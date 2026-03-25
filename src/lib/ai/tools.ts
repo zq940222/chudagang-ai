@@ -5,7 +5,7 @@ import { searchDevelopers } from "@/lib/services/matching";
 export const extractRequirements = tool({
   description:
     "Extract structured project requirements from the conversation. Call this when the user has described what they need built.",
-  parameters: z.object({
+  inputSchema: z.object({
     title: z.string().describe("Short project title (5-80 chars)"),
     description: z
       .string()
@@ -37,7 +37,7 @@ export const extractRequirements = tool({
 export const searchDevelopersTool = tool({
   description:
     "Search for developers matching project requirements. Use after extracting requirements to find suitable candidates.",
-  parameters: z.object({
+  inputSchema: z.object({
     query: z.string().optional().describe("Free-text search query"),
     skills: z
       .array(z.string())
@@ -63,7 +63,7 @@ export const searchDevelopersTool = tool({
 export const estimateBudget = tool({
   description:
     "Estimate a budget range for a project based on complexity, required skills, and timeline.",
-  parameters: z.object({
+  inputSchema: z.object({
     complexity: z
       .enum(["low", "medium", "high"])
       .describe("Project complexity level"),

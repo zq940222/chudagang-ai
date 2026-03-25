@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useChat } from "ai/react";
+import { useEffect, useRef, useState } from "react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -21,12 +22,16 @@ export function ChatInterface({
   className,
 }: ChatInterfaceProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [input, setInput] = useState("");
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, error } =
-    useChat({
+  const { messages, sendMessage, status, error } = useChat({
+    transport: new DefaultChatTransport({
       api: "/api/chat",
       body: { conversationId },
-    });
+    }),
+  });
+
+  const isBusy = status === "submitted" || status === "streaming";
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -62,55 +67,62 @@ export function ChatInterface({
 
         {messages.map((message) => (
           <div key={message.id} className="space-y-2">
-            <MessageBubble role={message.role as "user" | "assistant"}>
-              {message.content}
-            </MessageBubble>
-
-            {/* Render tool invocation results inline */}
-            {message.toolInvocations?.map((invocation) => {
-              if (invocation.state !== "result") return null;
-
-              if (invocation.toolName === "extractRequirements") {
-                return (
-                  <ProjectSummaryCard
-                    key={invocation.toolCallId}
-                    project={invocation.result as {
-                      title: string;
-                      description: string;
-                      skills: string[];
-                      budget?: number | null;
-                      timeline?: string | null;
-                    }}
-                  />
-                );
+            {message.parts.map((part, i) => {
+              switch (part.type) {
+                case "text":
+                  return (
+                    <MessageBubble
+                      key={`${message.id}-text-${i}`}
+                      role={message.role as "user" | "assistant"}
+                    >
+                      {part.text}
+                    </MessageBubble>
+                  );
+                case "tool-extractRequirements":
+                  if (part.state === "output-available") {
+                    return (
+                      <ProjectSummaryCard
+                        key={`${message.id}-tool-${i}`}
+                        project={part.output as {
+                          title: string;
+                          description: string;
+                          skills: string[];
+                          budget?: number | null;
+                          timeline?: string | null;
+                        }}
+                      />
+                    );
+                  }
+                  return null;
+                case "tool-searchDevelopers":
+                  if (part.state === "output-available") {
+                    const result = part.output as {
+                      developers: {
+                        id: string;
+                        name: string;
+                        title?: string;
+                        skills?: string[];
+                        rating?: number;
+                        hourlyRate?: number;
+                      }[];
+                    };
+                    return (
+                      <DeveloperRecommendations
+                        key={`${message.id}-tool-${i}`}
+                        developers={result.developers}
+                      />
+                    );
+                  }
+                  return null;
+                default:
+                  return null;
               }
-
-              if (invocation.toolName === "searchDevelopers") {
-                const result = invocation.result as {
-                  developers: {
-                    id: string;
-                    name: string;
-                    title?: string;
-                    skills?: string[];
-                    rating?: number;
-                    hourlyRate?: number;
-                  }[];
-                };
-                return (
-                  <DeveloperRecommendations
-                    key={invocation.toolCallId}
-                    developers={result.developers}
-                  />
-                );
-              }
-
-              return null;
             })}
           </div>
         ))}
 
         {/* Loading indicator */}
-        {isLoading && (
+        {isBusy && (
           <div className="flex gap-3 justify-start">
             <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-xs font-bold">
               AI
@@ -135,20 +147,25 @@ export function ChatInterface({
 
       {/* Input bar */}
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!input.trim()) return;
+          sendMessage({ text: input });
+          setInput("");
+        }}
         className="flex-shrink-0 border-t border-outline-variant/20 p-4"
       >
         <div className="flex gap-2 max-w-3xl mx-auto">
           <Input
             value={input}
-            onChange={handleInputChange}
+            onChange={(e) => setInput(e.target.value)}
             placeholder={
               locale === "zh" ? "描述你的项目需求..." : "Describe your project needs..."
             }
-            disabled={isLoading}
+            disabled={isBusy}
             className="flex-1"
           />
-          <Button type="submit" variant="primary" size="md" disabled={isLoading || !input.trim()}>
+          <Button type="submit" variant="primary" size="md" disabled={isBusy || !input.trim()}>
             {locale === "zh" ? "发送" : "Send"}
           </Button>
         </div>

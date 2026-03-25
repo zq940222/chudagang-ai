@@ -1,4 +1,4 @@
-import { streamText } from "ai";
+import { streamText, UIMessage, convertToModelMessages, stepCountIs } from "ai";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { getModel } from "@/lib/ai/gateway";
@@ -13,7 +13,10 @@ export async function POST(req: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const { messages, conversationId } = await req.json();
+  const { messages: rawMessages, conversationId } = (await req.json()) as {
+    messages: UIMessage[];
+    conversationId?: string;
+  };
 
   // Get or create conversation
   let conversation;
@@ -37,26 +40,29 @@ export async function POST(req: Request) {
   const systemPrompt = getSystemPrompt(phase, locale);
 
   // Save user message to DB
-  const lastUserMessage = messages[messages.length - 1];
+  const lastUserMessage = rawMessages[rawMessages.length - 1];
   if (lastUserMessage?.role === "user") {
-    await db.message.create({
-      data: {
-        conversationId: conversation.id,
-        role: "USER",
-        content:
-          typeof lastUserMessage.content === "string"
-            ? lastUserMessage.content
-            : JSON.stringify(lastUserMessage.content),
-      },
-    });
+    const textParts = lastUserMessage.parts
+      .filter((p): p is { type: "text"; text: string } => p.type === "text")
+      .map((p) => p.text);
+    const content = textParts.join("\n") || "";
+    if (content) {
+      await db.message.create({
+        data: {
+          conversationId: conversation.id,
+          role: "USER",
+          content,
+        },
+      });
+    }
   }
 
   const result = streamText({
     model: getModel(conversation.modelProvider as ModelProvider),
     system: systemPrompt,
-    messages,
+    messages: await convertToModelMessages(rawMessages),
     tools: aiTools,
-    maxSteps: 3,
+    stopWhen: stepCountIs(3),
     onFinish: async ({ text, toolCalls }) => {
       // Save assistant message
       if (text) {
@@ -65,7 +71,9 @@ export async function POST(req: Request) {
             conversationId: conversation!.id,
             role: "ASSISTANT",
             content: text,
-            metadata: toolCalls?.length ? { toolCalls } : undefined,
+            metadata: toolCalls?.length
+              ? { toolCalls: JSON.parse(JSON.stringify(toolCalls)) }
+              : undefined,
           },
         });
       }
@@ -99,7 +107,7 @@ export async function POST(req: Request) {
     },
   });
 
-  return result.toDataStreamResponse({
+  return result.toUIMessageStreamResponse({
     headers: { "X-Conversation-Id": conversation.id },
   });
 }
