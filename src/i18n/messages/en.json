@@ -44,9 +44,26 @@
     "roleDeveloperDesc": "Showcase your skills and get matched with projects"
   },
   "landing": {
-    "heroTitle": "The AI-Powered Way to Hire AI Talent",
+    "heroTitle": "The AI-Powered Way to Hire",
+    "heroHighlight": "AI Talent",
     "heroSubtitle": "Tell our AI what you need. We'll match you with vetted developers, handle contracts, and manage payments — all automatically.",
     "ctaStart": "Start a Conversation",
-    "ctaBrowse": "Browse Developers"
+    "ctaBrowse": "Browse Developers",
+    "featuresTitle": "Why Choose ChuDaGang AI",
+    "featureAiTitle": "AI-Powered Matching",
+    "featureAiDesc": "Our AI understands your project requirements and matches you with the most suitable developers based on skills, experience, and availability.",
+    "featureMatchTitle": "Vetted Developers",
+    "featureMatchDesc": "Every developer is AI-reviewed and verified. Browse profiles, ratings, and portfolios to find the perfect match for your project.",
+    "featureSecureTitle": "Secure Payments",
+    "featureSecureDesc": "Escrow-protected payments via Stripe. Funds are held safely until you approve the delivery. No risk, no hassle.",
+    "howTitle": "How It Works",
+    "step1Title": "Describe Your Project",
+    "step1Desc": "Chat with our AI assistant or post manually. The AI helps you clarify requirements and estimate budgets.",
+    "step2Title": "Get Matched",
+    "step2Desc": "Our matching engine finds the best developers for your project based on skills, rates, and availability.",
+    "step3Title": "Sign & Pay",
+    "step3Desc": "AI generates a contract. Both parties sign online. Payment is held in secure escrow via Stripe.",
+    "step4Title": "Receive & Review",
+    "step4Desc": "Developer delivers the work. Review, request revisions, or accept. Payment is released automatically on approval."
   }
 }

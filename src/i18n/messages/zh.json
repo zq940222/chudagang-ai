@@ -44,9 +44,26 @@
     "roleDeveloperDesc": "展示你的技能，被智能匹配到合适的项目"
   },
   "landing": {
-    "heroTitle": "用AI的方式，雇佣AI人才",
+    "heroTitle": "用AI的方式，雇佣",
+    "heroHighlight": "AI人才",
     "heroSubtitle": "告诉我们你的需求，AI将为你匹配经过验证的开发者，自动处理合同和付款。",
     "ctaStart": "开始对话",
-    "ctaBrowse": "浏览开发者"
+    "ctaBrowse": "浏览开发者",
+    "featuresTitle": "为什么选择杵大岗AI",
+    "featureAiTitle": "AI智能匹配",
+    "featureAiDesc": "我们的AI理解您的项目需求，根据技能、经验和可用性为您匹配最合适的开发者。",
+    "featureMatchTitle": "认证开发者",
+    "featureMatchDesc": "每位开发者都经过AI审核和验证。浏览档案、评分和作品集，找到项目的最佳人选。",
+    "featureSecureTitle": "安全支付",
+    "featureSecureDesc": "通过Stripe托管保护支付。资金安全持有，直到您批准交付。零风险，零麻烦。",
+    "howTitle": "平台流程",
+    "step1Title": "描述你的项目",
+    "step1Desc": "与AI助手对话或手动发布。AI帮你明确需求并估算预算。",
+    "step2Title": "智能匹配",
+    "step2Desc": "匹配引擎根据技能、费率和可用性，为你找到最合适的开发者。",
+    "step3Title": "签约付款",
+    "step3Desc": "AI生成合同，双方在线签署。款项通过Stripe安全托管。",
+    "step4Title": "验收交付",
+    "step4Desc": "开发者提交成果，你可以审核、要求修改或接受。付款在验收后自动释放。"
   }
 }

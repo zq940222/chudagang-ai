@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { UserMenu } from "@/components/user-menu";
+import { NotificationBell } from "@/components/notification/notification-bell";
 
 const navLinks = [
   { href: "/", labelKey: "home" },
@@ -44,6 +45,8 @@ export function Nav() {
         {/* Right side: locale switcher + auth */}
         <div className="flex items-center gap-3">
           <LocaleSwitcher />
+
+          {status !== "loading" && session?.user && <NotificationBell />}
 
           {status === "loading" ? (
             <div className="h-10 w-20 animate-pulse rounded-md bg-surface-container" />

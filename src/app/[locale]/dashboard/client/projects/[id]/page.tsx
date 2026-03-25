@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ApplicationList } from "@/components/application/application-list";
 import { ContractView } from "@/components/contract/contract-view";
 import { ContractActions } from "@/components/contract/contract-actions";
+import { DeliverableReview } from "@/components/delivery/deliverable-review";
 
 export default async function ClientProjectDetailPage({
   params,
@@ -67,22 +68,14 @@ export default async function ClientProjectDetailPage({
               </CardHeader>
               <CardContent className="space-y-3">
                 {contract.deliverables.map((d) => (
-                  <div key={d.id} className="rounded-lg bg-surface-container-lowest p-3 ghost-border">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <p className="font-medium text-on-surface text-sm">{d.title}</p>
-                        {d.description && (
-                          <p className="mt-1 text-xs text-on-surface-variant">{d.description}</p>
-                        )}
-                      </div>
-                      <span className="text-xs text-accent-cyan">{d.status}</span>
-                    </div>
-                    {d.fileUrl && (
-                      <a href={d.fileUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-accent-cyan underline">
-                        View file
-                      </a>
-                    )}
-                  </div>
+                  <DeliverableReview
+                    key={d.id}
+                    deliverableId={d.id}
+                    title={d.title}
+                    description={d.description}
+                    fileUrl={d.fileUrl}
+                    status={d.status}
+                  />
                 ))}
               </CardContent>
             </Card>
