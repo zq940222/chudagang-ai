@@ -1,0 +1,52 @@
+{
+  "common": {
+    "appName": "ChuDaGang AI",
+    "tagline": "AI-Powered Developer Marketplace",
+    "login": "Log In",
+    "register": "Sign Up",
+    "logout": "Log Out",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search",
+    "filter": "Filter"
+  },
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "developers": "Find Experts",
+    "chat": "AI Assistant",
+    "howItWorks": "How It Works"
+  },
+  "auth": {
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to your account",
+    "registerTitle": "Get Started",
+    "registerSubtitle": "Create your account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "github": "GitHub",
+    "selectRole": "I want to...",
+    "roleClient": "Hire AI Developers",
+    "roleDeveloper": "Find AI Projects",
+    "roleClientDesc": "Post projects and find the perfect AI developer",
+    "roleDeveloperDesc": "Showcase your skills and get matched with projects"
+  },
+  "landing": {
+    "heroTitle": "The AI-Powered Way to Hire AI Talent",
+    "heroSubtitle": "Tell our AI what you need. We'll match you with vetted developers, handle contracts, and manage payments — all automatically.",
+    "ctaStart": "Start a Conversation",
+    "ctaBrowse": "Browse Developers"
+  }
+}

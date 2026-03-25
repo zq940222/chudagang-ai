@@ -1,8 +1,13 @@
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
+import createIntlMiddleware from "next-intl/middleware";
+import { routing } from "@/i18n/routing";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 const { auth } = NextAuth(authConfig);
+
+const intlMiddleware = createIntlMiddleware(routing);
 
 const publicPaths = [
   "/",
@@ -28,6 +33,7 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
+  // For protected paths, check auth first
   if (!isPublicPath(pathname) && !req.auth) {
     const locale = pathname.match(/^\/(en|zh)/)?.[1] || "en";
     const loginUrl = new URL(`/${locale}/login`, req.url);
@@ -35,7 +41,8 @@ export default auth((req) => {
     return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.next();
+  // Apply intl middleware for locale detection and routing
+  return intlMiddleware(req as unknown as NextRequest);
 });
 
 export const config = {

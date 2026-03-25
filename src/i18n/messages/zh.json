@@ -1,0 +1,52 @@
+{
+  "common": {
+    "appName": "杵大岗AI",
+    "tagline": "AI驱动的开发者接单平台",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出",
+    "dashboard": "工作台",
+    "settings": "设置",
+    "loading": "加载中...",
+    "save": "保存",
+    "cancel": "取消",
+    "submit": "提交",
+    "back": "返回",
+    "next": "下一步",
+    "search": "搜索",
+    "filter": "筛选"
+  },
+  "nav": {
+    "home": "首页",
+    "projects": "项目大厅",
+    "developers": "找专家",
+    "chat": "AI助手",
+    "howItWorks": "平台介绍"
+  },
+  "auth": {
+    "loginTitle": "欢迎回来",
+    "loginSubtitle": "登录你的账号",
+    "registerTitle": "开始使用",
+    "registerSubtitle": "创建你的账号",
+    "email": "邮箱",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "forgotPassword": "忘记密码？",
+    "noAccount": "还没有账号？",
+    "hasAccount": "已有账号？",
+    "orContinueWith": "或使用以下方式",
+    "google": "Google",
+    "github": "GitHub",
+    "selectRole": "我想要...",
+    "roleClient": "雇佣AI开发者",
+    "roleDeveloper": "承接AI项目",
+    "roleClientDesc": "发布项目需求，找到最匹配的AI开发者",
+    "roleDeveloperDesc": "展示你的技能，被智能匹配到合适的项目"
+  },
+  "landing": {
+    "heroTitle": "用AI的方式，雇佣AI人才",
+    "heroSubtitle": "告诉我们你的需求，AI将为你匹配经过验证的开发者，自动处理合同和付款。",
+    "ctaStart": "开始对话",
+    "ctaBrowse": "浏览开发者"
+  }
+}
