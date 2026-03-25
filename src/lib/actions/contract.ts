@@ -8,6 +8,7 @@ import {
   signContractSchema,
 } from "@/lib/validators/contract";
 import type { ContractCardData, ContractWithDetails } from "@/types/contract";
+import { capturePayment, transferToDeveloper } from "@/lib/services/stripe";
 
 export async function createContractFromApplication(applicationId: string) {
   const session = await auth();
@@ -246,8 +247,42 @@ export async function transitionContract(
     data: { status: newStatus as any },
   });
 
-  // Update project status if completed
+  // Release escrow payment and complete project if contract is completed
   if (newStatus === "COMPLETED") {
+    // Release escrow payment
+    const heldPayment = await db.payment.findFirst({
+      where: { contractId, status: "HELD" },
+    });
+
+    if (heldPayment?.providerPaymentId) {
+      try {
+        await capturePayment(heldPayment.providerPaymentId);
+        await db.payment.update({
+          where: { id: heldPayment.id },
+          data: { status: "RELEASED" },
+        });
+
+        // Transfer to developer if they have Stripe Connect
+        const devProfile = await db.developerProfile.findUnique({
+          where: { userId: contract.developerId },
+          select: { stripeConnectAccountId: true },
+        });
+
+        if (devProfile?.stripeConnectAccountId) {
+          await transferToDeveloper({
+            amount: Number(heldPayment.amount),
+            currency: heldPayment.currency,
+            connectedAccountId: devProfile.stripeConnectAccountId,
+            contractId,
+          });
+        }
+      } catch (err) {
+        console.error("Payment release error:", err);
+        // Don't fail the transition — payment can be manually resolved
+      }
+    }
+
+    // Also complete the project
     await db.project.update({
       where: { id: contract.projectId },
       data: { status: "COMPLETED" },

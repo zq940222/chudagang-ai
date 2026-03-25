@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { auth } from "@/auth";
+import { ApplicationForm } from "@/components/application/application-form";
 
 export default async function ProjectDetailPage({
   params,
@@ -20,6 +22,13 @@ export default async function ProjectDetailPage({
   });
 
   if (!project) notFound();
+
+  const session = await auth();
+  const hasDeveloperProfile = session?.user?.id
+    ? !!(await db.developerProfile.findUnique({
+        where: { userId: session.user.id },
+      }))
+    : false;
 
   const currencySymbol =
     project.currency === "CNY"
@@ -52,9 +61,13 @@ export default async function ProjectDetailPage({
             )}
           </div>
         </div>
-        <Button asChild>
-          <Link href={`/chat`}>Apply</Link>
-        </Button>
+        {hasDeveloperProfile ? (
+          <ApplicationForm projectId={project.id} />
+        ) : (
+          <Button asChild>
+            <Link href={`/${locale}/login`}>Sign in to Apply</Link>
+          </Button>
+        )}
       </div>
 
       {/* Description */}
