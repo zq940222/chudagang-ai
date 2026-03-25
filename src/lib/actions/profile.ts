@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { profileCreateSchema, profileUpdateSchema } from "@/lib/validators/profile";
 import { revalidatePath } from "next/cache";
+import { reviewDeveloperProfile } from "@/lib/services/developer-review";
 
 export async function createProfile(formData: FormData) {
   const session = await auth();
@@ -39,6 +40,9 @@ export async function createProfile(formData: FormData) {
     where: { id: session.user.id },
     data: { role: "DEVELOPER" },
   });
+
+  // Trigger AI review in background (don't block the response)
+  reviewDeveloperProfile(profile.id).catch(console.error);
 
   revalidatePath("/dashboard/developer/profile");
   return { success: true, profileId: profile.id };
