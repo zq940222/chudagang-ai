@@ -41,7 +41,10 @@
     "roleClient": "Hire AI Developers",
     "roleDeveloper": "Find AI Projects",
     "roleClientDesc": "Post projects and find the perfect AI developer",
-    "roleDeveloperDesc": "Showcase your skills and get matched with projects"
+    "roleDeveloperDesc": "Showcase your skills and get matched with projects",
+    "errorEmailExists": "This email is already registered",
+    "errorInvalidCredentials": "Invalid email or password",
+    "errorGeneric": "Something went wrong, please try again"
   },
   "landing": {
     "heroTitle": "The AI-Powered Way to Hire",

@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
+import { register } from "@/lib/actions/auth";
+
 type Step = "role" | "form";
 type Role = "CLIENT" | "DEVELOPER";
 
@@ -32,27 +34,36 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name, password, role }),
-      });
+      const res = await register({ email, name, password, role });
 
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || "Registration failed");
+      if (res.error) {
+        if (res.error === "Email exists") {
+          setError(t("errorEmailExists"));
+        } else if (res.error === "Invalid input") {
+          setError(t("errorGeneric"));
+        } else {
+          setError(res.error);
+        }
         setLoading(false);
         return;
       }
 
       // Auto sign in after registration
-      await signIn("credentials", {
+      const signInRes = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/",
+        redirect: false,
       });
+
+      if (signInRes?.error) {
+        setError(t("errorInvalidCredentials"));
+        setLoading(false);
+        return;
+      }
+
+      window.location.href = "/";
     } catch {
-      setError("Something went wrong");
+      setError(t("errorGeneric"));
       setLoading(false);
     }
   }

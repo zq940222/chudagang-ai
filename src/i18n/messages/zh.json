@@ -41,7 +41,10 @@
     "roleClient": "雇佣AI开发者",
     "roleDeveloper": "承接AI项目",
     "roleClientDesc": "发布项目需求，找到最匹配的AI开发者",
-    "roleDeveloperDesc": "展示你的技能，被智能匹配到合适的项目"
+    "roleDeveloperDesc": "展示你的技能，被智能匹配到合适的项目",
+    "errorEmailExists": "该邮箱已被注册",
+    "errorInvalidCredentials": "邮箱或密码错误",
+    "errorGeneric": "发生错误，请重试"
   },
   "landing": {
     "heroTitle": "用AI的方式，雇佣",
