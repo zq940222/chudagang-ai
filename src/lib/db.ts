@@ -4,14 +4,24 @@ import pg from "pg";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
-};
-
 function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL ?? "";
-  
-  // Use a smaller pool size for serverless functions to avoid exhausting DB connections
+
+  // Log sanitized connection info for debugging
+  try {
+    const url = new URL(connectionString);
+    console.log(`DEBUG: DB Client connecting to ${url.hostname}:${url.port}${url.pathname} (protocol: ${url.protocol})`);
+    if (url.searchParams.get("pgbouncer") !== "true" && url.port === "6543") {
+      console.warn("DEBUG: Warning - Using port 6543 without pgbouncer=true might cause issues with Prisma.");
+    }
+  } catch {
+    console.error("DEBUG: DATABASE_URL is either missing or not a valid URL.");
+  }
+
   const pool = new pg.Pool({ 
     connectionString,
+    max: 10,
+...
     max: 10, // Max connections in pool
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 5000, // Wait 5s for connection before failing
