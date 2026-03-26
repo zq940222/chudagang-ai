@@ -91,6 +91,11 @@ export async function POST(req: Request) {
         ) {
           newStatus = "CONFIRMATION";
         } else if (
+          toolNames.includes("createProjectDraft") &&
+          phase === "CONFIRMATION"
+        ) {
+          newStatus = "MATCHING";
+        } else if (
           toolNames.includes("searchDevelopers") &&
           phase === "CONFIRMATION"
         ) {

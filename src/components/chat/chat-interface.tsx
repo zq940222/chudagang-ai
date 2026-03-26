@@ -97,20 +97,38 @@ export function ChatInterface({
                 case "tool-searchDevelopers":
                   if (part.state === "output-available") {
                     const result = part.output as {
-                      developers: {
-                        id: string;
-                        name: string;
-                        title?: string;
-                        skills?: string[];
-                        rating?: number;
-                        hourlyRate?: number;
-                      }[];
+                      developers: any[];
                     };
                     return (
                       <DeveloperRecommendations
                         key={`${message.id}-tool-${i}`}
                         developers={result.developers}
                       />
+                    );
+                  }
+                  return null;
+                case "tool-createProjectDraft":
+                  if (part.state === "output-available") {
+                    const result = part.output as {
+                      project: { id: string; title: string };
+                    };
+                    return (
+                      <div
+                        key={`${message.id}-tool-${i}`}
+                        className="mx-auto max-w-sm rounded-xl border border-accent-cyan/20 bg-accent-cyan/5 p-4 text-center"
+                      >
+                        <p className="text-sm font-medium text-on-surface">
+                          {locale === "zh" ? "项目草稿已创建" : "Project draft created"}
+                        </p>
+                        <p className="mt-1 text-xs text-on-surface-variant">
+                          {result.project.title}
+                        </p>
+                        <Button variant="secondary" size="sm" className="mt-3 w-full" asChild>
+                          <a href={`/${locale}/dashboard/client/projects`}>
+                            {locale === "zh" ? "前往管理" : "Manage Project"}
+                          </a>
+                        </Button>
+                      </div>
                     );
                   }
                   return null;

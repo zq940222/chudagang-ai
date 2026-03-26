@@ -1,6 +1,8 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { searchDevelopers } from "@/lib/services/matching";
+import { createProjectFromAI } from "@/lib/actions/project";
+import { db } from "@/lib/db";
 
 export const extractRequirements = tool({
   description:
@@ -31,6 +33,39 @@ export const extractRequirements = tool({
       timeline: timeline ?? null,
       extractedAt: new Date().toISOString(),
     };
+  },
+});
+
+export const resolveSkills = tool({
+  description: "Resolve skill names to internal IDs. Use this before creating a project draft.",
+  inputSchema: z.object({
+    skills: z.array(z.string()).describe("Skill names to resolve"),
+  }),
+  execute: async ({ skills }) => {
+    const tags = await db.skillTag.findMany({
+      where: {
+        name: { in: skills, mode: "insensitive" },
+      },
+      select: { id: true, name: true },
+    });
+    return { tags };
+  },
+});
+
+export const createProjectDraft = tool({
+  description: "Create a project draft from the extracted requirements. Call this when the user confirms they want to proceed with creating a project.",
+  inputSchema: z.object({
+    title: z.string(),
+    description: z.string(),
+    budget: z.number().optional(),
+    currency: z.string().default("USD"),
+    skillTagIds: z.array(z.string()).describe("IDs of the resolved skills"),
+    conversationId: z.string().optional(),
+  }),
+  execute: async (params) => {
+    const result = await createProjectFromAI(params);
+    if (result.error) throw new Error(result.error);
+    return { project: result.data };
   },
 });
 
@@ -118,6 +153,8 @@ export const estimateBudget = tool({
 
 export const aiTools = {
   extractRequirements,
+  resolveSkills,
+  createProjectDraft,
   searchDevelopers: searchDevelopersTool,
   estimateBudget,
 };
