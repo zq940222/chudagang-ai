@@ -49,20 +49,26 @@ export default function RegisterPage() {
       }
 
       // Auto sign in after registration
+      console.log("Registration successful, attempting auto sign-in...");
       const signInRes = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
 
+      console.log("SignIn response:", signInRes);
+
       if (signInRes?.error) {
+        console.error("Auto sign-in failed:", signInRes.error);
         setError(t("errorInvalidCredentials"));
         setLoading(false);
         return;
       }
 
+      console.log("Sign-in successful, redirecting...");
       window.location.href = "/";
-    } catch {
+    } catch (err) {
+      console.error("Registration/SignIn error:", err);
       setError(t("errorGeneric"));
       setLoading(false);
     }
