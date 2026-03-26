@@ -97,7 +97,14 @@ export function ChatInterface({
                 case "tool-searchDevelopers":
                   if (part.state === "output-available") {
                     const result = part.output as {
-                      developers: any[];
+                      developers: {
+                        id: string;
+                        name: string;
+                        title?: string;
+                        skills?: string[];
+                        rating?: number;
+                        hourlyRate?: number;
+                      }[];
                     };
                     return (
                       <DeveloperRecommendations
