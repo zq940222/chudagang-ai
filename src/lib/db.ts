@@ -9,23 +9,16 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL ?? "";
 
-  // Use pool for Serverless
+  // Standard pg pool setup
   const pool = new pg.Pool({ 
     connectionString,
-    max: 1, // Minimize connections in serverless
+    max: 1, 
     ssl: {
       rejectUnauthorized: false
     }
   });
 
-  // Log sanitized connection info for debugging
-  try {
-    if (connectionString) {
-      const url = new URL(connectionString);
-      console.log(`DEBUG: DB Client connecting to ${url.hostname}:${url.port} (protocol: ${url.protocol}, pgbouncer: ${url.searchParams.get("pgbouncer")})`);
-    }
-  } catch {}
-
+  // Use the driver adapter to satisfy Prisma 7 requirements in Next.js 16 Turbopack
   // @ts-expect-error -- pg types mismatch
   const adapter = new PrismaPg(pool);
   
