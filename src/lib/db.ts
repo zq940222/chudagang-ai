@@ -9,22 +9,42 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL ?? "";
 
-  // Standard pg pool setup
+  // Log detailed connection info (excluding password)
+  try {
+    if (connectionString) {
+      const url = new URL(connectionString);
+      console.log(`DEBUG: DB Attempting connection to: ${url.hostname} on port ${url.port}`);
+      console.log(`DEBUG: Username used: ${url.username}`);
+      
+      if (url.port === "6543" && !url.username.includes(".")) {
+        console.warn("DEBUG: WARNING - Connection pooler (6543) usually requires username format 'postgres.[project-id]'");
+      }
+      
+      if (url.hostname.startsWith("db.") && url.port === "6543") {
+        console.warn("DEBUG: WARNING - Hostnames starting with 'db.' are usually for direct connection (5432). Pooler host usually looks like 'xxx.pooler.supabase.com'");
+      }
+    }
+  } catch {}
+
   const pool = new pg.Pool({ 
     connectionString,
     max: 1, 
+    connectionTimeoutMillis: 10000, // Increase to 10s
     ssl: {
       rejectUnauthorized: false
     }
   });
 
-  // Use the driver adapter to satisfy Prisma 7 requirements in Next.js 16 Turbopack
+  pool.on("error", (err) => {
+    console.error("DEBUG: Pool Error:", err);
+  });
+
   // @ts-expect-error -- pg types mismatch
   const adapter = new PrismaPg(pool);
   
   return new PrismaClient({
     adapter,
-    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+    log: ["error"],
   });
 }
 
