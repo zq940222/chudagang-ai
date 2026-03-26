@@ -10,6 +10,7 @@ export default defineConfig({
   schema: path.join(__dirname, "prisma", "schema.prisma"),
   datasource: {
     url: env("DATABASE_URL"),
+    // @ts-expect-error -- directUrl is supported by Prisma 7 CLI but missing from current @prisma/config types
     directUrl: env("DIRECT_URL"),
   },
 });
