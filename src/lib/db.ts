@@ -13,15 +13,16 @@ function createPrismaClient(): PrismaClient {
   try {
     if (connectionString) {
       const url = new URL(connectionString);
-      console.log(`DEBUG: DB Attempting connection to: ${url.hostname} on port ${url.port}`);
-      console.log(`DEBUG: Username used: ${url.username}`);
+      const host = url.hostname.trim();
+      console.log(`DEBUG: DB Host: "${host}" (Length: ${host.length})`);
+      console.log(`DEBUG: DB Port: ${url.port}`);
+      console.log(`DEBUG: DB User: ${url.username}`);
       
-      if (url.port === "6543" && !url.username.includes(".")) {
-        console.warn("DEBUG: WARNING - Connection pooler (6543) usually requires username format 'postgres.[project-id]'");
+      if (host.includes("supabase.co") && !host.startsWith("db.")) {
+        console.warn("DEBUG: WARNING - Supabase direct host usually starts with 'db.'");
       }
-      
-      if (url.hostname.startsWith("db.") && url.port === "6543") {
-        console.warn("DEBUG: WARNING - Hostnames starting with 'db.' are usually for direct connection (5432). Pooler host usually looks like 'xxx.pooler.supabase.com'");
+      if (url.port === "6543" && !host.includes("pooler")) {
+        console.warn("DEBUG: WARNING - Port 6543 should usually be used with a '.pooler.supabase.com' host.");
       }
     }
   } catch {}
