@@ -62,7 +62,7 @@ export async function POST(req: Request) {
     system: systemPrompt,
     messages: await convertToModelMessages(rawMessages),
     tools: aiTools,
-    maxSteps: 5,
+    stopWhen: stepCountIs(5),
     onFinish: async ({ text, toolCalls }) => {
       // Save assistant message
       if (text) {
