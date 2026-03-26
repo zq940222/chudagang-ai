@@ -6,15 +6,19 @@ export type ModelProvider = "openai" | "azure" | "claude" | "qwen";
 const azure = createAzure({
   resourceName: process.env.AZURE_RESOURCE_NAME,
   apiKey: process.env.AZURE_API_KEY,
-  apiVersion: process.env.AZURE_API_VERSION || "2024-05-01-preview",
+  apiVersion: process.env.AZURE_API_VERSION || "2024-08-01-preview",
 });
 
 export function getModel(provider: ModelProvider = "openai") {
+  const modelId = provider === "azure" 
+    ? (process.env.AZURE_DEPLOYMENT_NAME || "gpt-4o")
+    : (process.env.OPENAI_MODEL_NAME || "gpt-4o-mini");
+
   switch (provider) {
     case "azure":
-      return azure(process.env.AZURE_DEPLOYMENT_NAME || "gpt-4o");
+      return azure(modelId);
     case "openai":
-      return openai(process.env.OPENAI_MODEL_NAME || "gpt-4o-mini");
+      return openai(modelId);
     case "claude":
       // Stub for now, using openai mini as fallback
       return openai("gpt-4o-mini");
