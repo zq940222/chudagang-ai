@@ -17,8 +17,7 @@ const azure = createAzure({
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
     const deploymentName = process.env.AZURE_DEPLOYMENT_NAME || "gpt-5.4";
-    // Force using the chat completion API
-    return azure.chat(deploymentName);
+    return azure(deploymentName);
   }
 
   const openaiModel = process.env.OPENAI_MODEL_NAME || "gpt-4o-mini";
