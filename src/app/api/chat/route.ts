@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       data: {
         userId: session.user.id,
         status: "DISCOVERY",
-        modelProvider: "openai",
+        modelProvider: process.env.AI_DEFAULT_PROVIDER || "openai",
       },
     });
   }

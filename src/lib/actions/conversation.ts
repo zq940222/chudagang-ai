@@ -19,7 +19,7 @@ export async function createConversation(opts?: {
     data: {
       userId: session.user.id,
       projectId: opts?.projectId,
-      modelProvider: opts?.modelProvider ?? "openai",
+      modelProvider: opts?.modelProvider ?? process.env.AI_DEFAULT_PROVIDER ?? "openai",
       status: "DISCOVERY",
     },
   });

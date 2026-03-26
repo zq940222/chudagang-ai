@@ -1,13 +1,26 @@
 import { openai } from "@ai-sdk/openai";
+import { createAzure } from "@ai-sdk/azure";
 
-export type ModelProvider = "openai" | "claude" | "qwen";
+export type ModelProvider = "openai" | "azure" | "claude" | "qwen";
 
-const models: Record<ModelProvider, () => ReturnType<typeof openai>> = {
-  openai: () => openai("gpt-4o-mini"),
-  claude: () => openai("gpt-4o-mini"),
-  qwen: () => openai("gpt-4o-mini"),
-};
+const azure = createAzure({
+  resourceName: process.env.AZURE_RESOURCE_NAME,
+  apiKey: process.env.AZURE_API_KEY,
+});
 
 export function getModel(provider: ModelProvider = "openai") {
-  return (models[provider] ?? models.openai)();
+  switch (provider) {
+    case "azure":
+      return azure(process.env.AZURE_DEPLOYMENT_NAME || "gpt-4o");
+    case "openai":
+      return openai(process.env.OPENAI_MODEL_NAME || "gpt-4o-mini");
+    case "claude":
+      // Stub for now, using openai mini as fallback
+      return openai("gpt-4o-mini");
+    case "qwen":
+      // Stub for now, using openai mini as fallback
+      return openai("gpt-4o-mini");
+    default:
+      return openai("gpt-4o-mini");
+  }
 }
