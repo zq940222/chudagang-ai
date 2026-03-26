@@ -57,8 +57,8 @@ export default async function ClientProjectDetailPage({
             status={contract.status}
             isClient={true}
             isDeveloper={false}
-            signedByClient={contract.signedByClient}
-            signedByDeveloper={contract.signedByDeveloper}
+            signedByClient={!!contract.signedByClient}
+            signedByDeveloper={!!contract.signedByDeveloper}
           />
 
           {contract.deliverables.length > 0 && (

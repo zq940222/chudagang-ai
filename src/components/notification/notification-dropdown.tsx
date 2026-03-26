@@ -18,7 +18,7 @@ interface Notification {
   createdAt: string;
 }
 
-export function NotificationDropdown({ onClose }: { onClose: () => void }) {
+export function NotificationDropdown({ onClose }: { onClose?: () => void }) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -60,7 +60,10 @@ export function NotificationDropdown({ onClose }: { onClose: () => void }) {
             <a
               key={n.id}
               href={n.link ?? "#"}
-              onClick={() => !n.read && handleRead(n.id)}
+              onClick={() => {
+                if (!n.read) handleRead(n.id);
+                onClose?.();
+              }}
               className={`block border-b border-outline-variant/5 px-4 py-3 transition-colors hover:bg-surface-container ${
                 !n.read ? "bg-accent-cyan/5" : ""
               }`}

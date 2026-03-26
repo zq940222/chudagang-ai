@@ -3,10 +3,7 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { generateContractTerms } from "@/lib/services/contract-generator";
-import {
-  createContractSchema,
-  signContractSchema,
-} from "@/lib/validators/contract";
+import { signContractSchema } from "@/lib/validators/contract";
 import type { ContractCardData, ContractWithDetails } from "@/types/contract";
 import { capturePayment, transferToDeveloper } from "@/lib/services/stripe";
 
@@ -81,7 +78,7 @@ export async function createContractFromApplication(applicationId: string) {
       clientId: application.project.clientId,
       developerId: application.developerId,
       title: `Contract for ${application.project.title}`,
-      terms: terms as any,
+      terms: terms as import("@prisma/client").Prisma.InputJsonValue,
       totalAmount,
       currency: application.project.currency,
       status: "PENDING_SIGN",
@@ -141,7 +138,7 @@ export async function signContract(contractId: string) {
   }
 
   // Update signature
-  const updateData: any = {};
+  const updateData: Record<string, unknown> = {};
   if (isClient) {
     if (contract.signedByClient) {
       return { error: "You have already signed this contract" };
@@ -255,7 +252,7 @@ export async function transitionContract(
 
   const updatedContract = await db.contract.update({
     where: { id: contractId },
-    data: { status: newStatus as any },
+    data: { status: newStatus as "DRAFT" | "PENDING_SIGN" | "ACTIVE" | "DELIVERED" | "COMPLETED" | "DISPUTED" | "CANCELLED" },
   });
 
   // Release escrow payment and complete project if contract is completed

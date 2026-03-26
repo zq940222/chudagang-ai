@@ -30,8 +30,8 @@ export default async function DeveloperContractDetailPage({
         status={contract.status}
         isClient={false}
         isDeveloper={true}
-        signedByClient={contract.signedByClient}
-        signedByDeveloper={contract.signedByDeveloper}
+        signedByClient={!!contract.signedByClient}
+        signedByDeveloper={!!contract.signedByDeveloper}
       />
 
       {contract.status === "ACTIVE" && (
