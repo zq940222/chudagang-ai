@@ -6,6 +6,7 @@ export type ModelProvider = "openai" | "azure" | "claude" | "qwen";
 const azure = createAzure({
   resourceName: process.env.AZURE_RESOURCE_NAME,
   apiKey: process.env.AZURE_API_KEY,
+  apiVersion: process.env.AZURE_API_VERSION || "2024-05-01-preview",
 });
 
 export function getModel(provider: ModelProvider = "openai") {
