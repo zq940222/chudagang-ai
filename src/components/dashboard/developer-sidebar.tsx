@@ -28,18 +28,18 @@ export function DeveloperSidebar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-xl px-4 py-3 text-[13px] font-bold uppercase tracking-wider transition-all",
                 isActive
-                  ? "bg-primary/10 text-accent-cyan"
-                  : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
+                  ? "bg-primary text-on-primary shadow-lg shadow-primary/20"
+                  : "text-on-surface-variant/70 hover:bg-surface-container-high hover:text-on-surface"
               )}
             >
               <svg
-                className="h-5 w-5 shrink-0"
+                className={cn("h-5 w-5 shrink-0 transition-colors", isActive ? "text-accent-cyan" : "text-on-surface-variant/40")}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={1.5}
+                strokeWidth={2}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d={link.icon} />
               </svg>

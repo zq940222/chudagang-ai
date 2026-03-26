@@ -34,23 +34,31 @@ const features = [
 
 export function FeaturesSection({ t }: FeaturesSectionProps) {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-16">
-      <h2 className="text-center text-2xl font-bold text-on-surface sm:text-3xl">
-        {t("featuresTitle")}
-      </h2>
-      <div className="mt-12 grid gap-8 sm:grid-cols-3">
+    <section className="mx-auto max-w-7xl px-6 py-24 sm:py-32">
+      <div className="flex flex-col items-center text-center mb-16">
+        <span className="text-accent-cyan text-sm font-bold uppercase tracking-widest mb-3">
+          {t("featuresTagline") || "Capabilities"}
+        </span>
+        <h2 className="text-3xl font-extrabold text-on-surface sm:text-5xl max-w-2xl">
+          {t("featuresTitle")}
+        </h2>
+      </div>
+      
+      <div className="grid gap-8 sm:grid-cols-3">
         {features.map((feature) => (
           <div
             key={feature.titleKey}
-            className="rounded-xl bg-surface-container-low p-6 ghost-border"
+            className="group relative rounded-3xl bg-surface-container-lowest p-8 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-accent-cyan/10 ghost-border"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-cyan/10 text-accent-cyan">
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-accent-cyan/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            
+            <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-container text-accent-cyan shadow-inner transition-colors group-hover:bg-accent-cyan group-hover:text-primary">
               {feature.icon}
             </div>
-            <h3 className="mt-4 text-lg font-semibold text-on-surface">
+            <h3 className="relative z-10 mt-6 text-xl font-bold text-on-surface">
               {t(feature.titleKey)}
             </h3>
-            <p className="mt-2 text-sm leading-6 text-on-surface-variant">
+            <p className="relative z-10 mt-3 text-base leading-relaxed text-on-surface-variant/70">
               {t(feature.descKey)}
             </p>
           </div>

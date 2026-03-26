@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { Button } from "@/components/ui/button";
 
 export default async function DeveloperDetailPage({
   params,
@@ -28,123 +29,141 @@ export default async function DeveloperDetailPage({
     profile.currency === "CNY" ? "\u00A5" : profile.currency === "EUR" ? "\u20AC" : "$";
 
   return (
-    <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="flex items-start gap-5">
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-primary/20 text-2xl font-bold text-primary">
-          {initial}
-        </div>
-        <div className="min-w-0 flex-1">
-          <h1 className="text-2xl font-bold text-on-surface">
-            {profile.displayName}
-          </h1>
-          {profile.title && (
-            <p className="text-lg text-on-surface-variant">{profile.title}</p>
+    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        {/* Main Content (2/3) */}
+        <div className="lg:col-span-2 space-y-12">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-start gap-8">
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-primary-container text-4xl font-black text-on-primary shadow-2xl">
+              {initial}
+            </div>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-4xl font-extrabold text-on-surface tracking-tight">
+                {profile.displayName}
+              </h1>
+              {profile.title && (
+                <p className="mt-2 text-xl font-medium text-accent-cyan">{profile.title}</p>
+              )}
+              <div className="mt-4 flex items-center gap-3">
+                {profile.aiRating && (
+                  <div className="flex items-center gap-1 rounded-full bg-accent-cyan/10 px-3 py-1 text-xs font-bold text-accent-cyan uppercase tracking-wider">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    {Number(profile.aiRating).toFixed(1)} AI Score
+                  </div>
+                )}
+                <span className="text-sm font-bold text-on-surface-variant/60 uppercase tracking-widest">
+                  Verified Expert
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bio */}
+          {profile.bio && (
+            <div className="rounded-3xl bg-surface-container-lowest p-8 ghost-border relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent-cyan/5 blur-3xl -z-10" />
+              <h2 className="text-sm font-black text-on-surface uppercase tracking-[0.2em] mb-4">About</h2>
+              <p className="text-lg leading-relaxed text-on-surface-variant/90 font-medium">
+                {profile.bio}
+              </p>
+            </div>
           )}
-          <div className="mt-2 flex items-center gap-4">
-            {profile.aiRating && (
-              <span className="rounded-md bg-accent-cyan/10 px-2.5 py-0.5 text-sm font-semibold text-accent-cyan">
-                {Number(profile.aiRating).toFixed(1)} rating
-              </span>
+
+          {/* Skills */}
+          {profile.skills.length > 0 && (
+            <div className="space-y-6">
+              <h2 className="text-sm font-black text-on-surface uppercase tracking-[0.2em]">Expertise</h2>
+              <div className="flex flex-wrap gap-3">
+                {profile.skills.map((s) => (
+                  <span
+                    key={s.skillTag.id}
+                    className="rounded-xl bg-surface-container px-5 py-2.5 text-sm font-bold text-on-surface shadow-sm hover:bg-surface-container-high transition-colors cursor-default"
+                  >
+                    {locale === "zh" ? s.skillTag.localeZh : s.skillTag.localeEn}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Sidebar (1/3) */}
+        <div className="space-y-8">
+          {/* Rate & Availability Card */}
+          <div className="sticky top-24 rounded-3xl bg-primary p-8 text-on-primary shadow-2xl shadow-primary/20 space-y-8">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-2">Hourly Rate</p>
+              <p className="text-4xl font-black tracking-tight">
+                <span className="text-accent-cyan">{currencySymbol}</span>
+                {Number(profile.hourlyRate)}
+                <span className="text-xl font-medium opacity-60 ml-1">/hr</span>
+              </p>
+            </div>
+
+            {/* Availability */}
+            {profile.availabilities.length > 0 && (
+              <div className="space-y-4">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60">Next Available</p>
+                <div className="space-y-2">
+                  {profile.availabilities.slice(0, 3).map((slot) => (
+                    <div
+                      key={slot.id}
+                      className="flex items-center justify-between rounded-xl bg-white/10 p-3 text-sm font-bold backdrop-blur-sm"
+                    >
+                      <span>
+                        {new Date(slot.date).toLocaleDateString(locale, {
+                          weekday: "short",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
+                      <span className="text-accent-cyan">{slot.startTime}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
-            {profile.hourlyRate && (
-              <span className="text-sm font-medium text-on-surface">
-                {currencySymbol}
-                {Number(profile.hourlyRate)}/hr
-              </span>
+
+            {/* Links */}
+            {(profile.githubUrl || profile.portfolioUrl) && (
+              <div className="space-y-4 pt-4 border-t border-white/10">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60">External Proof</p>
+                <div className="flex flex-col gap-3">
+                  {profile.githubUrl && (
+                    <a
+                      href={profile.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm font-bold text-accent-cyan hover:opacity-80 transition-opacity"
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 4.287 9.607 9.607 10.607.6.11.82-.258.82-.577 0-.285-.02-1.04-.032-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                      GitHub Profile
+                    </a>
+                  )}
+                  {profile.portfolioUrl && (
+                    <a
+                      href={profile.portfolioUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm font-bold text-accent-cyan hover:opacity-80 transition-opacity"
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
+                      Portfolio
+                    </a>
+                  )}
+                </div>
+              </div>
             )}
+
+            <Button className="w-full bg-accent-cyan text-primary hover:bg-white transition-colors h-14 rounded-2xl font-black uppercase tracking-widest text-xs">
+              Direct Message
+            </Button>
           </div>
         </div>
       </div>
-
-      {/* Bio */}
-      {profile.bio && (
-        <div className="mt-8">
-          <h2 className="text-lg font-semibold text-on-surface">About</h2>
-          <p className="mt-2 whitespace-pre-line text-on-surface-variant">
-            {profile.bio}
-          </p>
-        </div>
-      )}
-
-      {/* Skills */}
-      {profile.skills.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-lg font-semibold text-on-surface">Skills</h2>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {profile.skills.map((s) => (
-              <span
-                key={s.skillTag.id}
-                className="rounded-full bg-surface-container-high px-3 py-1 text-sm text-on-surface-variant"
-              >
-                {locale === "zh" ? s.skillTag.localeZh : s.skillTag.localeEn}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Links */}
-      {(profile.githubUrl || profile.portfolioUrl) && (
-        <div className="mt-8">
-          <h2 className="text-lg font-semibold text-on-surface">Links</h2>
-          <div className="mt-2 flex flex-col gap-2">
-            {profile.githubUrl && (
-              <a
-                href={profile.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-accent-cyan hover:underline"
-              >
-                GitHub
-              </a>
-            )}
-            {profile.portfolioUrl && (
-              <a
-                href={profile.portfolioUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-accent-cyan hover:underline"
-              >
-                Portfolio
-              </a>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Upcoming availability */}
-      {profile.availabilities.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-lg font-semibold text-on-surface">
-            Upcoming Availability
-          </h2>
-          <div className="mt-2 space-y-2">
-            {profile.availabilities.map((slot) => (
-              <div
-                key={slot.id}
-                className="flex items-center gap-3 rounded-lg bg-surface-container-lowest p-3 ghost-border"
-              >
-                <span className="text-sm font-medium text-on-surface">
-                  {new Date(slot.date).toLocaleDateString(locale, {
-                    weekday: "short",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-                <span className="text-sm text-on-surface-variant">
-                  {slot.startTime} - {slot.endTime}
-                </span>
-                {slot.note && (
-                  <span className="text-xs text-on-surface-variant/70">
-                    {slot.note}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </section>
   );
 }
