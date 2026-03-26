@@ -14,6 +14,14 @@ const registerSchema = z.object({
 
 export async function register(data: z.infer<typeof registerSchema>) {
   try {
+    const rawUrl = process.env.DATABASE_URL || "MISSING";
+    let sanitizedUrl = "INVALID_URL";
+    try {
+      const url = new URL(rawUrl);
+      sanitizedUrl = `${url.hostname}:${url.port}${url.pathname} (protocol: ${url.protocol}, pgbouncer: ${url.searchParams.get("pgbouncer")})`;
+    } catch {}
+    console.log("DEBUG: Current DATABASE_URL environment:", sanitizedUrl);
+    
     console.log("DEBUG: Registration action started for:", data.email);
     
     const parsed = registerSchema.safeParse(data);

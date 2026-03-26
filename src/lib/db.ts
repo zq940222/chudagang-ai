@@ -27,9 +27,12 @@ function createPrismaClient(): PrismaClient {
   // Use a smaller pool size for serverless functions to avoid exhausting DB connections
   const pool = new pg.Pool({ 
     connectionString,
-    max: 10, // Max connections in pool
+    max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000, // Wait 5s for connection before failing
+    connectionTimeoutMillis: 5000,
+    ssl: {
+      rejectUnauthorized: false // Required for Supabase/Neon in some serverless environments
+    }
   });
 
   pool.on("error", (err) => {
