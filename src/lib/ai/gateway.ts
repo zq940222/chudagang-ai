@@ -23,7 +23,7 @@ const azureProvider = createOpenAI({
     console.log(`DEBUG: Intercepting AI SDK call. Redirecting to verified Azure path: ${finalUrl}`);
     
     // Ensure Azure auth header is present
-    const headers = new Headers(options.headers);
+    const headers = new Headers(options?.headers);
     headers.set("api-key", azureApiKey);
 
     return fetch(finalUrl, {
