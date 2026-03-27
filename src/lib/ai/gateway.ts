@@ -8,36 +8,72 @@ const azureApiVersion = process.env.AZURE_API_VERSION || "2024-10-21";
 const azureDeploymentName = process.env.AZURE_DEPLOYMENT_NAME || "gpt-5.4";
 
 /**
- * THE COMPATIBILITY BRIDGE:
- * We use the OpenAI provider to ensure the SDK uses the classic Chat Completions protocol.
- * We use 'gpt-3.5-turbo' as a model alias to prevent the SDK from upgrading to the new Inference protocol.
- * The fetch interceptor handles the Azure-specific URL, Versioning, and Authentication.
+ * THE PROTOCOL ADAPTER:
+ * Manually translates Vercel AI SDK's modern "Inference" request body
+ * to the legacy "Chat Completion" format required by current Azure OpenAI deployments.
  */
 const azureCompatibleProvider = createOpenAI({
   apiKey: azureApiKey,
   fetch: async (url, options) => {
-    // Manually build the EXACT URL that we verified with the raw fetch script
     const finalUrl = `https://${azureResourceName}.openai.azure.com/openai/deployments/${azureDeploymentName}/chat/completions?api-version=${azureApiVersion}`;
     
-    console.log(`DEBUG: Protocol Bridge -> Redirecting to Azure: ${finalUrl}`);
+    console.log(`DEBUG: Protocol Adapter -> Rewriting Body & Redirecting to: ${finalUrl}`);
     
     const headers = new Headers(options?.headers);
     headers.set("api-key", azureApiKey);
-    headers.delete("Authorization"); // Azure rejects standard OpenAI Bearer tokens
+    headers.delete("Authorization");
+
+    let body: any = {};
+    try {
+      body = JSON.parse(options?.body as string);
+      
+      // 1. Transform 'input' format back to 'messages' format
+      if (body.input && !body.messages) {
+        body.messages = body.input.map((msg: any) => {
+          // Deep fix: Convert content parts if necessary
+          if (Array.isArray(msg.content)) {
+            msg.content = msg.content.map((part: any) => {
+              // Convert 'input_text' back to standard 'text' type
+              if (part.type === "input_text") return { ...part, type: "text" };
+              return part;
+            });
+          }
+          return msg;
+        });
+        delete body.input;
+      }
+
+      // 2. Transform tools format if necessary (handle SDK v6 flattening)
+      if (Array.isArray(body.tools)) {
+        body.tools = body.tools.map((tool: any) => {
+          if (tool.type === "function" && !tool.function) {
+            const { name, description, parameters, ...rest } = tool;
+            return { ...rest, type: "function", function: { name, description, parameters } };
+          }
+          return tool;
+        });
+      }
+
+      // 3. Remove modern fields that Azure might reject
+      delete body.model; 
+      if (body.parallel_tool_calls === undefined) delete body.parallel_tool_calls;
+
+    } catch (e) {
+      console.error("DEBUG: Body parsing error", e);
+    }
 
     return fetch(finalUrl, {
       ...options,
       headers,
+      body: JSON.stringify(body),
     });
   },
 });
 
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
-    // 'gpt-3.5-turbo' is the "Safest" model name. 
-    // It forces the SDK to expect the legacy 'choices' response format,
-    // which matches what Azure is currently sending back.
-    return azureCompatibleProvider("gpt-3.5-turbo");
+    // Standard model alias to keep SDK happy
+    return azureCompatibleProvider("gpt-4o");
   }
 
   const openaiDefault = createOpenAI({
