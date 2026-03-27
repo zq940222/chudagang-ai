@@ -8,26 +8,36 @@ const azureApiKey = process.env.AZURE_API_KEY || "";
 const azureApiVersion = process.env.AZURE_API_VERSION || "2024-10-21";
 const azureDeploymentName = process.env.AZURE_DEPLOYMENT_NAME || "gpt-5.4";
 
-// We use the OpenAI provider but point it to Azure's specific deployment URL.
+/**
+ * STRATEGY: Custom Fetch Wrapper
+ * We provide a custom fetch implementation to the OpenAI provider.
+ * No matter what URL the SDK tries to build internally (e.g., .../responses),
+ * we intercept it and redirect it to the EXACT Azure Chat Completions endpoint
+ * that we verified working with our local script.
+ */
 const azure = createOpenAI({
-  baseURL: `https://${azureResourceName}.openai.azure.com/openai/deployments/${azureDeploymentName}`,
   apiKey: azureApiKey,
-  headers: {
-    "api-key": azureApiKey,
+  fetch: async (url, options) => {
+    const correctUrl = `https://${azureResourceName}.openai.azure.com/openai/deployments/${azureDeploymentName}/chat/completions?api-version=${azureApiVersion}`;
+    
+    // Inject Azure-specific headers
+    const headers = new Headers(options.headers);
+    headers.set("api-key", azureApiKey);
+
+    console.log(`DEBUG: Intercepting SDK request. Redirecting to Azure: ${correctUrl}`);
+    
+    return fetch(correctUrl, {
+      ...options,
+      headers,
+    });
   },
 });
 
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
-    // STRATEGY: We use "gpt-4" as the model name here.
-    // 1. This forces the Vercel AI SDK to use the "/chat/completions" path.
-    // 2. Azure will receive the request at the correct URL.
-    // 3. Azure COMPLETELY IGNORES the "model" field in the JSON body when using 
-    //    deployment-based URLs, so it will correctly use your "gpt-5.4" deployment.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (azure as any)("gpt-4", {
-      queryParams: { "api-version": azureApiVersion },
-    });
+    // We use a standard model name to keep the SDK happy internally.
+    // The actual URL and model used are controlled by our custom fetch wrapper above.
+    return azure("gpt-4");
   }
 
   const openaiDefault = createOpenAI({
