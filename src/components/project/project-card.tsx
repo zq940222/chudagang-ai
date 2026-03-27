@@ -3,6 +3,7 @@
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { ProjectCardData } from "@/types/project";
 
@@ -15,7 +16,12 @@ const statusColors: Record<string, string> = {
   CANCELLED: "bg-error/10 text-error",
 };
 
-export function ProjectCard({ project }: { project: ProjectCardData }) {
+interface ProjectCardProps {
+  project: ProjectCardData;
+  variant?: "default" | "tall";
+}
+
+export function ProjectCard({ project, variant = "default" }: ProjectCardProps) {
   const locale = useLocale();
 
   const currencySymbol =
@@ -29,53 +35,62 @@ export function ProjectCard({ project }: { project: ProjectCardData }) {
   const extraSkillCount = project.skills.length - 4;
 
   return (
-    <Link href={`/projects/${project.id}`} className="block">
-      <Card className="h-full transition-colors hover:bg-surface-container-low">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="text-base font-semibold text-on-surface line-clamp-1">
+    <Link href={`/projects/${project.id}`} className="block group h-full">
+      <Card
+        className={cn(
+          "h-full transition-all hover:shadow-md hover:border-accent-cyan/20",
+          variant === "tall" && "flex flex-col justify-between min-h-[320px]"
+        )}
+      >
+        <div>
+          <div className="flex items-start justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              {project.category && (
+                <span className="text-[10px] font-bold tracking-widest uppercase text-on-surface-variant">
+                  {project.category}
+                </span>
+              )}
+            </div>
+            <span
+              className={cn(
+                "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider",
+                statusColors[project.status] ?? statusColors.DRAFT
+              )}
+            >
+              {project.status}
+            </span>
+          </div>
+
+          <h3 className="text-lg font-bold text-on-surface line-clamp-2 group-hover:text-secondary transition-colors">
             {project.title}
           </h3>
-          <span
-            className={cn(
-              "shrink-0 rounded-full px-2 py-0.5 text-xs font-medium",
-              statusColors[project.status] ?? statusColors.DRAFT
-            )}
-          >
-            {project.status}
-          </span>
+
+          <p className="mt-2 text-sm text-on-surface-variant line-clamp-3 leading-relaxed">
+            {project.description}
+          </p>
+
+          {displaySkills.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {displaySkills.map((skill) => (
+                <Badge key={skill.id} variant="default">
+                  {locale === "zh" ? skill.localeZh : skill.localeEn}
+                </Badge>
+              ))}
+              {extraSkillCount > 0 && (
+                <Badge variant="outline">+{extraSkillCount}</Badge>
+              )}
+            </div>
+          )}
         </div>
 
-        <p className="mt-2 text-sm text-on-surface-variant line-clamp-3">
-          {project.description}
-        </p>
-
-        {displaySkills.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {displaySkills.map((skill) => (
-              <span
-                key={skill.id}
-                className="rounded-full bg-surface-container-high px-2.5 py-0.5 text-xs text-on-surface-variant"
-              >
-                {locale === "zh" ? skill.localeZh : skill.localeEn}
-              </span>
-            ))}
-            {extraSkillCount > 0 && (
-              <span className="rounded-full bg-surface-container-high px-2.5 py-0.5 text-xs text-on-surface-variant/70">
-                +{extraSkillCount}
-              </span>
-            )}
-          </div>
-        )}
-
-        <div className="mt-4 flex items-center justify-between text-sm">
-          <span className="font-medium text-on-surface">
+        <div className="mt-4 flex items-center justify-between text-sm pt-4 border-t border-outline-variant/10">
+          <span className="font-bold text-on-surface">
             {project.budget !== null
               ? `${currencySymbol}${project.budget.toLocaleString()}`
               : "Negotiable"}
           </span>
-          <span className="text-on-surface-variant">
-            {project.applicationCount} application
-            {project.applicationCount !== 1 ? "s" : ""}
+          <span className="text-on-surface-variant text-xs">
+            {project.applicationCount} applicant{project.applicationCount !== 1 ? "s" : ""}
           </span>
         </div>
       </Card>
