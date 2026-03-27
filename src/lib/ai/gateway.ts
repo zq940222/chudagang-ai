@@ -9,16 +9,17 @@ const azureDeploymentName = process.env.AZURE_DEPLOYMENT_NAME || "gpt-5.4";
 
 /**
  * THE PROTOCOL ADAPTER:
- * Manually translates Vercel AI SDK's modern "Inference" request body
- * to the legacy "Chat Completion" format required by current Azure OpenAI deployments.
+ * Uses compatibility mode so the SDK sends/receives the legacy Chat Completion
+ * format that Azure OpenAI deployments support (instead of the Responses API).
  */
 const azureCompatibleProvider = createOpenAI({
   apiKey: azureApiKey,
+  compatibility: "compatible",
   fetch: async (url, options) => {
     const finalUrl = `https://${azureResourceName}.openai.azure.com/openai/deployments/${azureDeploymentName}/chat/completions?api-version=${azureApiVersion}`;
-    
-    console.log(`DEBUG: Protocol Adapter -> Rewriting Body & Redirecting to: ${finalUrl}`);
-    
+
+    console.log(`DEBUG: Protocol Adapter -> Redirecting to: ${finalUrl}`);
+
     const headers = new Headers(options?.headers);
     headers.set("api-key", azureApiKey);
     headers.delete("Authorization");
@@ -27,41 +28,8 @@ const azureCompatibleProvider = createOpenAI({
     let body: any = {};
     try {
       body = JSON.parse(options?.body as string);
-      
-      // 1. Transform 'input' format back to 'messages' format
-      if (body.input && !body.messages) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        body.messages = body.input.map((msg: any) => {
-          // Deep fix: Convert content parts if necessary
-          if (Array.isArray(msg.content)) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            msg.content = msg.content.map((part: any) => {
-              // Convert 'input_text' back to standard 'text' type
-              if (part.type === "input_text") return { ...part, type: "text" };
-              return part;
-            });
-          }
-          return msg;
-        });
-        delete body.input;
-      }
-
-      // 2. Transform tools format if necessary (handle SDK v6 flattening)
-      if (Array.isArray(body.tools)) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        body.tools = body.tools.map((tool: any) => {
-          if (tool.type === "function" && !tool.function) {
-            const { name, description, parameters, ...rest } = tool;
-            return { ...rest, type: "function", function: { name, description, parameters } };
-          }
-          return tool;
-        });
-      }
-
-      // 3. Remove modern fields that Azure might reject
-      delete body.model; 
-      if (body.parallel_tool_calls === undefined) delete body.parallel_tool_calls;
-
+      // Remove model field — Azure infers it from the deployment URL
+      delete body.model;
     } catch (e) {
       console.error("DEBUG: Body parsing error", e);
     }
