@@ -9,12 +9,11 @@ const azureDeploymentName = process.env.AZURE_DEPLOYMENT_NAME || "gpt-5.4";
 
 /**
  * THE PROTOCOL ADAPTER:
- * Uses compatibility mode so the SDK sends/receives the legacy Chat Completion
- * format that Azure OpenAI deployments support (instead of the Responses API).
+ * Uses .chat() to force the legacy Chat Completion protocol
+ * that Azure OpenAI deployments support (instead of the Responses API).
  */
 const azureCompatibleProvider = createOpenAI({
   apiKey: azureApiKey,
-  compatibility: "compatible",
   fetch: async (url, options) => {
     const finalUrl = `https://${azureResourceName}.openai.azure.com/openai/deployments/${azureDeploymentName}/chat/completions?api-version=${azureApiVersion}`;
 
@@ -44,8 +43,8 @@ const azureCompatibleProvider = createOpenAI({
 
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
-    // Standard model alias to keep SDK happy
-    return azureCompatibleProvider("gpt-4o");
+    // Use .chat() to force legacy Chat Completion protocol instead of Responses API
+    return azureCompatibleProvider.chat("gpt-4o");
   }
 
   const openaiDefault = createOpenAI({
