@@ -17,13 +17,8 @@ const azure = createAzure({
 
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
-    // We use .chatModel() or .completionModel() depending on deployment
-    // Since gpt-5.4 is a chat model, we ensure it maps to the chat completion endpoint
-    return azure(azureDeploymentName, {
-      // This is a crucial fix for the "API version not supported" error
-      // It forces the SDK to use the standard chat completions path
-      structuredOutputs: false, 
-    });
+    // Standard Azure provider call
+    return azure(azureDeploymentName);
   }
 
   const openaiModel = process.env.OPENAI_MODEL_NAME || "gpt-4o-mini";
