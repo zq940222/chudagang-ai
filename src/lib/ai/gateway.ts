@@ -2,31 +2,31 @@ import { createOpenAI } from "@ai-sdk/openai";
 
 export type ModelProvider = "openai" | "azure" | "claude" | "qwen";
 
-// Azure configurations
 const azureResourceName = process.env.AZURE_RESOURCE_NAME || "crewplus-eastus2";
 const azureApiKey = process.env.AZURE_API_KEY || "";
 const azureApiVersion = process.env.AZURE_API_VERSION || "2024-10-21";
 const azureDeploymentName = process.env.AZURE_DEPLOYMENT_NAME || "gpt-5.4";
 
 /**
- * STRATEGY: Custom Fetch Wrapper
- * We provide a custom fetch implementation to the OpenAI provider.
- * No matter what URL the SDK tries to build internally (e.g., .../responses),
- * we intercept it and redirect it to the EXACT Azure Chat Completions endpoint
- * that we verified working with our local script.
+ * FINAL STRATEGY:
+ * We use the OpenAI compatible provider but with a manually constructed baseURL
+ * that includes the full Azure deployment path. To prevent the SDK from appending
+ * anything else, we use a custom fetch that effectively Ignores the URL the SDK 
+ * thinks it's calling and uses our verified one.
  */
-const azure = createOpenAI({
+const azureProvider = createOpenAI({
   apiKey: azureApiKey,
-  fetch: async (url, options) => {
-    const correctUrl = `https://${azureResourceName}.openai.azure.com/openai/deployments/${azureDeploymentName}/chat/completions?api-version=${azureApiVersion}`;
+  fetch: async (inputUrl, options) => {
+    // This is the ONLY URL we know works for your Azure resource.
+    const finalUrl = `https://${azureResourceName}.openai.azure.com/openai/deployments/${azureDeploymentName}/chat/completions?api-version=${azureApiVersion}`;
     
-    // Inject Azure-specific headers
+    console.log(`DEBUG: Intercepting AI SDK call. Redirecting to verified Azure path: ${finalUrl}`);
+    
+    // Ensure Azure auth header is present
     const headers = new Headers(options.headers);
     headers.set("api-key", azureApiKey);
 
-    console.log(`DEBUG: Intercepting SDK request. Redirecting to Azure: ${correctUrl}`);
-    
-    return fetch(correctUrl, {
+    return fetch(finalUrl, {
       ...options,
       headers,
     });
@@ -35,9 +35,8 @@ const azure = createOpenAI({
 
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
-    // We use a standard model name to keep the SDK happy internally.
-    // The actual URL and model used are controlled by our custom fetch wrapper above.
-    return azure("gpt-4");
+    // We pass a generic model name. The actual URL is handled by our interceptor.
+    return azureProvider("gpt-4o"); 
   }
 
   const openaiDefault = createOpenAI({
