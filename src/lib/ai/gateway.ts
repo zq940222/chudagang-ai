@@ -20,9 +20,10 @@ const azure = createOpenAI({
 
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
-    // By passing an empty string as the model name, it will use the deployment specified in the baseURL
-    // and append /chat/completions which is exactly what Azure needs.
-    return azure("", {
+    // Standard OpenAI provider instance call with empty model name
+    // since deployment is in baseURL. We cast to any to allow queryParams
+    // which is the common way to handle api-version in compatible providers.
+    return (azure as any)("", {
       queryParams: { "api-version": azureApiVersion },
     });
   }
