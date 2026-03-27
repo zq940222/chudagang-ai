@@ -23,6 +23,7 @@ export function getModel(provider: ModelProvider = "openai") {
     // Standard OpenAI provider instance call with empty model name
     // since deployment is in baseURL. We cast to any to allow queryParams
     // which is the common way to handle api-version in compatible providers.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (azure as any)("", {
       queryParams: { "api-version": azureApiVersion },
     });

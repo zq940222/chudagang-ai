@@ -1,5 +1,3 @@
-import { Card } from "@/components/ui/card";
-
 interface StatsCardProps {
   title: string;
   value: string | number;
