@@ -23,15 +23,18 @@ const azureCompatibleProvider = createOpenAI({
     headers.set("api-key", azureApiKey);
     headers.delete("Authorization");
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let body: any = {};
     try {
       body = JSON.parse(options?.body as string);
       
       // 1. Transform 'input' format back to 'messages' format
       if (body.input && !body.messages) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         body.messages = body.input.map((msg: any) => {
           // Deep fix: Convert content parts if necessary
           if (Array.isArray(msg.content)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             msg.content = msg.content.map((part: any) => {
               // Convert 'input_text' back to standard 'text' type
               if (part.type === "input_text") return { ...part, type: "text" };
@@ -45,6 +48,7 @@ const azureCompatibleProvider = createOpenAI({
 
       // 2. Transform tools format if necessary (handle SDK v6 flattening)
       if (Array.isArray(body.tools)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         body.tools = body.tools.map((tool: any) => {
           if (tool.type === "function" && !tool.function) {
             const { name, description, parameters, ...rest } = tool;
