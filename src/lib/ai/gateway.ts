@@ -1,5 +1,4 @@
-import { openai } from "@ai-sdk/openai";
-import { createAzure } from "@ai-sdk/azure";
+import { createOpenAI } from "@ai-sdk/openai";
 
 export type ModelProvider = "openai" | "azure" | "claude" | "qwen";
 
@@ -9,26 +8,22 @@ const azureApiVersion = process.env.AZURE_API_VERSION || "2024-10-21";
 const azureDeploymentName = process.env.AZURE_DEPLOYMENT_NAME || "gpt-5.4";
 
 /**
- * THE ULTIMATE AZURE ADAPTER:
- * We use the official Azure provider so that the SDK expects Azure-formatted responses.
- * We use a fetch interceptor ONLY to fix the URL path and version,
- * bypassing the SDK's internal misidentification of the 'gpt-5.4' model.
+ * THE COMPATIBILITY BRIDGE:
+ * We use the OpenAI provider to ensure the SDK uses the classic Chat Completions protocol.
+ * We use 'gpt-3.5-turbo' as a model alias to prevent the SDK from upgrading to the new Inference protocol.
+ * The fetch interceptor handles the Azure-specific URL, Versioning, and Authentication.
  */
-const azure = createAzure({
-  resourceName: azureResourceName,
+const azureCompatibleProvider = createOpenAI({
   apiKey: azureApiKey,
-  apiVersion: azureApiVersion,
   fetch: async (url, options) => {
-    // 1. Force the correct path: always use /chat/completions for this deployment
-    let finalUrl = url.toString()
-      .replace(/\/responses($|\?)/, "/chat/completions$1")
-      .replace(/api-version=[^&]+/, `api-version=${azureApiVersion}`);
-
-    console.log(`DEBUG: Azure Adapter Redirect: ${finalUrl}`);
-
-    // 2. Ensure the API key is present in headers (Azure requirement)
+    // Manually build the EXACT URL that we verified with the raw fetch script
+    const finalUrl = `https://${azureResourceName}.openai.azure.com/openai/deployments/${azureDeploymentName}/chat/completions?api-version=${azureApiVersion}`;
+    
+    console.log(`DEBUG: Protocol Bridge -> Redirecting to Azure: ${finalUrl}`);
+    
     const headers = new Headers(options?.headers);
     headers.set("api-key", azureApiKey);
+    headers.delete("Authorization"); // Azure rejects standard OpenAI Bearer tokens
 
     return fetch(finalUrl, {
       ...options,
@@ -39,10 +34,15 @@ const azure = createAzure({
 
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
-    // Calling the azure provider directly. The interceptor handles the rest.
-    return azure(azureDeploymentName);
+    // 'gpt-3.5-turbo' is the "Safest" model name. 
+    // It forces the SDK to expect the legacy 'choices' response format,
+    // which matches what Azure is currently sending back.
+    return azureCompatibleProvider("gpt-3.5-turbo");
   }
 
-  const openaiDefault = openai(process.env.OPENAI_MODEL_NAME || "gpt-4o-mini");
-  return openaiDefault;
+  const openaiDefault = createOpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+  const openaiModel = process.env.OPENAI_MODEL_NAME || "gpt-4o-mini";
+  return openaiDefault(openaiModel);
 }
