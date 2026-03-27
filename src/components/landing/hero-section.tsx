@@ -6,41 +6,83 @@ interface HeroSectionProps {
 
 export function HeroSection({ t }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden px-6 py-24 sm:py-32 lg:py-40">
-      {/* Background gradient effects */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-[10%] top-[-10%] h-[600px] w-[600px] rounded-full bg-accent-cyan/10 blur-[120px] animate-pulse" />
-        <div className="absolute right-[10%] bottom-[-10%] h-[500px] w-[500px] rounded-full bg-tertiary/10 blur-[100px] animate-pulse delay-700" />
+    <section className="relative overflow-hidden bg-surface-container-lowest py-24 px-8">
+      {/* Background blobs */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-[-10%] w-[600px] h-[600px] rounded-full bg-accent-cyan/5 blur-[120px]" />
+        <div className="absolute bottom-0 left-[-5%] w-[400px] h-[400px] rounded-full bg-tertiary/5 blur-[100px]" />
       </div>
 
-      <div className="mx-auto max-w-4xl text-center relative">
-        {/* Floating decorative element with glassmorphism */}
-        <div className="hidden lg:block absolute -left-20 top-0 w-24 h-24 glass rounded-2xl ghost-border -rotate-12 animate-bounce [animation-duration:4s]" />
-        <div className="hidden lg:block absolute -right-16 bottom-10 w-20 h-20 glass rounded-full ghost-border rotate-12 animate-bounce [animation-duration:5s]" />
+      <div className="mx-auto max-w-6xl grid lg:grid-cols-2 gap-12 items-center relative z-10">
+        {/* Left: Copy */}
+        <div className="space-y-8">
+          <div className="space-y-4">
+            <span className="text-[10px] uppercase tracking-[0.25em] font-black bg-tertiary/10 text-tertiary px-4 py-1.5 rounded-full inline-block">
+              {t("heroTagline")}
+            </span>
+            <h1 className="text-5xl lg:text-6xl font-black tracking-tight text-on-surface leading-[1.1]">
+              {t("heroTitle")}{" "}
+              <br />
+              <span className="bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-transparent">
+                {t("heroHighlight")}
+              </span>{" "}
+              <br />
+              {t("heroTitle2")}
+            </h1>
+            <p className="text-lg text-on-surface-variant max-w-lg leading-relaxed pt-4">
+              {t("heroSubtitle")}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-4 pt-4">
+            <Link
+              href="/chat"
+              className="group relative inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-xl font-bold shadow-xl shadow-primary/20 hover:shadow-2xl hover:-translate-y-0.5 transition-all"
+            >
+              {t("ctaStart")}
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </Link>
+            <Link
+              href="/projects"
+              className="inline-flex items-center px-8 py-4 bg-surface-container-high text-on-surface rounded-xl font-bold hover:bg-surface-container-highest transition-all"
+            >
+              {t("ctaBrowse")}
+            </Link>
+          </div>
+        </div>
 
-        <h1 className="text-4xl font-extrabold tracking-tight text-on-surface sm:text-5xl lg:text-7xl leading-[1.1]">
-          {t("heroTitle")}{" "}
-          <span className="bg-gradient-to-r from-accent-cyan via-tertiary to-accent-cyan bg-[length:200%_auto] animate-text-gradient bg-clip-text text-transparent">
-            {t("heroHighlight")}
-          </span>
-        </h1>
-        <p className="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-on-surface-variant/80">
-          {t("heroSubtitle")}
-        </p>
-        <div className="mt-12 flex flex-col items-center gap-5 sm:flex-row sm:justify-center">
-          <Link
-            href="/chat"
-            className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-xl bg-primary px-10 text-base font-bold text-on-primary transition-all hover:scale-[1.02] active:scale-[0.98]"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-accent-cyan/20 to-tertiary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <span className="relative z-10">{t("ctaStart")}</span>
-          </Link>
-          <Link
-            href="/developers"
-            className="inline-flex h-14 items-center justify-center rounded-xl bg-surface-container-high px-10 text-base font-semibold text-on-surface ghost-border transition-all hover:bg-surface-container-highest hover:scale-[1.02]"
-          >
-            {t("ctaBrowse")}
-          </Link>
+        {/* Right: Visual card */}
+        <div className="relative hidden lg:block">
+          <div className="glass rounded-2xl shadow-2xl overflow-hidden ghost-border p-1.5">
+            <div className="bg-gradient-to-br from-primary-container to-primary rounded-xl aspect-[4/3] flex items-end p-8 relative">
+              {/* Abstract grid pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="grid grid-cols-6 grid-rows-4 h-full gap-2 p-4">
+                  {Array.from({ length: 24 }).map((_, i) => (
+                    <div key={i} className="rounded bg-white/20" />
+                  ))}
+                </div>
+              </div>
+              {/* Floating status card */}
+              <div className="relative z-10 glass rounded-xl p-5 ghost-border shadow-xl w-full">
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-accent-cyan/20 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-accent-cyan" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456Z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/80">Active Model Deployment</div>
+                    <div className="text-sm font-bold text-on-surface">Fine-tuned Llama-3-70B</div>
+                  </div>
+                </div>
+                <div className="h-1.5 w-full bg-surface-container/50 rounded-full overflow-hidden">
+                  <div className="h-full w-[85%] bg-accent-cyan rounded-full" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
