@@ -8,12 +8,9 @@ const azureApiVersion = process.env.AZURE_API_VERSION || "2024-10-21";
 const azureDeploymentName = process.env.AZURE_DEPLOYMENT_NAME || "gpt-5.4";
 
 /**
- * THE ULTIMATE FIX:
- * We intercept the SDK's fetch call to:
- * 1. Force the correct Azure URL path.
- * 2. Force the correct Azure Auth headers.
- * 3. FIX THE BODY: The SDK might send 'input' (Inference API), 
- *    but Azure Chat Completions expects 'messages'.
+ * THE DEEP PROTOCOL FIX:
+ * Azure Chat Completions is strict about the older schema.
+ * We must recursively fix the body parts.
  */
 const azureProvider = createOpenAI({
   apiKey: azureApiKey,
@@ -23,26 +20,41 @@ const azureProvider = createOpenAI({
     const headers = new Headers(options?.headers);
     headers.set("api-key", azureApiKey);
 
-    // Parse the body sent by the SDK
     let body: any = {};
     try {
       body = JSON.parse(options?.body as string);
       
-      // CRITICAL: If the SDK used the new Inference API format ('input'),
-      // we convert it back to the standard Chat Completion format ('messages').
+      // 1. Convert 'input' to 'messages'
       if (body.input && !body.messages) {
-        console.log("DEBUG: Converting SDK 'input' format to Azure 'messages' format.");
         body.messages = body.input;
         delete body.input;
       }
       
-      // Azure deployment endpoints ignore the 'model' field, but let's keep it safe.
+      // 2. Deep fix message content types
+      if (Array.isArray(body.messages)) {
+        body.messages = body.messages.map((msg: any) => {
+          if (Array.isArray(msg.content)) {
+            msg.content = msg.content.map((part: any) => {
+              // Map 'input_text' -> 'text' (Crucial for Azure compatibility)
+              if (part.type === "input_text") {
+                return { ...part, type: "text" };
+              }
+              return part;
+            });
+          }
+          return msg;
+        });
+      }
+      
+      // Remove fields Azure might reject
       if (body.model) delete body.model;
+      if (body.parallel_tool_calls === undefined) delete body.parallel_tool_calls;
+      
     } catch (e) {
-      console.error("DEBUG: Failed to parse request body", e);
+      console.error("DEBUG: Failed to parse/fix request body", e);
     }
 
-    console.log(`DEBUG: Redirecting to verified Azure path: ${finalUrl}`);
+    console.log(`DEBUG: Final path redirect: ${finalUrl}`);
     
     return fetch(finalUrl, {
       ...options,
@@ -54,8 +66,9 @@ const azureProvider = createOpenAI({
 
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
-    // We use a model name that is likely to trigger tools support in the SDK
-    return azureProvider("gpt-4o"); 
+    // We use a model name that doesn't trigger the newest SDK features 
+    // to minimize protocol friction, but our interceptor handles the rest.
+    return azureProvider("gpt-4"); 
   }
 
   const openaiDefault = createOpenAI({
