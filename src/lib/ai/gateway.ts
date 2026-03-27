@@ -8,9 +8,9 @@ const azureApiVersion = process.env.AZURE_API_VERSION || "2024-10-21";
 const azureDeploymentName = process.env.AZURE_DEPLOYMENT_NAME || "gpt-5.4";
 
 /**
- * THE DEEP PROTOCOL FIX:
- * Azure Chat Completions is strict about the older schema.
- * We must recursively fix the body parts.
+ * THE PROTOCOL TRANSLATOR:
+ * Translates Vercel AI SDK's modern "Inference API" protocol
+ * back to the classic "Chat Completions" protocol that Azure expects.
  */
 const azureProvider = createOpenAI({
   apiKey: azureApiKey,
@@ -24,21 +24,17 @@ const azureProvider = createOpenAI({
     try {
       body = JSON.parse(options?.body as string);
       
-      // 1. Convert 'input' to 'messages'
+      // 1. Fix Messages: Convert 'input' to 'messages' and 'input_text' to 'text'
       if (body.input && !body.messages) {
         body.messages = body.input;
         delete body.input;
       }
       
-      // 2. Deep fix message content types
       if (Array.isArray(body.messages)) {
         body.messages = body.messages.map((msg: any) => {
           if (Array.isArray(msg.content)) {
             msg.content = msg.content.map((part: any) => {
-              // Map 'input_text' -> 'text' (Crucial for Azure compatibility)
-              if (part.type === "input_text") {
-                return { ...part, type: "text" };
-              }
+              if (part.type === "input_text") return { ...part, type: "text" };
               return part;
             });
           }
@@ -46,15 +42,30 @@ const azureProvider = createOpenAI({
         });
       }
       
-      // Remove fields Azure might reject
+      // 2. Fix Tools: Un-flatten tools for Azure/Classic OpenAI
+      if (Array.isArray(body.tools)) {
+        body.tools = body.tools.map((t: any) => {
+          if (t.type === "function" && !t.function) {
+            const { name, description, parameters, ...rest } = t;
+            return {
+              ...rest,
+              type: "function",
+              function: { name, description, parameters }
+            };
+          }
+          return t;
+        });
+      }
+      
+      // 3. Cleanup: Remove fields that cause Azure to reject the request
       if (body.model) delete body.model;
       if (body.parallel_tool_calls === undefined) delete body.parallel_tool_calls;
       
     } catch (e) {
-      console.error("DEBUG: Failed to parse/fix request body", e);
+      console.error("DEBUG: Protocol translation failed", e);
     }
 
-    console.log(`DEBUG: Final path redirect: ${finalUrl}`);
+    console.log(`DEBUG: Protocol translated. Redirecting to: ${finalUrl}`);
     
     return fetch(finalUrl, {
       ...options,
@@ -66,8 +77,7 @@ const azureProvider = createOpenAI({
 
 export function getModel(provider: ModelProvider = "openai") {
   if (provider === "azure") {
-    // We use a model name that doesn't trigger the newest SDK features 
-    // to minimize protocol friction, but our interceptor handles the rest.
+    // Using gpt-4 name to minimize protocol friction in the SDK
     return azureProvider("gpt-4"); 
   }
 
