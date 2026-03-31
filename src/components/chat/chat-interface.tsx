@@ -244,11 +244,11 @@ export function ChatInterface({
           sendMessage({ text: input });
           setInput("");
         }}
-        className="flex-shrink-0 p-6 bg-surface"
+        className="flex-shrink-0 p-4 sm:p-6"
       >
         <div className="relative max-w-3xl mx-auto group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-accent-cyan/20 to-tertiary/20 rounded-2xl blur opacity-25 group-focus-within:opacity-100 transition-opacity" />
-          <div className="relative flex items-center gap-2 bg-surface-container-lowest rounded-xl p-2 ghost-border shadow-2xl shadow-primary/5">
+          <div className="absolute -inset-1 bg-gradient-to-r from-accent-cyan/20 to-tertiary/20 rounded-3xl blur opacity-25 group-focus-within:opacity-100 transition-opacity" />
+          <div className="relative flex items-center gap-2 glass rounded-2xl p-2 ghost-border shadow-2xl shadow-primary/5">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -256,14 +256,14 @@ export function ChatInterface({
                 locale === "zh" ? "描述您的项目需求..." : "Describe your project needs..."
               }
               disabled={isBusy}
-              className="flex-1 border-none focus-visible:ring-0 bg-transparent text-base py-6"
+              className="flex-1 border-none focus-visible:ring-0 bg-transparent text-base py-6 rounded-2xl"
             />
-            <Button 
-              type="submit" 
-              variant="primary" 
-              size="md" 
+            <Button
+              type="submit"
+              variant="primary"
+              size="md"
               disabled={isBusy || !input.trim()}
-              className="rounded-lg h-12 w-12 p-0 flex items-center justify-center shrink-0"
+              className="rounded-xl h-12 w-12 p-0 flex items-center justify-center shrink-0 bg-gradient-to-r from-primary to-accent-cyan border-none shadow-lg shadow-primary/20"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
@@ -271,9 +271,6 @@ export function ChatInterface({
             </Button>
           </div>
         </div>
-        <p className="mt-3 text-[10px] text-center text-on-surface-variant/50 uppercase tracking-widest font-bold">
-          AI Guided Requirement Extraction
-        </p>
       </form>
     </div>
   );
