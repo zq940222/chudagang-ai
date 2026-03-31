@@ -149,6 +149,7 @@ export function ChatInterface({
                     return (
                       <ProjectSummaryCard
                         key={`${message.id}-tool-${i}`}
+                        className="hover:shadow-md transition-shadow"
                         project={part.output as {
                           title: string;
                           description: string;
@@ -175,6 +176,7 @@ export function ChatInterface({
                     return (
                       <DeveloperRecommendations
                         key={`${message.id}-tool-${i}`}
+                        className="hover:shadow-md transition-shadow"
                         developers={result.developers}
                       />
                     );
@@ -215,7 +217,7 @@ export function ChatInterface({
         {/* Loading indicator */}
         {isBusy && (
           <div className="flex gap-3 justify-start">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-xs font-bold">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-xs font-bold shadow-lg">
               AI
             </div>
             <div className="rounded-2xl rounded-bl-md bg-surface-container-highest px-4 py-3">
