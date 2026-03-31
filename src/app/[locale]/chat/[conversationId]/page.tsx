@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { redirect, notFound } from "next/navigation";
-import { Nav } from "@/components/nav";
 import { ChatInterface } from "@/components/chat/chat-interface";
 import { getConversation } from "@/lib/actions/conversation";
 
@@ -18,13 +17,10 @@ export default async function ChatConversationPage({
   if (result.error || !result.data) notFound();
 
   return (
-    <div className="flex h-screen flex-col">
-      <Nav />
-      <ChatInterface
-        conversationId={conversationId}
-        locale={locale as "zh" | "en"}
-        className="flex-1 min-h-0"
-      />
-    </div>
+    <ChatInterface
+      conversationId={conversationId}
+      locale={locale as "zh" | "en"}
+      className="flex-1 min-h-0"
+    />
   );
 }
