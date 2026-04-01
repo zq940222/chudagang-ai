@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useChat } from "@ai-sdk/react";
+import { useChat, type UIMessage } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useRouter } from "@/i18n/navigation";
 import { useChatSidebar } from "./chat-sidebar-context";
@@ -14,12 +14,14 @@ import { DeveloperRecommendations } from "./developer-recommendation";
 
 interface ChatInterfaceProps {
   conversationId?: string;
+  initialMessages?: UIMessage[];
   locale?: "zh" | "en";
   className?: string;
 }
 
 export function ChatInterface({
   conversationId,
+  initialMessages: initialMsgs,
   locale = "en",
   className,
 }: ChatInterfaceProps) {
@@ -30,6 +32,7 @@ export function ChatInterface({
   const hadMessages = useRef(false);
 
   const { messages, sendMessage, status, error } = useChat({
+    messages: initialMsgs,
     transport: new DefaultChatTransport({
       api: "/api/chat",
       body: { conversationId },
