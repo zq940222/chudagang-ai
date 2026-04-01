@@ -133,5 +133,41 @@
     "emailPlaceholder": "Enter your email...",
     "copyright": "Built for the AGI era.",
     "nodesOperational": "Nodes Operational"
+  },
+  "projects": {
+    "marketplaceBadge": "Open Marketplace",
+    "title": "Project Hall",
+    "description": "Connecting clients with high-performance AI builders. Explore vetted opportunities across fine-tuning, computer vision, model architecture, and deployment.",
+    "availableCount": "{count, plural, =0 {No projects available} one {# project available} other {# projects available}}",
+    "emptyTitle": "No matching projects yet",
+    "emptyDescription": "There are no projects under the current filters. Try a different category, widen your budget range, or publish a new project brief.",
+    "emptyPrimaryCta": "Post a Project",
+    "emptySecondaryCta": "Browse Experts",
+    "defaultCategory": "AI Project",
+    "viewBrief": "View Brief",
+    "sideCtaTitle": "Post Your Project",
+    "sideCtaDescription": "Share your AI requirements and get matched with elite engineers from our curated network.",
+    "sideCtaButton": "Get Started",
+    "bottomCtaTitle": "Don’t see your niche?",
+    "bottomCtaDescription": "Submit a specialized AI brief and we’ll route it through our vetted expert network.",
+    "bottomPrimaryCta": "Post Custom Project",
+    "bottomSecondaryCta": "Browse Experts",
+    "filterAll": "All Categories",
+    "filterLlm": "LLM Fine-tuning",
+    "filterCv": "Computer Vision",
+    "filterNeural": "Neural Architecture",
+    "filterDeploy": "Deployment",
+    "budgetRange": "Budget Range",
+    "resetFilters": "Reset Filters",
+    "negotiable": "Negotiable",
+    "applicantCount": "{count, plural, =0 {No applicants} one {# applicant} other {# applicants}}",
+    "status": {
+      "DRAFT": "Draft",
+      "PUBLISHED": "Open",
+      "IN_PROGRESS": "In Progress",
+      "DELIVERED": "Delivered",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    }
   }
 }

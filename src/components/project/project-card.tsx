@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
@@ -23,6 +24,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, variant = "default" }: ProjectCardProps) {
   const locale = useLocale();
+  const t = useTranslations("projects");
 
   const currencySymbol =
     project.currency === "CNY"
@@ -33,6 +35,7 @@ export function ProjectCard({ project, variant = "default" }: ProjectCardProps) 
 
   const displaySkills = project.skills.slice(0, 4);
   const extraSkillCount = project.skills.length - 4;
+  const statusLabel = t(`status.${project.status}`);
 
   return (
     <Link href={`/projects/${project.id}`} className="block group h-full">
@@ -57,7 +60,7 @@ export function ProjectCard({ project, variant = "default" }: ProjectCardProps) 
                 statusColors[project.status] ?? statusColors.DRAFT
               )}
             >
-              {project.status}
+              {statusLabel}
             </span>
           </div>
 
@@ -87,10 +90,10 @@ export function ProjectCard({ project, variant = "default" }: ProjectCardProps) 
           <span className="font-bold text-on-surface">
             {project.budget !== null
               ? `${currencySymbol}${project.budget.toLocaleString()}`
-              : "Negotiable"}
+              : t("negotiable")}
           </span>
           <span className="text-on-surface-variant text-xs">
-            {project.applicationCount} applicant{project.applicationCount !== 1 ? "s" : ""}
+            {t("applicantCount", { count: project.applicationCount })}
           </span>
         </div>
       </Card>

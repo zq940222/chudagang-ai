@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "@/i18n/navigation";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { cn } from "@/lib/utils";
 
 interface FilterCategory {
@@ -31,7 +31,7 @@ export function FilterSidebar({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const activeCategory = searchParams.get("category") ?? "all";
 
   const updateParams = useCallback(
     (key: string, value: string | null) => {
@@ -59,7 +59,6 @@ export function FilterSidebar({
             <button
               key={cat.value}
               onClick={() => {
-                setActiveCategory(cat.value);
                 updateParams(
                   "category",
                   cat.value === "all" ? null : cat.value

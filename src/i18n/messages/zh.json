@@ -133,5 +133,41 @@
     "emailPlaceholder": "输入你的邮箱...",
     "copyright": "为 AGI 时代而生。",
     "nodesOperational": "节点运行中"
+  },
+  "projects": {
+    "marketplaceBadge": "开放项目大厅",
+    "title": "项目大厅",
+    "description": "连接有真实需求的客户与高质量 AI 开发者，聚合微调、视觉、模型架构与部署等前沿机会。",
+    "availableCount": "{count, plural, =0 {当前暂无项目} one {当前有 # 个项目} other {当前有 # 个项目}}",
+    "emptyTitle": "暂时没有匹配的项目",
+    "emptyDescription": "当前筛选条件下还没有合适项目。你可以切换分类、放宽预算条件，或直接发布新的项目需求。",
+    "emptyPrimaryCta": "发布项目",
+    "emptySecondaryCta": "浏览专家",
+    "defaultCategory": "AI 项目",
+    "viewBrief": "查看需求",
+    "sideCtaTitle": "发布你的项目",
+    "sideCtaDescription": "提交你的 AI 需求，从精选专家网络中快速匹配合适的工程师。",
+    "sideCtaButton": "立即开始",
+    "bottomCtaTitle": "没看到合适方向？",
+    "bottomCtaDescription": "提交你的定制化 AI 需求，我们会把它分发给经过筛选的专家网络。",
+    "bottomPrimaryCta": "发布定制项目",
+    "bottomSecondaryCta": "浏览专家",
+    "filterAll": "全部分类",
+    "filterLlm": "大模型微调",
+    "filterCv": "计算机视觉",
+    "filterNeural": "神经网络架构",
+    "filterDeploy": "部署与上线",
+    "budgetRange": "预算范围",
+    "resetFilters": "重置筛选",
+    "negotiable": "面议",
+    "applicantCount": "{count, plural, =0 {暂无申请} one {# 位申请者} other {# 位申请者}}",
+    "status": {
+      "DRAFT": "草稿",
+      "PUBLISHED": "招募中",
+      "IN_PROGRESS": "进行中",
+      "DELIVERED": "待验收",
+      "COMPLETED": "已完成",
+      "CANCELLED": "已取消"
+    }
   }
 }
