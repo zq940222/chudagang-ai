@@ -29,16 +29,16 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
   return (
     <section className="py-24 px-8 mx-auto max-w-6xl">
       <div className="flex items-center justify-between mb-12">
-        <h3 className="text-3xl font-black tracking-tight">
+        <h3 className="text-3xl font-black tracking-tight text-on-surface">
           {t("featuredExpertsTitle")}
         </h3>
         <div className="flex gap-2">
-          <button className="w-12 h-12 border border-outline-variant/30 rounded-full flex items-center justify-center hover:bg-surface-container-lowest hover:shadow-lg transition-all">
+          <button className="w-12 h-12 liquid-glass-subtle liquid-panel rounded-full flex items-center justify-center hover:shadow-lg transition-all text-on-surface">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </button>
-          <button className="w-12 h-12 border border-outline-variant/30 rounded-full flex items-center justify-center hover:bg-surface-container-lowest hover:shadow-lg transition-all">
+          <button className="w-12 h-12 liquid-glass-subtle liquid-panel rounded-full flex items-center justify-center hover:shadow-lg transition-all text-on-surface">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
@@ -50,23 +50,23 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
         {experts.map((expert) => (
           <div
             key={expert.name}
-            className="bg-surface-container-lowest p-8 rounded-2xl ghost-border hover:shadow-2xl hover:shadow-surface-dim/30 transition-all group"
+            className="liquid-glass liquid-panel liquid-shimmer p-8 rounded-3xl hover:shadow-2xl hover:shadow-primary/5 transition-all group"
           >
             {/* Header */}
             <div className="flex items-start justify-between mb-8">
               <div className="flex items-center gap-5">
-                <div className="w-16 h-16 rounded-full bg-surface-container overflow-hidden relative ring-4 ring-surface">
+                <div className="w-16 h-16 rounded-full bg-surface-container overflow-hidden relative ring-4 ring-white/50">
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-container to-primary text-on-primary font-bold text-lg">
                     {expert.name.charAt(0)}
                   </div>
-                  <div className="absolute bottom-0 right-0 w-5 h-5 bg-tertiary rounded-full border-2 border-surface-container-lowest flex items-center justify-center">
+                  <div className="absolute bottom-0 right-0 w-5 h-5 bg-tertiary rounded-full border-2 border-white flex items-center justify-center">
                     <svg className="w-3 h-3 text-on-tertiary" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
                     </svg>
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-black text-xl">{expert.name}</h4>
+                  <h4 className="font-black text-xl text-on-surface">{expert.name}</h4>
                   <p className="text-xs text-on-surface-variant font-mono mt-1">
                     {expert.handle}
                   </p>
@@ -90,7 +90,7 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
             </div>
 
             {/* Achievement */}
-            <div className="bg-primary-fixed-dim/5 rounded-xl p-5 mb-8 ghost-border">
+            <div className="liquid-glass-subtle rounded-2xl p-5 mb-8 ghost-border">
               <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant mb-3">
                 <span>{t(expert.achievementKey)}</span>
                 <svg className="w-4 h-4 text-secondary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -103,7 +103,7 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
             </div>
 
             {/* CTA */}
-            <button className="w-full py-4 bg-primary-container text-on-primary rounded-xl font-black text-xs uppercase tracking-widest group-hover:bg-primary transition-all shadow-lg shadow-primary/10">
+            <button className="liquid-button w-full rounded-2xl py-4 text-xs font-black uppercase tracking-widest text-on-primary transition-all group-hover:shadow-lg group-hover:shadow-primary/20">
               {t("viewProfile")}
             </button>
           </div>

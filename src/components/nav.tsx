@@ -20,14 +20,17 @@ export function Nav() {
   const { data: session, status } = useSession();
 
   return (
-    <header className="sticky top-0 z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm">
-      <nav className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
+      <nav className="liquid-glass-subtle liquid-panel liquid-line mx-auto flex h-16 max-w-screen-2xl items-center justify-between rounded-[1.75rem] px-4 sm:px-6 lg:px-8">
         {/* Left: Logo + links */}
         <div className="flex items-center gap-8 lg:gap-12">
           <Link
             href="/"
-            className="text-xl font-black tracking-tighter text-on-surface"
+            className="flex items-center gap-3 text-xl font-black tracking-tighter text-on-surface"
           >
+            <span className="flex h-9 w-9 items-center justify-center rounded-2xl liquid-glass text-xs text-secondary shadow-sm">
+              AI
+            </span>
             {tc("appName")}
           </Link>
 
@@ -36,7 +39,7 @@ export function Nav() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-sm font-medium text-on-surface-variant transition-colors hover:text-on-surface"
+                  className="rounded-full px-3 py-2 text-sm font-medium text-on-surface-variant transition-all hover:bg-white/40 hover:text-on-surface"
                 >
                   {t(link.labelKey)}
                 </Link>
@@ -63,7 +66,7 @@ export function Nav() {
               />
             </svg>
             <input
-              className="bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-xl pl-10 pr-4 py-1.5 text-sm focus:ring-secondary focus:bg-surface-container-high transition-all outline-none w-56"
+              className="liquid-input w-56 rounded-2xl border-none pl-10 pr-4 py-2 text-sm text-on-surface outline-none transition-all focus:ring-2 focus:ring-secondary/30"
               placeholder={t("searchPlaceholder")}
               type="text"
             />
@@ -72,7 +75,7 @@ export function Nav() {
           {/* Action icons for logged-in users */}
           {status !== "loading" && session?.user && (
             <>
-              <button className="p-2 text-on-surface-variant hover:bg-surface-container/50 rounded-lg transition-all">
+              <button className="liquid-glass-subtle rounded-xl p-2 text-on-surface-variant transition-all hover:-translate-y-0.5 hover:text-on-surface">
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -102,7 +105,7 @@ export function Nav() {
               <Button variant="tertiary" size="sm" asChild>
                 <Link href="/login">{tc("login")}</Link>
               </Button>
-              <Button variant="primary" size="sm" asChild>
+              <Button variant="primary" size="sm" className="rounded-xl" asChild>
                 <Link href="/register">{tc("register")}</Link>
               </Button>
             </div>

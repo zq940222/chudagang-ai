@@ -14,7 +14,9 @@ export default async function LandingPage() {
   return (
     <>
       <Nav />
-      <main>
+      <main className="relative overflow-hidden">
+        <div className="liquid-orb left-[-10rem] top-20 h-80 w-80 bg-accent-cyan/30" />
+        <div className="liquid-orb right-[-8rem] top-[28rem] h-96 w-96 bg-tertiary/20" />
         <HeroSection t={(key) => t(key)} />
         <TrustedBySection t={(key) => t(key)} />
         <CategoriesBento t={(key) => t(key)} />

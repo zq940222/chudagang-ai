@@ -6,79 +6,114 @@ interface HeroSectionProps {
 
 export function HeroSection({ t }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden bg-surface-container-lowest py-24 px-8">
-      {/* Background blobs */}
+    <section className="relative overflow-hidden px-8 py-28">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-[-10%] w-[600px] h-[600px] rounded-full bg-accent-cyan/5 blur-[120px]" />
-        <div className="absolute bottom-0 left-[-5%] w-[400px] h-[400px] rounded-full bg-tertiary/5 blur-[100px]" />
+        <div className="liquid-orb right-[-6rem] top-[-6rem] h-[32rem] w-[32rem] bg-accent-cyan/30" />
+        <div className="liquid-orb bottom-[-8rem] left-[-3rem] h-[26rem] w-[26rem] bg-tertiary/20" />
+        <div className="liquid-orb left-[35%] top-[42%] h-52 w-52 bg-secondary/20" />
       </div>
 
-      <div className="mx-auto max-w-6xl grid lg:grid-cols-2 gap-12 items-center relative z-10">
-        {/* Left: Copy */}
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-2">
         <div className="space-y-8">
-          <div className="space-y-4">
-            <span className="text-[10px] uppercase tracking-[0.25em] font-black bg-tertiary/10 text-tertiary px-4 py-1.5 rounded-full inline-block">
+          <div className="space-y-5">
+            <span className="liquid-glass-subtle liquid-line inline-block rounded-full px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.25em] text-tertiary">
               {t("heroTagline")}
             </span>
-            <h1 className="text-5xl lg:text-6xl font-black tracking-tight text-on-surface leading-[1.1]">
+            <h1 className="text-5xl leading-[1.1] font-black tracking-tight text-on-surface lg:text-6xl">
               {t("heroTitle")}{" "}
               <br />
-              <span className="bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-transparent">
+              <span className="animate-text-gradient bg-gradient-to-r from-secondary via-accent-cyan to-tertiary bg-[length:200%_200%] bg-clip-text text-transparent">
                 {t("heroHighlight")}
               </span>{" "}
               <br />
               {t("heroTitle2")}
             </h1>
-            <p className="text-lg text-on-surface-variant max-w-lg leading-relaxed pt-4">
+            <p className="max-w-lg pt-2 text-lg leading-relaxed text-on-surface-variant">
               {t("heroSubtitle")}
             </p>
           </div>
+
+          <div className="flex flex-wrap gap-3">
+            <div className="liquid-glass-subtle liquid-panel rounded-2xl px-4 py-3">
+              <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
+                Match Accuracy
+              </div>
+              <div className="mt-1 text-2xl font-black text-on-surface">92%</div>
+            </div>
+            <div className="liquid-glass-subtle liquid-panel rounded-2xl px-4 py-3">
+              <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
+                Median Time
+              </div>
+              <div className="mt-1 text-2xl font-black text-on-surface">48h</div>
+            </div>
+          </div>
+
           <div className="flex flex-wrap gap-4 pt-4">
             <Link
               href="/chat"
-              className="group relative inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-xl font-bold shadow-xl shadow-primary/20 hover:shadow-2xl hover:-translate-y-0.5 transition-all"
+              className="liquid-button group relative inline-flex items-center gap-2 rounded-2xl px-8 py-4 font-bold text-on-primary transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-primary/20"
             >
               {t("ctaStart")}
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
             </Link>
             <Link
               href="/projects"
-              className="inline-flex items-center px-8 py-4 bg-surface-container-high text-on-surface rounded-xl font-bold hover:bg-surface-container-highest transition-all"
+              className="liquid-glass-subtle liquid-panel inline-flex items-center rounded-2xl px-8 py-4 font-bold text-on-surface transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
               {t("ctaBrowse")}
             </Link>
           </div>
         </div>
 
-        {/* Right: Visual card */}
         <div className="relative hidden lg:block">
-          <div className="glass rounded-2xl shadow-2xl overflow-hidden ghost-border p-1.5">
-            <div className="bg-gradient-to-br from-primary-container to-primary rounded-xl aspect-[4/3] flex items-end p-8 relative">
-              {/* Abstract grid pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="grid grid-cols-6 grid-rows-4 h-full gap-2 p-4">
-                  {Array.from({ length: 24 }).map((_, i) => (
-                    <div key={i} className="rounded bg-white/20" />
-                  ))}
+          <div className="liquid-glass liquid-panel liquid-shimmer rounded-[2rem] p-2">
+            <div className="liquid-mesh relative aspect-[4/3] rounded-[1.5rem] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_42%),linear-gradient(135deg,#18233b_0%,#0f172a_55%,#17203a_100%)] p-8">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(0,229,255,0.18),transparent_18%),radial-gradient(circle_at_78%_72%,rgba(157,0,255,0.18),transparent_20%)]" />
+              <div className="absolute left-6 right-6 top-6 flex items-center justify-between gap-4">
+                <div className="liquid-glass-dark rounded-2xl px-4 py-3">
+                  <div className="text-[10px] uppercase tracking-[0.24em] text-white/60">Active Talent Pool</div>
+                  <div className="mt-1 text-lg font-black text-white">1,280 specialists</div>
+                </div>
+                <div className="liquid-glass-subtle rounded-2xl px-4 py-3 text-right">
+                  <div className="text-[10px] uppercase tracking-[0.24em] text-on-surface-variant">Signal Score</div>
+                  <div className="mt-1 text-lg font-black text-on-surface">8.9/10</div>
                 </div>
               </div>
-              {/* Floating status card */}
-              <div className="relative z-10 glass rounded-xl p-5 ghost-border shadow-xl w-full">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-accent-cyan/20 flex items-center justify-center">
-                    <svg className="w-5 h-5 text-accent-cyan" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456Z" />
-                    </svg>
+
+              <div className="relative z-10 flex h-full items-end">
+                <div className="liquid-glass-dark w-full rounded-[1.75rem] p-5">
+                  <div className="mb-3 flex items-center gap-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-cyan/20">
+                      <svg className="h-5 w-5 text-accent-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-black uppercase tracking-widest text-white/70">Active Model Deployment</div>
+                      <div className="text-sm font-bold text-white">Fine-tuned Llama-3-70B</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/80">Active Model Deployment</div>
-                    <div className="text-sm font-bold text-on-surface">Fine-tuned Llama-3-70B</div>
+
+                  <div className="mb-5 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                    <div className="h-full w-[85%] rounded-full bg-gradient-to-r from-accent-cyan to-secondary" />
                   </div>
-                </div>
-                <div className="h-1.5 w-full bg-surface-container/50 rounded-full overflow-hidden">
-                  <div className="h-full w-[85%] bg-accent-cyan rounded-full" />
+
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="rounded-2xl bg-white/6 p-3">
+                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">Latency</div>
+                      <div className="mt-1 text-sm font-bold text-white">120ms</div>
+                    </div>
+                    <div className="rounded-2xl bg-white/6 p-3">
+                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">Shortlist</div>
+                      <div className="mt-1 text-sm font-bold text-white">6 experts</div>
+                    </div>
+                    <div className="rounded-2xl bg-white/6 p-3">
+                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">Readiness</div>
+                      <div className="mt-1 text-sm font-bold text-white">Live</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -4,51 +4,51 @@
   /* Synthetic Architect Design System */
 
   /* Primary - Midnight Blue */
-  --color-primary: #0F172A;
-  --color-primary-container: #131B2E;
-  --color-primary-fixed: #DAE2FD;
-  --color-primary-fixed-dim: #BEC6E0;
+  --color-primary: #0f172a;
+  --color-primary-container: #131b2e;
+  --color-primary-fixed: #dae2fd;
+  --color-primary-fixed-dim: #bec6e0;
 
   /* Secondary */
   --color-secondary: #006875;
-  --color-secondary-container: #00E3FD;
-  --color-secondary-fixed: #9CF0FF;
-  --color-secondary-fixed-dim: #00DAF3;
+  --color-secondary-container: #00e3fd;
+  --color-secondary-fixed: #9cf0ff;
+  --color-secondary-fixed-dim: #00daf3;
 
   /* Tertiary - Neon Violet */
-  --color-tertiary: #2D004F;
-  --color-tertiary-container: #4A0080;
-  --color-tertiary-fixed: #F1DAFF;
-  --color-tertiary-fixed-dim: #DFB7FF;
+  --color-tertiary: #2d004f;
+  --color-tertiary-container: #4a0080;
+  --color-tertiary-fixed: #f1daff;
+  --color-tertiary-fixed-dim: #dfb7ff;
 
   /* Accent shortcuts */
-  --color-accent-cyan: #00E5FF;
-  --color-accent-violet: #9D00FF;
+  --color-accent-cyan: #00e5ff;
+  --color-accent-violet: #9d00ff;
 
   /* Surface hierarchy */
-  --color-surface: #F9F9F9;
-  --color-surface-dim: #DADADA;
-  --color-surface-bright: #F9F9F9;
-  --color-surface-container: #EEEEEE;
-  --color-surface-container-low: #F3F3F4;
-  --color-surface-container-high: #E8E8E8;
-  --color-surface-container-highest: #E2E2E2;
-  --color-surface-container-lowest: #FFFFFF;
+  --color-surface: #f9f9f9;
+  --color-surface-dim: #dadada;
+  --color-surface-bright: #f9f9f9;
+  --color-surface-container: #eeeeee;
+  --color-surface-container-low: #f3f3f4;
+  --color-surface-container-high: #e8e8e8;
+  --color-surface-container-highest: #e2e2e2;
+  --color-surface-container-lowest: #ffffff;
 
   /* On-colors (text on backgrounds) */
-  --color-on-surface: #1A1C1C;
-  --color-on-surface-variant: #45464D;
-  --color-on-primary: #FFFFFF;
-  --color-on-secondary: #FFFFFF;
-  --color-on-tertiary: #FFFFFF;
+  --color-on-surface: #1a1c1c;
+  --color-on-surface-variant: #45464d;
+  --color-on-primary: #ffffff;
+  --color-on-secondary: #ffffff;
+  --color-on-tertiary: #ffffff;
 
   /* Outline */
-  --color-outline: #76777D;
-  --color-outline-variant: #C6C6CD;
+  --color-outline: #76777d;
+  --color-outline-variant: #c6c6cd;
 
   /* Error */
-  --color-error: #BA1A1A;
-  --color-error-container: #FFDAD6;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
 
   /* Typography */
   --font-sans: "Inter", system-ui, sans-serif;
@@ -61,16 +61,30 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    background-color: var(--color-surface);
+    min-height: 100vh;
+    background-color: #edf3fb;
+    background-image:
+      radial-gradient(circle at top left, rgba(0, 229, 255, 0.18), transparent 28%),
+      radial-gradient(circle at 85% 12%, rgba(157, 0, 255, 0.1), transparent 22%),
+      radial-gradient(circle at 50% 100%, rgba(0, 104, 117, 0.09), transparent 30%),
+      linear-gradient(180deg, #f7fbff 0%, #eef3f7 45%, #edf0f6 100%);
     color: var(--color-on-surface);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  ::selection {
+    background: rgba(0, 229, 255, 0.18);
+    color: var(--color-primary);
+  }
 }
 
-/* Ghost Border utility — 20% opacity outline per design system */
 .ghost-border {
   box-shadow: inset 0 0 0 1px rgba(198, 198, 205, 0.2);
 }
@@ -83,11 +97,143 @@
   border-top: 1px solid rgba(198, 198, 205, 0.2);
 }
 
-/* Glassmorphism for floating elements */
 .glass {
   background-color: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+
+.liquid-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.3) 46%,
+    rgba(255, 255, 255, 0.52) 100%
+  );
+  backdrop-filter: blur(28px) saturate(1.45);
+  -webkit-backdrop-filter: blur(28px) saturate(1.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.26),
+    0 24px 60px rgba(23, 37, 84, 0.08),
+    0 10px 24px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+}
+
+.liquid-glass-subtle {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.64) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 14px 32px rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.52);
+}
+
+.liquid-glass-dark {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.76) 0%,
+    rgba(15, 23, 42, 0.58) 45%,
+    rgba(19, 27, 46, 0.78) 100%
+  );
+  backdrop-filter: blur(26px) saturate(1.4);
+  -webkit-backdrop-filter: blur(26px) saturate(1.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 40px rgba(15, 23, 42, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.liquid-panel {
+  position: relative;
+  isolation: isolate;
+}
+
+.liquid-panel::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.32), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 30%);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.liquid-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-line {
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 10px 24px rgba(15, 23, 42, 0.04);
+}
+
+.liquid-button {
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(19, 27, 46, 0.88)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 14px 34px rgba(15, 23, 42, 0.2);
+}
+
+.liquid-input {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.38));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 12px 24px rgba(15, 23, 42, 0.05);
+}
+
+.liquid-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-shimmer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.12) 45%,
+    rgba(255, 255, 255, 0.26) 50%,
+    rgba(255, 255, 255, 0.12) 55%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.liquid-mesh {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.liquid-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 @keyframes text-gradient {
