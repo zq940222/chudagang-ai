@@ -5,6 +5,7 @@ import { useChatSidebar } from "./chat-sidebar-context";
 
 interface Conversation {
   id: string;
+  title: string | null;
   status: string;
   updatedAt: string;
   messageCount: number;
@@ -88,7 +89,7 @@ export function ChatSidebarClient({
               />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-on-surface truncate">
-                  {c.project?.title ?? "New Chat"}
+                  {c.title || c.project?.title || "New Chat"}
                 </p>
                 <p className="text-[11px] text-on-surface-variant mt-0.5">
                   {c.messageCount} message{c.messageCount !== 1 ? "s" : ""} ·{" "}

@@ -192,6 +192,7 @@ model Conversation {
   id            String             @id @default(cuid())
   userId        String
   projectId     String?
+  title         String?
   status        ConversationStatus @default(DISCOVERY)
   modelProvider String             @default("claude")
   createdAt     DateTime           @default(now())

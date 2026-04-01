@@ -101,6 +101,7 @@ export async function getMyConversations() {
   return {
     data: conversations.map((c) => ({
       id: c.id,
+      title: c.title,
       status: c.status,
       modelProvider: c.modelProvider,
       createdAt: c.createdAt.toISOString(),

@@ -1,4 +1,4 @@
-import { streamText, UIMessage, convertToModelMessages, stepCountIs } from "ai";
+import { streamText, generateText, UIMessage, convertToModelMessages, stepCountIs } from "ai";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { getModel } from "@/lib/ai/gateway";
@@ -54,6 +54,24 @@ export async function POST(req: Request) {
           content,
         },
       });
+
+      // Generate title from first user message (fire-and-forget)
+      if (!conversation.title) {
+        generateText({
+          model: getModel(conversation.modelProvider as ModelProvider),
+          system:
+            "Generate a short chat title (max 20 characters, no quotes) summarizing the user's message. " +
+            "Reply in the same language as the user. Output ONLY the title, nothing else.",
+          prompt: content,
+        })
+          .then(({ text }) =>
+            db.conversation.update({
+              where: { id: conversation!.id },
+              data: { title: text.trim().slice(0, 50) },
+            })
+          )
+          .catch(() => {});
+      }
     }
   }
 
