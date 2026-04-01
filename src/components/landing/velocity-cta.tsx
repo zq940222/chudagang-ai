@@ -19,7 +19,7 @@ export function VelocityCta({ t }: VelocityCtaProps) {
         <div className="liquid-orb right-[8%] bottom-[-3rem] h-[20rem] w-[20rem] bg-tertiary/14" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl overflow-hidden rounded-[2.4rem] liquid-glass p-8 sm:p-12">
+      <div className="relative z-10 mx-auto max-w-6xl overflow-hidden rounded-[2.4rem] liquid-glass-vivid liquid-panel liquid-float liquid-refract p-8 sm:p-12">
         <div className="mx-auto mb-16 max-w-2xl text-center">
           <h2 className="mb-6 text-4xl font-black tracking-[-0.04em] text-on-surface">{t("velocityTitle")}</h2>
           <p className="leading-8 text-on-surface-variant">{t("velocityDesc")}</p>
@@ -27,8 +27,8 @@ export function VelocityCta({ t }: VelocityCtaProps) {
 
         <div className="mb-16 grid gap-6 md:grid-cols-4">
           {steps.map((step) => (
-            <div key={step.num} className="rounded-[1.8rem] bg-[rgba(255,255,255,0.34)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-[1.2rem] liquid-glass-dark text-2xl font-black text-[color:var(--color-accent-gold)]">
+            <div key={step.num} className="rounded-[1.8rem] liquid-glass-vivid liquid-float p-6">
+              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-[1.2rem] liquid-glass-dark-vivid text-2xl font-black text-[color:var(--color-accent-gold)]">
                 {step.num}
               </div>
               <h4 className="text-lg font-bold text-on-surface">{t(step.titleKey)}</h4>
@@ -37,7 +37,7 @@ export function VelocityCta({ t }: VelocityCtaProps) {
           ))}
         </div>
 
-        <div className="mx-auto max-w-3xl rounded-[2rem] liquid-glass-dark p-10 text-center">
+        <div className="mx-auto max-w-3xl rounded-[2rem] liquid-glass-dark-vivid liquid-refract p-10 text-center">
           <h3 className="mb-4 text-2xl font-black text-white">{t("recruitTitle")}</h3>
           <p className="mx-auto mb-10 max-w-md text-sm leading-7 text-white/68">
             {t("recruitDesc")}

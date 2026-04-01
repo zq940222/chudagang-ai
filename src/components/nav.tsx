@@ -21,14 +21,14 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
-      <nav className="liquid-glass-subtle liquid-panel liquid-line mx-auto flex h-16 max-w-screen-2xl items-center justify-between rounded-[1.75rem] px-4 sm:px-6 lg:px-8">
+      <nav className="liquid-glass-vivid liquid-panel liquid-line liquid-float mx-auto flex h-16 max-w-screen-2xl items-center justify-between rounded-[1.75rem] px-4 sm:px-6 lg:px-8">
         {/* Left: Logo + links */}
         <div className="flex items-center gap-8 lg:gap-12">
           <Link
             href="/"
             className="flex items-center gap-3 text-xl font-black tracking-tighter text-on-surface"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-2xl liquid-glass text-xs text-secondary shadow-sm">
+            <span className="flex h-9 w-9 items-center justify-center rounded-2xl liquid-glass-vivid liquid-refract text-xs text-secondary shadow-sm">
               AI
             </span>
             {tc("appName")}
@@ -75,7 +75,7 @@ export function Nav() {
           {/* Action icons for logged-in users */}
           {status !== "loading" && session?.user && (
             <>
-              <button className="liquid-glass-subtle rounded-xl p-2 text-on-surface-variant transition-all hover:-translate-y-0.5 hover:text-on-surface">
+              <button className="liquid-glass-vivid rounded-xl p-2 text-on-surface-variant transition-all hover:-translate-y-0.5 hover:text-on-surface">
                 <svg
                   className="w-5 h-5"
                   fill="none"

@@ -15,7 +15,7 @@ export function HeroSection({ t }: HeroSectionProps) {
       <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.08fr_0.92fr]">
         <div className="space-y-8">
           <div className="space-y-5">
-            <span className="liquid-glass-subtle liquid-line inline-flex items-center rounded-full px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.28em] text-on-surface-variant">
+            <span className="liquid-glass-vivid liquid-line liquid-float inline-flex items-center rounded-full px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.28em] text-on-surface-variant">
               {t("heroTagline")}
             </span>
             <h1 className="max-w-3xl text-5xl leading-[1.02] font-black tracking-[-0.04em] text-on-surface lg:text-7xl">
@@ -33,7 +33,7 @@ export function HeroSection({ t }: HeroSectionProps) {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <div className="liquid-glass-subtle liquid-panel rounded-[1.6rem] px-5 py-4">
+            <div className="liquid-glass-vivid liquid-panel liquid-float rounded-[1.6rem] px-5 py-4">
               <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
                 {t("heroMetricAccuracyLabel")}
               </div>
@@ -41,7 +41,7 @@ export function HeroSection({ t }: HeroSectionProps) {
                 {t("heroMetricAccuracyValue")}
               </div>
             </div>
-            <div className="liquid-glass-subtle liquid-panel rounded-[1.6rem] px-5 py-4">
+            <div className="liquid-glass-vivid liquid-panel liquid-float rounded-[1.6rem] px-5 py-4">
               <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
                 {t("heroMetricTimeLabel")}
               </div>
@@ -63,7 +63,7 @@ export function HeroSection({ t }: HeroSectionProps) {
             </Link>
             <Link
               href="/projects"
-              className="liquid-glass-subtle liquid-panel inline-flex items-center rounded-[1.4rem] px-8 py-4 font-bold text-on-surface transition-all hover:-translate-y-0.5 hover:shadow-lg"
+              className="liquid-glass-vivid liquid-panel liquid-float inline-flex items-center rounded-[1.4rem] px-8 py-4 font-bold text-on-surface transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
               {t("ctaBrowse")}
             </Link>
@@ -71,11 +71,12 @@ export function HeroSection({ t }: HeroSectionProps) {
         </div>
 
         <div className="relative hidden lg:block">
-          <div className="liquid-glass liquid-panel rounded-[2.25rem] p-3">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.8rem] bg-[linear-gradient(145deg,#f5efe6_0%,#dfd6c7_52%,#c9b9a4_100%)] p-6">
+          <div className="liquid-glass-vivid liquid-panel liquid-float liquid-refract rounded-[2.25rem] p-3">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.8rem] bg-[linear-gradient(145deg,rgba(245,239,230,0.92)_0%,rgba(223,214,199,0.7)_52%,rgba(201,185,164,0.54)_100%)] p-6">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.62),transparent_24%),radial-gradient(circle_at_82%_28%,rgba(154,215,207,0.24),transparent_18%),radial-gradient(circle_at_65%_85%,rgba(190,164,181,0.18),transparent_22%)]" />
+              <div className="absolute inset-3 rounded-[1.5rem] border border-white/45" />
               <div className="absolute inset-x-7 top-7 flex items-start justify-between gap-4">
-                <div className="liquid-glass rounded-[1.4rem] px-4 py-3">
+                <div className="liquid-glass-vivid liquid-float rounded-[1.4rem] px-4 py-3">
                   <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
                     {t("heroPoolLabel")}
                   </div>
@@ -83,7 +84,7 @@ export function HeroSection({ t }: HeroSectionProps) {
                     {t("heroPoolValue")}
                   </div>
                 </div>
-                <div className="rounded-[1.4rem] bg-[rgba(255,255,255,0.52)] px-4 py-3 shadow-[0_10px_24px_rgba(80,73,63,0.08)] backdrop-blur-xl">
+                <div className="liquid-glass-vivid liquid-float rounded-[1.4rem] px-4 py-3">
                   <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
                     {t("heroSignalLabel")}
                   </div>
@@ -93,9 +94,9 @@ export function HeroSection({ t }: HeroSectionProps) {
                 </div>
               </div>
 
-              <div className="absolute inset-x-6 bottom-6 space-y-4 rounded-[1.8rem] liquid-glass-dark p-5">
+              <div className="absolute inset-x-6 bottom-6 space-y-4 rounded-[1.8rem] liquid-glass-dark-vivid liquid-refract p-5">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/12 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
                     <svg className="h-5 w-5 text-[color:var(--color-accent-gold)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
                     </svg>
@@ -115,22 +116,22 @@ export function HeroSection({ t }: HeroSectionProps) {
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="rounded-[1.2rem] bg-white/6 p-3">
+                  <div className="rounded-[1.2rem] bg-white/8 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
                     <div className="text-[10px] uppercase tracking-[0.24em] text-white/52">{t("heroLatencyLabel")}</div>
                     <div className="mt-1 text-sm font-bold text-white">{t("heroLatencyValue")}</div>
                   </div>
-                  <div className="rounded-[1.2rem] bg-white/6 p-3">
+                  <div className="rounded-[1.2rem] bg-white/8 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
                     <div className="text-[10px] uppercase tracking-[0.24em] text-white/52">{t("heroShortlistLabel")}</div>
                     <div className="mt-1 text-sm font-bold text-white">{t("heroShortlistValue")}</div>
                   </div>
-                  <div className="rounded-[1.2rem] bg-white/6 p-3">
+                  <div className="rounded-[1.2rem] bg-white/8 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
                     <div className="text-[10px] uppercase tracking-[0.24em] text-white/52">{t("heroReadinessLabel")}</div>
                     <div className="mt-1 text-sm font-bold text-white">{t("heroReadinessValue")}</div>
                   </div>
                 </div>
               </div>
 
-              <div className="absolute bottom-24 right-10 h-28 w-28 rounded-full border border-white/45 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.8),rgba(255,255,255,0.12)_60%,transparent_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_18px_40px_rgba(94,85,72,0.12)]" />
+              <div className="absolute bottom-24 right-10 h-28 w-28 rounded-full border border-white/50 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.92),rgba(255,255,255,0.18)_56%,transparent_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_24px_48px_rgba(94,85,72,0.14)]" />
             </div>
           </div>
         </div>

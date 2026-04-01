@@ -32,12 +32,12 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
             {t("featuredExpertsTitle")}
           </h3>
           <div className="flex gap-2">
-            <button className="flex h-12 w-12 items-center justify-center rounded-full liquid-glass-subtle text-on-surface transition-all hover:shadow-lg">
+            <button className="flex h-12 w-12 items-center justify-center rounded-full liquid-glass-vivid liquid-float text-on-surface transition-all hover:shadow-lg">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
               </svg>
             </button>
-            <button className="flex h-12 w-12 items-center justify-center rounded-full liquid-glass-subtle text-on-surface transition-all hover:shadow-lg">
+            <button className="flex h-12 w-12 items-center justify-center rounded-full liquid-glass-vivid liquid-float text-on-surface transition-all hover:shadow-lg">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
               </svg>
@@ -49,7 +49,7 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
           {experts.map((expert, index) => (
             <div
               key={expert.name}
-              className="group rounded-[2rem] liquid-glass liquid-panel p-8 transition-all hover:-translate-y-1 hover:shadow-[0_30px_60px_rgba(74,65,57,0.08)]"
+              className="group rounded-[2rem] liquid-glass-vivid liquid-panel liquid-float liquid-refract p-8 transition-all hover:-translate-y-1 hover:shadow-[0_34px_72px_rgba(74,65,57,0.1)]"
             >
               <div className="mb-8 flex items-start justify-between">
                 <div className="flex items-center gap-5">
@@ -82,7 +82,7 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
                 ))}
               </div>
 
-              <div className="mb-8 rounded-[1.5rem] liquid-glass-subtle p-5 ghost-border">
+              <div className="mb-8 rounded-[1.5rem] liquid-glass-vivid p-5 ghost-border">
                 <div className="mb-3 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant">
                   <span>{t(expert.achievementKey)}</span>
                   <svg className="w-4 h-4 text-[color:var(--color-accent-gold)]" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
