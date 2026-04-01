@@ -5,6 +5,7 @@ import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { formatCurrencyAmount } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 import type { ProjectCardData } from "@/types/project";
 
@@ -25,13 +26,6 @@ interface ProjectCardProps {
 export function ProjectCard({ project, variant = "default" }: ProjectCardProps) {
   const locale = useLocale();
   const t = useTranslations("projects");
-
-  const currencySymbol =
-    project.currency === "CNY"
-      ? "\u00A5"
-      : project.currency === "EUR"
-        ? "\u20AC"
-        : "$";
 
   const displaySkills = project.skills.slice(0, 4);
   const extraSkillCount = project.skills.length - 4;
@@ -89,7 +83,7 @@ export function ProjectCard({ project, variant = "default" }: ProjectCardProps) 
         <div className="mt-4 flex items-center justify-between text-sm pt-4 border-t border-outline-variant/10">
           <span className="font-bold text-on-surface">
             {project.budget !== null
-              ? `${currencySymbol}${project.budget.toLocaleString()}`
+              ? formatCurrencyAmount(project.budget, project.currency)
               : t("negotiable")}
           </span>
           <span className="text-on-surface-variant text-xs">

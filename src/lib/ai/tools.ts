@@ -18,7 +18,7 @@ export const extractRequirements = tool({
     budget: z
       .number()
       .optional()
-      .describe("Estimated budget in USD, if mentioned"),
+      .describe("Estimated budget in CNY, if mentioned"),
     timeline: z
       .string()
       .optional()
@@ -58,7 +58,7 @@ export const createProjectDraft = tool({
     title: z.string(),
     description: z.string(),
     budget: z.number().optional(),
-    currency: z.string().default("USD"),
+    currency: z.string().default("CNY"),
     skillTagIds: z.array(z.string()).describe("IDs of the resolved skills"),
     conversationId: z.string().optional(),
   }),
@@ -78,8 +78,8 @@ export const searchDevelopersTool = tool({
       .array(z.string())
       .optional()
       .describe("Skill names to filter by"),
-    minRate: z.number().optional().describe("Minimum hourly rate in USD"),
-    maxRate: z.number().optional().describe("Maximum hourly rate in USD"),
+    minRate: z.number().optional().describe("Minimum hourly rate in CNY"),
+    maxRate: z.number().optional().describe("Maximum hourly rate in CNY"),
     page: z.number().optional().describe("Page number, defaults to 1"),
     limit: z.number().optional().describe("Results per page, defaults to 5"),
   }),
@@ -132,7 +132,7 @@ export const estimateBudget = tool({
     const high = Math.round(totalHours * rate.high * skillMultiplier);
 
     return {
-      currency: "USD",
+      currency: "CNY",
       low,
       high,
       hoursEstimate: totalHours,

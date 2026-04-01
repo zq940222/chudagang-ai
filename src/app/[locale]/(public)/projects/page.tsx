@@ -4,6 +4,7 @@ import { ProjectCard } from "@/components/project/project-card";
 import { ProjectFilterSidebar } from "@/components/project/project-filter-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
+import { formatCurrencyAmount } from "@/lib/currency";
 import type { ProjectSearchParams } from "@/types/project";
 
 export default async function ProjectsPage({
@@ -102,7 +103,7 @@ export default async function ProjectsPage({
                       </div>
                       {featured.budget !== null && (
                         <span className="text-secondary font-bold text-lg">
-                          ${featured.budget.toLocaleString()}
+                          {formatCurrencyAmount(featured.budget, featured.currency)}
                         </span>
                       )}
                     </div>

@@ -22,6 +22,8 @@ interface ProjectFormProps {
 export function ProjectForm({ skills }: ProjectFormProps) {
   const router = useRouter();
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [currency, setCurrency] = useState("CNY");
+  const [customCurrency, setCustomCurrency] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -31,6 +33,9 @@ export function ProjectForm({ skills }: ProjectFormProps) {
     setError(null);
 
     const formData = new FormData(e.currentTarget);
+    if (currency === "CUSTOM") {
+      formData.set("currency", customCurrency.trim().toUpperCase());
+    }
     const result = await createProject(formData);
 
     if (result.error) {
@@ -97,15 +102,34 @@ export function ProjectForm({ skills }: ProjectFormProps) {
           <select
             id="currency"
             name="currency"
-            defaultValue="USD"
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value)}
             className="flex h-10 w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:bg-surface-container-high focus:outline-none focus:ring-1 focus:ring-accent-cyan/50"
           >
-            <option value="USD">USD</option>
-            <option value="CNY">CNY</option>
-            <option value="EUR">EUR</option>
+            <option value="CNY">CNY (¥)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="CUSTOM">Custom</option>
           </select>
         </div>
       </div>
+
+      {currency === "CUSTOM" && (
+        <div className="space-y-2">
+          <label htmlFor="customCurrency" className="text-sm font-medium text-on-surface">
+            Settlement Unit
+          </label>
+          <Input
+            id="customCurrency"
+            name="customCurrency"
+            value={customCurrency}
+            onChange={(e) => setCustomCurrency(e.target.value)}
+            required
+            placeholder="e.g. HKD, JPY, USDT"
+            maxLength={12}
+          />
+        </div>
+      )}
 
       <div className="space-y-2">
         <label htmlFor="category" className="text-sm font-medium text-on-surface">

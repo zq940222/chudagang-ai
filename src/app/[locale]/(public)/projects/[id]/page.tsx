@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
 import { auth } from "@/auth";
 import { ApplicationForm } from "@/components/application/application-form";
+import { formatCurrencyAmount } from "@/lib/currency";
 
 export default async function ProjectDetailPage({
   params,
@@ -31,13 +32,6 @@ export default async function ProjectDetailPage({
       }))
     : false;
 
-  const currencySymbol =
-    project.currency === "CNY"
-      ? "\u00A5"
-      : project.currency === "EUR"
-        ? "\u20AC"
-        : "$";
-
   return (
     <div className="max-w-screen-2xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-16">
       {/* Main Content */}
@@ -55,7 +49,7 @@ export default async function ProjectDetailPage({
                   Budget
                 </span>
                 <span className="text-2xl font-bold text-secondary">
-                  {currencySymbol}{Number(project.budget).toLocaleString()}
+                  {formatCurrencyAmount(Number(project.budget), project.currency)}
                 </span>
               </div>
             )}
@@ -189,7 +183,7 @@ export default async function ProjectDetailPage({
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-on-surface-variant">Budget</span>
                   <span className="font-bold text-secondary">
-                    {currencySymbol}{Number(project.budget).toLocaleString()}
+                    {formatCurrencyAmount(Number(project.budget), project.currency)}
                   </span>
                 </div>
               )}

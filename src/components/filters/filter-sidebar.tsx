@@ -149,7 +149,7 @@ export function FilterSidebar({
   const safeMax = Math.max(currentMin, currentMax);
   const formatValue = (value: number) =>
     showBudgetRange
-      ? `$${value.toLocaleString()}`
+      ? `¥${value.toLocaleString()}`
       : `$${value}`;
 
   const updateParams = useCallback(
