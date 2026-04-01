@@ -13,38 +13,38 @@ const steps = [
 
 export function VelocityCta({ t }: VelocityCtaProps) {
   return (
-    <section className="relative overflow-hidden bg-primary-container py-24 text-on-primary">
+    <section className="section-shell relative overflow-hidden px-8 py-24">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-[20%] top-[-20%] h-[500px] w-[500px] rounded-full bg-accent-cyan/8 blur-[150px]" />
-        <div className="absolute bottom-[-10%] right-[10%] h-[400px] w-[400px] rounded-full bg-tertiary/6 blur-[120px]" />
+        <div className="liquid-orb left-[16%] top-10 h-[24rem] w-[24rem] bg-accent-cyan/16" />
+        <div className="liquid-orb right-[8%] bottom-[-3rem] h-[20rem] w-[20rem] bg-tertiary/14" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-8">
-        <div className="mx-auto mb-20 max-w-2xl text-center">
-          <h2 className="mb-6 text-4xl font-black">{t("velocityTitle")}</h2>
-          <p className="leading-relaxed text-white/70">{t("velocityDesc")}</p>
+      <div className="relative z-10 mx-auto max-w-6xl overflow-hidden rounded-[2.4rem] liquid-glass p-8 sm:p-12">
+        <div className="mx-auto mb-16 max-w-2xl text-center">
+          <h2 className="mb-6 text-4xl font-black tracking-[-0.04em] text-on-surface">{t("velocityTitle")}</h2>
+          <p className="leading-8 text-on-surface-variant">{t("velocityDesc")}</p>
         </div>
 
-        <div className="relative mb-24 grid gap-8 md:grid-cols-4">
+        <div className="mb-16 grid gap-6 md:grid-cols-4">
           {steps.map((step) => (
-            <div key={step.num} className="space-y-6 rounded-3xl liquid-glass-subtle p-6">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl liquid-glass-dark text-2xl font-black text-accent-cyan">
+            <div key={step.num} className="rounded-[1.8rem] bg-[rgba(255,255,255,0.34)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl">
+              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-[1.2rem] liquid-glass-dark text-2xl font-black text-[color:var(--color-accent-gold)]">
                 {step.num}
               </div>
-              <h4 className="text-lg font-bold text-white">{t(step.titleKey)}</h4>
-              <p className="text-sm leading-relaxed text-white/60">{t(step.descKey)}</p>
+              <h4 className="text-lg font-bold text-on-surface">{t(step.titleKey)}</h4>
+              <p className="mt-3 text-sm leading-7 text-on-surface-variant">{t(step.descKey)}</p>
             </div>
           ))}
         </div>
 
-        <div className="mx-auto max-w-3xl rounded-3xl liquid-glass liquid-panel p-12 text-center">
-          <h3 className="mb-4 text-2xl font-black text-on-surface">{t("recruitTitle")}</h3>
-          <p className="mx-auto mb-10 max-w-md text-sm leading-relaxed text-on-surface-variant">
+        <div className="mx-auto max-w-3xl rounded-[2rem] liquid-glass-dark p-10 text-center">
+          <h3 className="mb-4 text-2xl font-black text-white">{t("recruitTitle")}</h3>
+          <p className="mx-auto mb-10 max-w-md text-sm leading-7 text-white/68">
             {t("recruitDesc")}
           </p>
           <Link
             href="/register"
-            className="liquid-button inline-flex rounded-2xl px-10 py-4 text-xs font-black uppercase tracking-widest text-on-primary transition-all hover:scale-105"
+            className="inline-flex rounded-[1.4rem] bg-[linear-gradient(145deg,#f7f0e6,#dcc8ab)] px-10 py-4 text-xs font-black uppercase tracking-[0.2em] text-primary transition-all hover:scale-[1.02]"
           >
             {t("recruitCta")}
           </Link>

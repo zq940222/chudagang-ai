@@ -34,35 +34,36 @@ const features = [
 
 export function FeaturesSection({ t }: FeaturesSectionProps) {
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-24 sm:py-32">
-      <div className="flex flex-col items-center text-center mb-16">
-        <span className="text-secondary text-sm font-bold uppercase tracking-widest mb-3">
-          {t("featuresTagline") || "Capabilities"}
-        </span>
-        <h2 className="text-3xl font-extrabold text-on-surface sm:text-5xl max-w-2xl">
-          {t("featuresTitle")}
-        </h2>
-      </div>
+    <section className="section-shell relative mx-auto max-w-7xl px-6 py-24 sm:py-28">
+      <div className="relative z-10">
+        <div className="mb-16 flex flex-col items-center text-center">
+          <span className="mb-3 text-sm font-bold uppercase tracking-[0.28em] text-on-surface-variant">
+            {t("featuresTagline")}
+          </span>
+          <h2 className="max-w-2xl text-3xl font-extrabold tracking-[-0.04em] text-on-surface sm:text-5xl">
+            {t("featuresTitle")}
+          </h2>
+        </div>
 
-      <div className="grid gap-8 sm:grid-cols-3">
-        {features.map((feature) => (
-          <div
-            key={feature.titleKey}
-            className="group relative liquid-glass liquid-panel liquid-shimmer rounded-3xl p-8 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/5"
-          >
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-accent-cyan/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-
-            <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl liquid-glass-subtle text-secondary shadow-inner transition-colors group-hover:bg-primary group-hover:text-on-primary">
-              {feature.icon}
+        <div className="grid gap-8 sm:grid-cols-3">
+          {features.map((feature) => (
+            <div
+              key={feature.titleKey}
+              className="group relative rounded-[2rem] liquid-glass liquid-panel p-8 transition-all hover:-translate-y-1 hover:shadow-[0_30px_60px_rgba(74,65,57,0.08)]"
+            >
+              <div className="absolute inset-0 rounded-[2rem] bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.28),transparent_34%)] opacity-80" />
+              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-[1.2rem] bg-[rgba(255,255,255,0.56)] text-secondary shadow-[inset_0_1px_0_rgba(255,255,255,0.82)] transition-colors group-hover:bg-primary group-hover:text-on-primary">
+                {feature.icon}
+              </div>
+              <h3 className="relative z-10 mt-6 text-xl font-bold text-on-surface">
+                {t(feature.titleKey)}
+              </h3>
+              <p className="relative z-10 mt-3 text-base leading-7 text-on-surface-variant">
+                {t(feature.descKey)}
+              </p>
             </div>
-            <h3 className="relative z-10 mt-6 text-xl font-bold text-on-surface">
-              {t(feature.titleKey)}
-            </h3>
-            <p className="relative z-10 mt-3 text-base leading-relaxed text-on-surface-variant">
-              {t(feature.descKey)}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

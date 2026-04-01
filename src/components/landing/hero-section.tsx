@@ -6,52 +6,55 @@ interface HeroSectionProps {
 
 export function HeroSection({ t }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden px-8 py-28">
+    <section className="section-shell relative overflow-hidden px-8 py-24 sm:py-28">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="liquid-orb right-[-6rem] top-[-6rem] h-[32rem] w-[32rem] bg-accent-cyan/30" />
-        <div className="liquid-orb bottom-[-8rem] left-[-3rem] h-[26rem] w-[26rem] bg-tertiary/20" />
-        <div className="liquid-orb left-[35%] top-[42%] h-52 w-52 bg-secondary/20" />
+        <div className="liquid-orb left-[-5rem] top-10 h-[26rem] w-[26rem] bg-accent-cyan/18" />
+        <div className="liquid-orb right-[-7rem] top-[-2rem] h-[30rem] w-[30rem] bg-tertiary/16" />
       </div>
 
-      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-2">
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.08fr_0.92fr]">
         <div className="space-y-8">
           <div className="space-y-5">
-            <span className="liquid-glass-subtle liquid-line inline-block rounded-full px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.25em] text-tertiary">
+            <span className="liquid-glass-subtle liquid-line inline-flex items-center rounded-full px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.28em] text-on-surface-variant">
               {t("heroTagline")}
             </span>
-            <h1 className="text-5xl leading-[1.1] font-black tracking-tight text-on-surface lg:text-6xl">
-              {t("heroTitle")}{" "}
+            <h1 className="max-w-3xl text-5xl leading-[1.02] font-black tracking-[-0.04em] text-on-surface lg:text-7xl">
+              {t("heroTitle")}
               <br />
-              <span className="animate-text-gradient bg-gradient-to-r from-secondary via-accent-cyan to-tertiary bg-[length:200%_200%] bg-clip-text text-transparent">
+              <span className="animate-text-gradient bg-[linear-gradient(120deg,#1f2735_0%,#5f756d_34%,#b69b74_66%,#83717a_100%)] bg-[length:220%_220%] bg-clip-text text-transparent">
                 {t("heroHighlight")}
-              </span>{" "}
+              </span>
               <br />
               {t("heroTitle2")}
             </h1>
-            <p className="max-w-lg pt-2 text-lg leading-relaxed text-on-surface-variant">
+            <p className="max-w-xl text-[1.05rem] leading-8 text-on-surface-variant">
               {t("heroSubtitle")}
             </p>
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <div className="liquid-glass-subtle liquid-panel rounded-2xl px-4 py-3">
+            <div className="liquid-glass-subtle liquid-panel rounded-[1.6rem] px-5 py-4">
               <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
                 {t("heroMetricAccuracyLabel")}
               </div>
-              <div className="mt-1 text-2xl font-black text-on-surface">{t("heroMetricAccuracyValue")}</div>
+              <div className="mt-1 text-2xl font-black tracking-tight text-on-surface">
+                {t("heroMetricAccuracyValue")}
+              </div>
             </div>
-            <div className="liquid-glass-subtle liquid-panel rounded-2xl px-4 py-3">
+            <div className="liquid-glass-subtle liquid-panel rounded-[1.6rem] px-5 py-4">
               <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
                 {t("heroMetricTimeLabel")}
               </div>
-              <div className="mt-1 text-2xl font-black text-on-surface">{t("heroMetricTimeValue")}</div>
+              <div className="mt-1 text-2xl font-black tracking-tight text-on-surface">
+                {t("heroMetricTimeValue")}
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4 pt-4">
+          <div className="flex flex-wrap gap-4 pt-2">
             <Link
               href="/chat"
-              className="liquid-button group relative inline-flex items-center gap-2 rounded-2xl px-8 py-4 font-bold text-on-primary transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-primary/20"
+              className="liquid-button inline-flex items-center gap-2 rounded-[1.4rem] px-8 py-4 font-bold text-on-primary transition-all hover:-translate-y-0.5 hover:shadow-2xl"
             >
               {t("ctaStart")}
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -60,7 +63,7 @@ export function HeroSection({ t }: HeroSectionProps) {
             </Link>
             <Link
               href="/projects"
-              className="liquid-glass-subtle liquid-panel inline-flex items-center rounded-2xl px-8 py-4 font-bold text-on-surface transition-all hover:-translate-y-0.5 hover:shadow-lg"
+              className="liquid-glass-subtle liquid-panel inline-flex items-center rounded-[1.4rem] px-8 py-4 font-bold text-on-surface transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
               {t("ctaBrowse")}
             </Link>
@@ -68,54 +71,66 @@ export function HeroSection({ t }: HeroSectionProps) {
         </div>
 
         <div className="relative hidden lg:block">
-          <div className="liquid-glass liquid-panel liquid-shimmer rounded-[2rem] p-2">
-            <div className="liquid-mesh relative aspect-[4/3] rounded-[1.5rem] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_42%),linear-gradient(135deg,#18233b_0%,#0f172a_55%,#17203a_100%)] p-8">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(0,229,255,0.18),transparent_18%),radial-gradient(circle_at_78%_72%,rgba(157,0,255,0.18),transparent_20%)]" />
-              <div className="absolute left-6 right-6 top-6 flex items-center justify-between gap-4">
-                <div className="liquid-glass-dark rounded-2xl px-4 py-3">
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-white/60">{t("heroPoolLabel")}</div>
-                  <div className="mt-1 text-lg font-black text-white">{t("heroPoolValue")}</div>
-                </div>
-                <div className="liquid-glass-subtle rounded-2xl px-4 py-3 text-right">
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-on-surface-variant">{t("heroSignalLabel")}</div>
-                  <div className="mt-1 text-lg font-black text-on-surface">{t("heroSignalValue")}</div>
-                </div>
-              </div>
-
-              <div className="relative z-10 flex h-full items-end">
-                <div className="liquid-glass-dark w-full rounded-[1.75rem] p-5">
-                  <div className="mb-3 flex items-center gap-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-cyan/20">
-                      <svg className="h-5 w-5 text-accent-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="text-[10px] font-black uppercase tracking-widest text-white/70">{t("heroDeploymentLabel")}</div>
-                      <div className="text-sm font-bold text-white">{t("heroDeploymentValue")}</div>
-                    </div>
+          <div className="liquid-glass liquid-panel rounded-[2.25rem] p-3">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.8rem] bg-[linear-gradient(145deg,#f5efe6_0%,#dfd6c7_52%,#c9b9a4_100%)] p-6">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.62),transparent_24%),radial-gradient(circle_at_82%_28%,rgba(154,215,207,0.24),transparent_18%),radial-gradient(circle_at_65%_85%,rgba(190,164,181,0.18),transparent_22%)]" />
+              <div className="absolute inset-x-7 top-7 flex items-start justify-between gap-4">
+                <div className="liquid-glass rounded-[1.4rem] px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
+                    {t("heroPoolLabel")}
                   </div>
-
-                  <div className="mb-5 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                    <div className="h-full w-[85%] rounded-full bg-gradient-to-r from-accent-cyan to-secondary" />
+                  <div className="mt-1 text-lg font-black tracking-tight text-on-surface">
+                    {t("heroPoolValue")}
                   </div>
-
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="rounded-2xl bg-white/6 p-3">
-                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">{t("heroLatencyLabel")}</div>
-                      <div className="mt-1 text-sm font-bold text-white">{t("heroLatencyValue")}</div>
-                    </div>
-                    <div className="rounded-2xl bg-white/6 p-3">
-                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">{t("heroShortlistLabel")}</div>
-                      <div className="mt-1 text-sm font-bold text-white">{t("heroShortlistValue")}</div>
-                    </div>
-                    <div className="rounded-2xl bg-white/6 p-3">
-                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">{t("heroReadinessLabel")}</div>
-                      <div className="mt-1 text-sm font-bold text-white">{t("heroReadinessValue")}</div>
-                    </div>
+                </div>
+                <div className="rounded-[1.4rem] bg-[rgba(255,255,255,0.52)] px-4 py-3 shadow-[0_10px_24px_rgba(80,73,63,0.08)] backdrop-blur-xl">
+                  <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
+                    {t("heroSignalLabel")}
+                  </div>
+                  <div className="mt-1 text-lg font-black tracking-tight text-on-surface">
+                    {t("heroSignalValue")}
                   </div>
                 </div>
               </div>
+
+              <div className="absolute inset-x-6 bottom-6 space-y-4 rounded-[1.8rem] liquid-glass-dark p-5">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10">
+                    <svg className="h-5 w-5 text-[color:var(--color-accent-gold)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-black uppercase tracking-[0.24em] text-white/58">
+                      {t("heroDeploymentLabel")}
+                    </div>
+                    <div className="text-sm font-bold text-white">
+                      {t("heroDeploymentValue")}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                  <div className="h-full w-[85%] rounded-full bg-[linear-gradient(90deg,#d4b185_0%,#93d0c7_100%)]" />
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="rounded-[1.2rem] bg-white/6 p-3">
+                    <div className="text-[10px] uppercase tracking-[0.24em] text-white/52">{t("heroLatencyLabel")}</div>
+                    <div className="mt-1 text-sm font-bold text-white">{t("heroLatencyValue")}</div>
+                  </div>
+                  <div className="rounded-[1.2rem] bg-white/6 p-3">
+                    <div className="text-[10px] uppercase tracking-[0.24em] text-white/52">{t("heroShortlistLabel")}</div>
+                    <div className="mt-1 text-sm font-bold text-white">{t("heroShortlistValue")}</div>
+                  </div>
+                  <div className="rounded-[1.2rem] bg-white/6 p-3">
+                    <div className="text-[10px] uppercase tracking-[0.24em] text-white/52">{t("heroReadinessLabel")}</div>
+                    <div className="mt-1 text-sm font-bold text-white">{t("heroReadinessValue")}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-24 right-10 h-28 w-28 rounded-full border border-white/45 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.8),rgba(255,255,255,0.12)_60%,transparent_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_18px_40px_rgba(94,85,72,0.12)]" />
             </div>
           </div>
         </div>
