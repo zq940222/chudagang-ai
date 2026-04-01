@@ -228,5 +228,17 @@
       "api": "API / Backend",
       "other": "Other"
     }
+  },
+  "expertChat": {
+    "title": "AI Expert Matching",
+    "online": "Online",
+    "welcomeTitle": "Find Your Perfect Expert",
+    "welcomeDesc": "Describe your needs and I'll recommend the best-matched experts for you.",
+    "placeholder": "Describe what you need...",
+    "prompt1": "I need an app developer",
+    "prompt2": "Looking for an AI/ML expert",
+    "prompt3": "I need a website built",
+    "recommended": "Recommended Experts",
+    "viewDetail": "View Details"
   }
 }

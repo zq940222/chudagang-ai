@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { searchDevelopers } from "@/lib/services/matching";
 import { DeveloperCard } from "@/components/developer/developer-card";
 import { DeveloperFilterSidebar } from "@/components/developer/developer-filter-sidebar";
+import { ExpertMatchChat } from "@/components/developer/expert-match-chat";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrencyAmount } from "@/lib/currency";
 import type { DeveloperSearchParams } from "@/types/developer";
@@ -46,85 +47,93 @@ export default async function DevelopersPage({
     <div className="flex min-h-screen">
       <DeveloperFilterSidebar />
 
-      <main className="flex-1 max-w-7xl p-8 lg:p-12">
-        <header className="mb-12">
-          <div className="mb-3 flex flex-wrap items-center gap-3">
-            <Badge variant="accent">{t("marketplaceBadge")}</Badge>
-            <Badge variant="dark">{t("verifiedBadge")}</Badge>
-          </div>
-          <div className="flex flex-wrap items-baseline gap-4">
-            <h1 className="text-4xl font-black tracking-tighter text-on-surface sm:text-5xl">
-              {t("title")}
-            </h1>
-            <span className="text-sm font-medium text-on-surface-variant">
-              {t("availableCount", { count: total })}
-            </span>
-          </div>
-          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-on-surface-variant">
-            {t("description")}
-          </p>
-        </header>
-
-        {developers.length === 0 ? (
-          <div className="liquid-glass-vivid liquid-panel liquid-float rounded-[2rem] p-10 text-center">
-            <div className="mx-auto flex max-w-xl flex-col items-center">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-[1.4rem] liquid-glass-dark-vivid text-[color:var(--color-accent-gold)]">
-                <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75v10.5m5.25-5.25H6.75" />
-                </svg>
-              </div>
-              <h2 className="mb-3 text-2xl font-black tracking-tight text-on-surface">
-                {t("emptyTitle")}
-              </h2>
-              <p className="mb-8 text-base leading-8 text-on-surface-variant">
-                {t("emptyDescription")}
-              </p>
-              <div className="flex flex-col gap-4 sm:flex-row">
-                <Link
-                  href="/developers"
-                  className="liquid-button rounded-[1.2rem] px-8 py-3 text-sm font-bold text-on-primary"
-                >
-                  {t("emptyPrimaryCta")}
-                </Link>
-                <Link
-                  href="/dashboard/client/projects/new"
-                  className="liquid-glass-vivid liquid-float rounded-[1.2rem] px-8 py-3 text-sm font-bold text-on-surface"
-                >
-                  {t("emptySecondaryCta")}
-                </Link>
-              </div>
+      <div className="flex flex-1 min-w-0">
+        {/* Main content */}
+        <main className="flex-1 min-w-0 p-8 lg:p-12">
+          <header className="mb-12">
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <Badge variant="accent">{t("marketplaceBadge")}</Badge>
+              <Badge variant="dark">{t("verifiedBadge")}</Badge>
             </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-            {featured && (
-              <div className="md:col-span-2 xl:col-span-3">
-                <FeaturedDeveloperCard developer={featured} locale={locale} labels={featuredLabels} />
-              </div>
-            )}
-
-            {rest.map((dev) => (
-              <DeveloperCard key={dev.id} developer={dev} />
-            ))}
-          </div>
-        )}
-
-        {total > 12 && (
-          <div className="mt-20 flex items-center justify-center gap-4">
-            <div className="flex gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-xs font-bold text-on-primary">
-                1
-              </span>
-              <span className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg font-bold hover:bg-surface-container-high text-xs">
-                2
-              </span>
-              <span className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg font-bold hover:bg-surface-container-high text-xs">
-                3
+            <div className="flex flex-wrap items-baseline gap-4">
+              <h1 className="text-4xl font-black tracking-tighter text-on-surface sm:text-5xl">
+                {t("title")}
+              </h1>
+              <span className="text-sm font-medium text-on-surface-variant">
+                {t("availableCount", { count: total })}
               </span>
             </div>
-          </div>
-        )}
-      </main>
+            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-on-surface-variant">
+              {t("description")}
+            </p>
+          </header>
+
+          {developers.length === 0 ? (
+            <div className="liquid-glass-vivid liquid-panel liquid-float rounded-[2rem] p-10 text-center">
+              <div className="mx-auto flex max-w-xl flex-col items-center">
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-[1.4rem] liquid-glass-dark-vivid text-[color:var(--color-accent-gold)]">
+                  <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75v10.5m5.25-5.25H6.75" />
+                  </svg>
+                </div>
+                <h2 className="mb-3 text-2xl font-black tracking-tight text-on-surface">
+                  {t("emptyTitle")}
+                </h2>
+                <p className="mb-8 text-base leading-8 text-on-surface-variant">
+                  {t("emptyDescription")}
+                </p>
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <Link
+                    href="/developers"
+                    className="liquid-button rounded-[1.2rem] px-8 py-3 text-sm font-bold text-on-primary"
+                  >
+                    {t("emptyPrimaryCta")}
+                  </Link>
+                  <Link
+                    href="/dashboard/client/projects/new"
+                    className="liquid-glass-vivid liquid-float rounded-[1.2rem] px-8 py-3 text-sm font-bold text-on-surface"
+                  >
+                    {t("emptySecondaryCta")}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              {featured && (
+                <div className="md:col-span-2">
+                  <FeaturedDeveloperCard developer={featured} locale={locale} labels={featuredLabels} />
+                </div>
+              )}
+
+              {rest.map((dev) => (
+                <DeveloperCard key={dev.id} developer={dev} />
+              ))}
+            </div>
+          )}
+
+          {total > 12 && (
+            <div className="mt-20 flex items-center justify-center gap-4">
+              <div className="flex gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-xs font-bold text-on-primary">
+                  1
+                </span>
+                <span className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg font-bold hover:bg-surface-container-high text-xs">
+                  2
+                </span>
+                <span className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg font-bold hover:bg-surface-container-high text-xs">
+                  3
+                </span>
+              </div>
+            </div>
+          )}
+        </main>
+
+        {/* AI Chat Panel */}
+        <aside className="hidden xl:flex w-[400px] shrink-0 flex-col border-l border-outline-variant/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.56),rgba(246,242,236,0.36))] sticky top-0 h-screen">
+          <ExpertMatchChat />
+        </aside>
+      </div>
     </div>
   );
 }

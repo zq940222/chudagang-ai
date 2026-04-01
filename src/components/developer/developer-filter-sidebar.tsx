@@ -91,9 +91,7 @@ export function DeveloperFilterSidebar() {
   return (
     <FilterSidebar
       categories={categories}
-      showRateRange
-      rateLabel={t("rateLabel")}
-      applyLabel={t("clearFilters")}
+      showResetButton={false}
     />
   );
 }

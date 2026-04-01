@@ -228,5 +228,17 @@
       "api": "API / 后端",
       "other": "其他"
     }
+  },
+  "expertChat": {
+    "title": "AI 智能匹配",
+    "online": "在线",
+    "welcomeTitle": "找到最合适的专家",
+    "welcomeDesc": "描述您的需求，AI 将为您推荐最匹配的专家。",
+    "placeholder": "描述您的需求...",
+    "prompt1": "我需要一个 App 开发者",
+    "prompt2": "寻找 AI/机器学习专家",
+    "prompt3": "我需要搭建一个网站",
+    "recommended": "推荐专家",
+    "viewDetail": "查看详情"
   }
 }
