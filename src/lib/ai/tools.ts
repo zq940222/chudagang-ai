@@ -151,10 +151,77 @@ export const estimateBudget = tool({
   },
 });
 
+export const presentOptions = tool({
+  description:
+    "Present clickable options for the user to choose from. Use this when asking a question with a finite set of answers (e.g. project type, budget range, timeline). The user can click an option instead of typing.",
+  inputSchema: z.object({
+    question: z.string().describe("The question to ask the user"),
+    options: z
+      .array(
+        z.object({
+          label: z.string().describe("Display label for the option"),
+          value: z.string().describe("Value to send back when selected"),
+          description: z
+            .string()
+            .optional()
+            .describe("Optional short description under the label"),
+          icon: z
+            .enum(["mobile", "web", "ai", "api", "database", "cloud", "design", "other"])
+            .optional()
+            .describe("Optional icon hint"),
+        })
+      )
+      .min(2)
+      .max(8)
+      .describe("List of options to present"),
+    allowMultiple: z
+      .boolean()
+      .optional()
+      .default(false)
+      .describe("Whether the user can select multiple options"),
+  }),
+  execute: async ({ question, options, allowMultiple }) => {
+    return { question, options, allowMultiple: allowMultiple ?? false };
+  },
+});
+
+export const presentForm = tool({
+  description:
+    "Present a short inline form for the user to fill in structured data. Use this when you need several pieces of information at once (e.g. project name + budget + timeline). Keep forms short (2-5 fields).",
+  inputSchema: z.object({
+    title: z.string().describe("Form title / heading"),
+    fields: z
+      .array(
+        z.object({
+          name: z.string().describe("Field key name"),
+          label: z.string().describe("Display label"),
+          type: z
+            .enum(["text", "number", "select", "textarea"])
+            .describe("Input type"),
+          placeholder: z.string().optional().describe("Placeholder text"),
+          options: z
+            .array(z.object({ label: z.string(), value: z.string() }))
+            .optional()
+            .describe("Options for select type fields"),
+          required: z.boolean().optional().default(true),
+        })
+      )
+      .min(1)
+      .max(5)
+      .describe("Form fields to display"),
+    submitLabel: z.string().optional().default("Submit").describe("Submit button text"),
+  }),
+  execute: async ({ title, fields, submitLabel }) => {
+    return { title, fields, submitLabel: submitLabel ?? "Submit" };
+  },
+});
+
 export const aiTools = {
   extractRequirements,
   resolveSkills,
   createProjectDraft,
   searchDevelopers: searchDevelopersTool,
   estimateBudget,
+  presentOptions,
+  presentForm,
 };

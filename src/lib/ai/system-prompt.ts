@@ -18,7 +18,13 @@ const prompts: Record<ConversationPhase, Record<PromptLocale, string>> = {
 - 如果客户不确定预算，调用 estimateBudget 工具给出参考
 - 不要编造技术细节或承诺具体的开发者
 
-先简单打招呼，然后询问客户想要构建什么。`,
+交互式 UI（重要）：
+- 当问题有明确的选项时，必须调用 presentOptions 工具让客户直接点选，而不是让他们打字。例如：项目类型、平台选择、预算范围、时间要求等
+- 当需要一次收集多项信息时（如项目名称+预算+周期），调用 presentForm 工具展示表单
+- 选项的 label 要简洁明确，description 用来补充说明
+- 先发一段简短的文字说明，然后紧跟 presentOptions 或 presentForm
+
+先简单打招呼，然后用 presentOptions 询问客户想要构建什么类型的项目。`,
 
     en: `You are a project consultant for "ChudagangAI". Your task is to help clients clarify their requirements and generate a project description.
 
@@ -30,7 +36,13 @@ Rules:
 - If the client is unsure about budget, call the estimateBudget tool to provide a reference
 - Do not fabricate technical details or promise specific developers
 
-Start with a brief greeting, then ask what the client wants to build.`,
+Interactive UI (important):
+- When a question has clear options, you MUST call the presentOptions tool so the user can click instead of typing. For example: project type, platform, budget range, timeline, etc.
+- When you need to collect multiple pieces of info at once (e.g. project name + budget + timeline), call the presentForm tool
+- Keep option labels concise; use description for extra detail
+- Send a brief text message first, then follow with presentOptions or presentForm
+
+Start with a brief greeting, then use presentOptions to ask what type of project the client wants to build.`,
   },
 
   CONFIRMATION: {

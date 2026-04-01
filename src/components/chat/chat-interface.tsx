@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { MessageBubble } from "./message-bubble";
 import { ProjectSummaryCard } from "./project-summary-card";
 import { DeveloperRecommendations } from "./developer-recommendation";
+import { OptionsCard, FormCard } from "./interactive-options";
 
 interface ChatInterfaceProps {
   conversationId?: string;
@@ -40,6 +41,12 @@ export function ChatInterface({
   });
 
   const isBusy = status === "submitted" || status === "streaming";
+
+  const handleInteractiveSubmit = (text: string) => {
+    if (!text.trim()) return;
+    sendMessage({ text });
+    setInput("");
+  };
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -231,6 +238,44 @@ export function ChatInterface({
                           </a>
                         </Button>
                       </div>
+                    );
+                  }
+                  return null;
+                case "tool-presentOptions":
+                  if (part.state === "output-available") {
+                    const result = part.output as {
+                      question: string;
+                      options: { label: string; value: string; description?: string; icon?: string }[];
+                      allowMultiple: boolean;
+                    };
+                    return (
+                      <OptionsCard
+                        key={`${message.id}-tool-${i}`}
+                        question={result.question}
+                        options={result.options}
+                        allowMultiple={result.allowMultiple}
+                        onSelect={(value) => handleInteractiveSubmit(value)}
+                        disabled={isBusy}
+                      />
+                    );
+                  }
+                  return null;
+                case "tool-presentForm":
+                  if (part.state === "output-available") {
+                    const result = part.output as {
+                      title: string;
+                      fields: { name: string; label: string; type: "text" | "number" | "select" | "textarea"; placeholder?: string; options?: { label: string; value: string }[]; required?: boolean }[];
+                      submitLabel: string;
+                    };
+                    return (
+                      <FormCard
+                        key={`${message.id}-tool-${i}`}
+                        title={result.title}
+                        fields={result.fields}
+                        submitLabel={result.submitLabel}
+                        onSubmit={(value) => handleInteractiveSubmit(value)}
+                        disabled={isBusy}
+                      />
                     );
                   }
                   return null;

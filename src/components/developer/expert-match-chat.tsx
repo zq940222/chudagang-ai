@@ -6,6 +6,7 @@ import { DefaultChatTransport } from "ai";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { MessageBubble } from "@/components/chat/message-bubble";
+import { OptionsCard, FormCard } from "@/components/chat/interactive-options";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrencyAmount } from "@/lib/currency";
@@ -170,6 +171,44 @@ export function ExpertMatchChat() {
                           </div>
                         )}
                       </div>
+                    );
+                  }
+                  return null;
+                case "tool-presentOptions":
+                  if (part.state === "output-available") {
+                    const result = part.output as {
+                      question: string;
+                      options: { label: string; value: string; description?: string; icon?: string }[];
+                      allowMultiple: boolean;
+                    };
+                    return (
+                      <OptionsCard
+                        key={`${message.id}-tool-${i}`}
+                        question={result.question}
+                        options={result.options}
+                        allowMultiple={result.allowMultiple}
+                        onSelect={(value) => handleSubmit(value)}
+                        disabled={isBusy}
+                      />
+                    );
+                  }
+                  return null;
+                case "tool-presentForm":
+                  if (part.state === "output-available") {
+                    const result = part.output as {
+                      title: string;
+                      fields: { name: string; label: string; type: "text" | "number" | "select" | "textarea"; placeholder?: string; options?: { label: string; value: string }[]; required?: boolean }[];
+                      submitLabel: string;
+                    };
+                    return (
+                      <FormCard
+                        key={`${message.id}-tool-${i}`}
+                        title={result.title}
+                        fields={result.fields}
+                        submitLabel={result.submitLabel}
+                        onSubmit={(value) => handleSubmit(value)}
+                        disabled={isBusy}
+                      />
                     );
                   }
                   return null;
