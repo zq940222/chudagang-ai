@@ -57,15 +57,15 @@ function RangeControl({
         </div>
         <div className="mt-2 flex items-center justify-between text-sm font-bold text-on-surface">
           <span className="text-secondary">{formatValue(localMin)}</span>
-          <span className="text-on-surface-variant">—</span>
+          <span className="text-on-surface-variant/60">to</span>
           <span className="text-primary">{formatValue(localMax)}</span>
         </div>
       </div>
 
-      <div className="relative px-1 pb-10 pt-12">
-        <div className="absolute left-1 right-1 top-[3.75rem] h-2 rounded-full bg-[linear-gradient(90deg,rgba(236,229,220,0.95),rgba(219,210,198,0.72))]" />
+      <div className="relative px-1 py-9">
+        <div className="absolute left-1 right-1 top-1/2 h-2 -translate-y-1/2 rounded-full bg-[linear-gradient(90deg,rgba(236,229,220,0.95),rgba(219,210,198,0.72))]" />
         <div
-          className="absolute top-[3.75rem] h-2 rounded-full bg-[linear-gradient(90deg,#9ad7cf_0%,#d4b185_100%)] shadow-[0_0_20px_rgba(154,215,207,0.5)]"
+          className="absolute top-1/2 h-2 -translate-y-1/2 rounded-full bg-[linear-gradient(90deg,#9ad7cf_0%,#d4b185_100%)] shadow-[0_0_20px_rgba(154,215,207,0.5)]"
           style={{
             left: `calc(${minPercent}% + 0.25rem)`,
             right: `calc(${100 - maxPercent}% + 0.25rem)`,
@@ -87,7 +87,7 @@ function RangeControl({
 
         <input
           type="range"
-          className="pointer-events-none absolute left-0 right-0 top-[3.45rem] h-8 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-8px] [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[linear-gradient(145deg,#9ad7cf,#5f756d)] [&::-webkit-slider-thumb]:shadow-[0_10px_24px_rgba(18,21,28,0.18)]"
+          className="pointer-events-none absolute left-0 right-0 top-1/2 h-10 w-full -translate-y-1/2 appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-11px] [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[linear-gradient(145deg,#9ad7cf,#5f756d)] [&::-webkit-slider-thumb]:shadow-[0_10px_24px_rgba(18,21,28,0.18)]"
           min={minAllowed}
           max={maxAllowed}
           step={step}
@@ -101,7 +101,7 @@ function RangeControl({
         />
         <input
           type="range"
-          className="pointer-events-none absolute left-0 right-0 top-[3.45rem] h-8 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-8px] [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[linear-gradient(145deg,#d4b185,#cf8a7a)] [&::-webkit-slider-thumb]:shadow-[0_10px_24px_rgba(18,21,28,0.18)]"
+          className="pointer-events-none absolute left-0 right-0 top-1/2 h-10 w-full -translate-y-1/2 appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-11px] [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[linear-gradient(145deg,#d4b185,#cf8a7a)] [&::-webkit-slider-thumb]:shadow-[0_10px_24px_rgba(18,21,28,0.18)]"
           min={minAllowed}
           max={maxAllowed}
           step={step}
@@ -121,6 +121,23 @@ function RangeControl({
       </div>
     </>
   );
+}
+
+function getCategoryAccentClass(value: string, active: boolean) {
+  if (!active) return "text-on-surface-variant/72";
+
+  switch (value) {
+    case "llm":
+      return "bg-[linear-gradient(135deg,rgba(154,215,207,0.24),rgba(255,255,255,0.7))] text-[#0f6f67] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "cv":
+      return "bg-[linear-gradient(135deg,rgba(212,177,133,0.28),rgba(255,255,255,0.72))] text-[#95613a] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "neural":
+      return "bg-[linear-gradient(135deg,rgba(169,131,216,0.22),rgba(255,255,255,0.72))] text-[#6d48a8] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "deploy":
+      return "bg-[linear-gradient(135deg,rgba(111,190,222,0.24),rgba(255,255,255,0.72))] text-[#2f6d8a] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    default:
+      return "bg-[linear-gradient(135deg,rgba(154,215,207,0.2),rgba(255,255,255,0.7))] text-[#1f5d57] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+  }
 }
 
 export function FilterSidebar({
@@ -180,35 +197,48 @@ export function FilterSidebar({
   );
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 bg-surface-container-low/50 border-r border-outline-variant/10 shrink-0 p-6 space-y-8">
+    <aside className="hidden w-64 shrink-0 flex-col space-y-8 border-r border-outline-variant/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.56),rgba(246,242,236,0.36))] p-6 lg:flex">
       <div>
-        <h5 className="mb-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant/60">
+        <h5 className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-on-surface-variant/55">
           Marketplace Filters
         </h5>
         <nav className="space-y-1">
-          {categories.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => {
-                updateParams("category", cat.value === "all" ? null : cat.value);
-              }}
-              className={cn(
-                "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all",
-                activeCategory === cat.value
-                  ? "bg-[linear-gradient(135deg,rgba(154,215,207,0.22),rgba(212,177,133,0.18))] text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_10px_24px_rgba(18,21,28,0.06)]"
-                  : "text-on-surface-variant hover:bg-surface-container/50"
-              )}
-            >
-              {cat.icon}
-              {cat.label}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat.value;
+
+            return (
+              <button
+                key={cat.value}
+                onClick={() => {
+                  updateParams("category", cat.value === "all" ? null : cat.value);
+                }}
+                className={cn(
+                  "group flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left text-sm font-medium transition-all duration-200",
+                  isActive
+                    ? `${getCategoryAccentClass(cat.value, true)} border-white/55`
+                    : "border-transparent bg-transparent text-on-surface-variant/70 hover:border-white/40 hover:bg-white/55 hover:text-on-surface"
+                )}
+              >
+                <span
+                  className={cn(
+                    "flex h-9 w-9 items-center justify-center rounded-xl transition-all",
+                    isActive
+                      ? "bg-white/65 text-current shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                      : "bg-surface-container/60 text-on-surface-variant/50 group-hover:bg-white/70 group-hover:text-on-surface"
+                  )}
+                >
+                  {cat.icon}
+                </span>
+                <span className="flex-1">{cat.label}</span>
+              </button>
+            );
+          })}
         </nav>
       </div>
 
       {(showBudgetRange || showRateRange) && (
         <div className="border-t border-outline-variant/10 pt-4">
-          <h5 className="mb-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant/60">
+          <h5 className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-on-surface-variant/55">
             {showBudgetRange ? budgetLabel : rateLabel}
           </h5>
           <RangeControl

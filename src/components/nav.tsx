@@ -52,10 +52,10 @@ export function Nav() {
                   href={link.href}
                   aria-current={isActiveLink(pathname, link.href) ? "page" : undefined}
                   className={cn(
-                    "rounded-full px-3 py-2 text-sm font-medium transition-all",
+                    "rounded-full px-3 py-2 text-sm font-medium transition-all duration-200",
                     isActiveLink(pathname, link.href)
-                      ? "bg-white/55 text-on-surface shadow-[0_8px_24px_rgba(255,255,255,0.18)] ring-1 ring-white/45 backdrop-blur-xl"
-                      : "text-on-surface-variant hover:bg-white/40 hover:text-on-surface"
+                      ? "bg-gradient-to-r from-[rgba(154,215,207,0.26)] via-[rgba(255,255,255,0.58)] to-[rgba(212,177,133,0.24)] text-on-surface shadow-[0_10px_28px_rgba(18,21,28,0.08),inset_0_1px_0_rgba(255,255,255,0.85)] ring-1 ring-white/55 backdrop-blur-2xl"
+                      : "text-on-surface-variant/70 hover:bg-white/35 hover:text-accent-cyan"
                   )}
                 >
                   {t(link.labelKey)}
