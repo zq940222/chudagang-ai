@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SkillSelector } from "@/components/developer/skill-selector";
 import { createProject } from "@/lib/actions/project";
+import { projectCategoryOptions } from "@/lib/project-categories";
 
 type Skill = {
   id: string;
@@ -21,6 +23,7 @@ interface ProjectFormProps {
 
 export function ProjectForm({ skills }: ProjectFormProps) {
   const router = useRouter();
+  const t = useTranslations("projects");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [currency, setCurrency] = useState("CNY");
   const [customCurrency, setCustomCurrency] = useState("");
@@ -135,11 +138,19 @@ export function ProjectForm({ skills }: ProjectFormProps) {
         <label htmlFor="category" className="text-sm font-medium text-on-surface">
           Category
         </label>
-        <Input
+        <select
           id="category"
           name="category"
-          placeholder="e.g. Web Development, Mobile App"
-        />
+          defaultValue=""
+          className="flex h-10 w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:bg-surface-container-high focus:outline-none focus:ring-1 focus:ring-accent-cyan/50"
+        >
+          <option value="">{t("categoryPlaceholder")}</option>
+          {projectCategoryOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {t(option.labelKey)}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="space-y-2">

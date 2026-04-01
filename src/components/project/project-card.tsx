@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrencyAmount } from "@/lib/currency";
+import { resolveProjectCategory } from "@/lib/project-categories";
 import { cn } from "@/lib/utils";
 import type { ProjectCardData } from "@/types/project";
 
@@ -30,6 +31,7 @@ export function ProjectCard({ project, variant = "default" }: ProjectCardProps) 
   const displaySkills = project.skills.slice(0, 4);
   const extraSkillCount = project.skills.length - 4;
   const statusLabel = t(`status.${project.status}`);
+  const category = resolveProjectCategory(project.category);
 
   return (
     <Link href={`/projects/${project.id}`} className="block group h-full">
@@ -44,7 +46,7 @@ export function ProjectCard({ project, variant = "default" }: ProjectCardProps) 
             <div className="flex items-center gap-2">
               {project.category && (
                 <span className="text-[10px] font-bold tracking-widest uppercase text-on-surface-variant">
-                  {project.category}
+                  {category ? t(category.labelKey) : project.category}
                 </span>
               )}
             </div>

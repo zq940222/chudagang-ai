@@ -129,10 +129,30 @@ function getCategoryAccentClass(value: string, active: boolean) {
   switch (value) {
     case "llm":
       return "bg-[linear-gradient(135deg,rgba(154,215,207,0.24),rgba(255,255,255,0.7))] text-[#0f6f67] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
-    case "cv":
+    case "rag":
+      return "bg-[linear-gradient(135deg,rgba(111,190,222,0.24),rgba(255,255,255,0.72))] text-[#2f6d8a] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "vision":
       return "bg-[linear-gradient(135deg,rgba(212,177,133,0.28),rgba(255,255,255,0.72))] text-[#95613a] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "multimodal":
+      return "bg-[linear-gradient(135deg,rgba(169,131,216,0.24),rgba(255,255,255,0.72))] text-[#6d48a8] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "audio":
+      return "bg-[linear-gradient(135deg,rgba(247,190,82,0.24),rgba(255,255,255,0.72))] text-[#9c661a] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "agent":
+      return "bg-[linear-gradient(135deg,rgba(74,176,128,0.24),rgba(255,255,255,0.72))] text-[#25684f] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "deployment":
+      return "bg-[linear-gradient(135deg,rgba(111,146,232,0.24),rgba(255,255,255,0.72))] text-[#365fa5] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "automation":
+      return "bg-[linear-gradient(135deg,rgba(232,132,145,0.24),rgba(255,255,255,0.72))] text-[#9a4d5a] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "data":
+      return "bg-[linear-gradient(135deg,rgba(110,123,255,0.24),rgba(255,255,255,0.72))] text-[#4b58c9] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "evaluation":
+      return "bg-[linear-gradient(135deg,rgba(252,166,94,0.24),rgba(255,255,255,0.72))] text-[#b56214] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "product":
+      return "bg-[linear-gradient(135deg,rgba(242,131,169,0.24),rgba(255,255,255,0.72))] text-[#a43f6a] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
     case "neural":
       return "bg-[linear-gradient(135deg,rgba(169,131,216,0.22),rgba(255,255,255,0.72))] text-[#6d48a8] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
+    case "other":
+      return "bg-[linear-gradient(135deg,rgba(156,163,175,0.2),rgba(255,255,255,0.72))] text-[#4b5563] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
     case "deploy":
       return "bg-[linear-gradient(135deg,rgba(111,190,222,0.24),rgba(255,255,255,0.72))] text-[#2f6d8a] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_12px_24px_rgba(18,21,28,0.06)]";
     default:

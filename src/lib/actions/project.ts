@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { getProjectCategoryFilterValues, normalizeProjectCategory } from "@/lib/project-categories";
 import { projectCreateSchema } from "@/lib/validators/project";
 import type { ProjectCardData, ProjectSearchParams } from "@/types/project";
 
@@ -201,6 +202,12 @@ export async function searchProjects(params: ProjectSearchParams): Promise<{
     where.budget = {};
     if (minBudget !== undefined) (where.budget as Record<string, number>).gte = minBudget;
     if (maxBudget !== undefined) (where.budget as Record<string, number>).lte = maxBudget;
+  }
+
+  if (params.category) {
+    const normalized = normalizeProjectCategory(params.category);
+    const values = getProjectCategoryFilterValues(normalized);
+    where.category = { in: values };
   }
 
   if (skills && skills.length > 0) {

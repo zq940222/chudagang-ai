@@ -5,6 +5,7 @@ import { ProjectFilterSidebar } from "@/components/project/project-filter-sideba
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
 import { formatCurrencyAmount } from "@/lib/currency";
+import { getProjectCategoryLabel } from "@/lib/project-categories";
 import type { ProjectSearchParams } from "@/types/project";
 
 export default async function ProjectsPage({
@@ -22,6 +23,7 @@ export default async function ProjectsPage({
       : typeof params.skills === "string"
         ? [params.skills]
         : undefined,
+    category: typeof params.category === "string" ? params.category : undefined,
     minBudget: params.minBudget ? Number(params.minBudget) : undefined,
     maxBudget: params.maxBudget ? Number(params.maxBudget) : undefined,
     page: params.page ? Number(params.page) : 1,
@@ -98,7 +100,7 @@ export default async function ProjectsPage({
                           </svg>
                         </span>
                         <span className="text-xs font-bold tracking-widest uppercase text-on-surface-variant">
-                          {featured.category || t("defaultCategory")}
+                          {getProjectCategoryLabel(featured.category, (key) => t(key)) ?? t("defaultCategory")}
                         </span>
                       </div>
                       {featured.budget !== null && (

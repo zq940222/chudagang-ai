@@ -6,6 +6,8 @@ import { Link } from "@/i18n/navigation";
 import { auth } from "@/auth";
 import { ApplicationForm } from "@/components/application/application-form";
 import { formatCurrencyAmount } from "@/lib/currency";
+import { getProjectCategoryLabel } from "@/lib/project-categories";
+import { getTranslations } from "next-intl/server";
 
 export default async function ProjectDetailPage({
   params,
@@ -13,6 +15,7 @@ export default async function ProjectDetailPage({
   params: Promise<{ id: string; locale: string }>;
 }) {
   const { id, locale } = await params;
+  const t = await getTranslations("projects");
 
   const project = await db.project.findUnique({
     where: { id, status: "PUBLISHED" },
@@ -67,7 +70,7 @@ export default async function ProjectDetailPage({
                   Category
                 </span>
                 <span className="text-2xl font-bold text-on-surface">
-                  {project.category}
+                  {getProjectCategoryLabel(project.category, t) ?? project.category}
                 </span>
               </div>
             )}

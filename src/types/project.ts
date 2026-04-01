@@ -23,6 +23,7 @@ export type ProjectCardData = {
 export type ProjectSearchParams = {
   query?: string;
   skills?: string[];
+  category?: string;
   minBudget?: number;
   maxBudget?: number;
   status?: string;
