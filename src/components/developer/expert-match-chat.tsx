@@ -14,6 +14,7 @@ export function ExpertMatchChat() {
   const locale = useLocale();
   const t = useTranslations("expertChat");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [input, setInput] = useState("");
 
   const { messages, sendMessage, status, error } = useChat({
@@ -29,6 +30,13 @@ export function ExpertMatchChat() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages]);
 
+  // Re-focus input when AI finishes responding
+  useEffect(() => {
+    if (status === "ready" && messages.length > 0) {
+      inputRef.current?.focus();
+    }
+  }, [status, messages.length]);
+
   const isEmpty = messages.length === 0;
 
   const handleSubmit = (text?: string) => {
@@ -36,6 +44,7 @@ export function ExpertMatchChat() {
     if (!value) return;
     sendMessage({ text: value });
     setInput("");
+    setTimeout(() => inputRef.current?.focus(), 0);
   };
 
   // Empty state: input-first layout
@@ -58,6 +67,7 @@ export function ExpertMatchChat() {
                   AI
                 </div>
                 <Input
+                  ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder={t("placeholder")}
@@ -201,10 +211,12 @@ export function ExpertMatchChat() {
           <div className="absolute -inset-0.5 bg-gradient-to-r from-accent-cyan/20 to-tertiary/20 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity" />
           <div className="relative flex items-center gap-2 glass rounded-xl p-2 ghost-border">
             <Input
+              ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={t("placeholder")}
               disabled={isBusy}
+              autoFocus
               className="flex-1 border-none focus-visible:ring-0 bg-transparent text-sm py-3 rounded-xl"
             />
             <button
