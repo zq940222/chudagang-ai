@@ -2,11 +2,12 @@
 
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { UserMenu } from "@/components/user-menu";
 import { NotificationBell } from "@/components/notification/notification-bell";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/projects", labelKey: "projects" },
@@ -14,10 +15,20 @@ const navLinks = [
   { href: "/dashboard/client/projects/new", labelKey: "howItWorks" },
 ] as const;
 
+function isActiveLink(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+
+  const normalizedPath = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+  const normalizedHref = href.endsWith("/") && href !== "/" ? href.slice(0, -1) : href;
+
+  return normalizedPath === normalizedHref || normalizedPath.startsWith(`${normalizedHref}/`);
+}
+
 export function Nav() {
   const t = useTranslations("nav");
   const tc = useTranslations("common");
   const { data: session, status } = useSession();
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
@@ -39,7 +50,13 @@ export function Nav() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="rounded-full px-3 py-2 text-sm font-medium text-on-surface-variant transition-all hover:bg-white/40 hover:text-on-surface"
+                  aria-current={isActiveLink(pathname, link.href) ? "page" : undefined}
+                  className={cn(
+                    "rounded-full px-3 py-2 text-sm font-medium transition-all",
+                    isActiveLink(pathname, link.href)
+                      ? "bg-white/55 text-on-surface shadow-[0_8px_24px_rgba(255,255,255,0.18)] ring-1 ring-white/45 backdrop-blur-xl"
+                      : "text-on-surface-variant hover:bg-white/40 hover:text-on-surface"
+                  )}
                 >
                   {t(link.labelKey)}
                 </Link>
