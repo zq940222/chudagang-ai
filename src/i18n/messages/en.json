@@ -158,6 +158,7 @@
     "filterNeural": "Neural Architecture",
     "filterDeploy": "Deployment",
     "budgetRange": "Budget Range",
+    "selectedRange": "Selected Range",
     "resetFilters": "Reset Filters",
     "negotiable": "Negotiable",
     "applicantCount": "{count, plural, =0 {No applicants} one {# applicant} other {# applicants}}",

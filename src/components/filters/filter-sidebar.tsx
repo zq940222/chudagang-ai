@@ -18,6 +18,7 @@ interface FilterSidebarProps {
   budgetLabel?: string;
   rateLabel?: string;
   applyLabel?: string;
+  selectedRangeLabel?: string;
 }
 
 export function FilterSidebar({
@@ -27,11 +28,33 @@ export function FilterSidebar({
   budgetLabel = "Budget Range",
   rateLabel = "Hourly Rate",
   applyLabel = "Apply Filters",
+  selectedRangeLabel = "Selected Range",
 }: FilterSidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get("category") ?? "all";
+  const minAllowed = showBudgetRange ? 0 : 50;
+  const maxAllowed = showBudgetRange ? 100000 : 500;
+  const step = showBudgetRange ? 1000 : 10;
+  const minKey = showBudgetRange ? "minBudget" : "minRate";
+  const maxKey = showBudgetRange ? "maxBudget" : "maxRate";
+  const parsedMin = Number(searchParams.get(minKey) ?? minAllowed);
+  const parsedMax = Number(searchParams.get(maxKey) ?? maxAllowed);
+  const currentMin = Number.isFinite(parsedMin)
+    ? Math.min(Math.max(parsedMin, minAllowed), maxAllowed)
+    : minAllowed;
+  const currentMax = Number.isFinite(parsedMax)
+    ? Math.max(Math.min(parsedMax, maxAllowed), minAllowed)
+    : maxAllowed;
+  const safeMin = Math.min(currentMin, currentMax);
+  const safeMax = Math.max(currentMin, currentMax);
+  const minPercent = ((safeMin - minAllowed) / (maxAllowed - minAllowed)) * 100;
+  const maxPercent = ((safeMax - minAllowed) / (maxAllowed - minAllowed)) * 100;
+  const formatValue = (value: number) =>
+    showBudgetRange
+      ? `$${value.toLocaleString()}`
+      : `$${value}`;
 
   const updateParams = useCallback(
     (key: string, value: string | null) => {
@@ -45,6 +68,17 @@ export function FilterSidebar({
       router.push(`${pathname}?${params.toString()}`);
     },
     [router, pathname, searchParams]
+  );
+
+  const updateRangeParams = useCallback(
+    (nextMin: number, nextMax: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(minKey, String(nextMin));
+      params.set(maxKey, String(nextMax));
+      params.delete("page");
+      router.push(`${pathname}?${params.toString()}`);
+    },
+    [maxKey, minKey, pathname, router, searchParams]
   );
 
   return (
@@ -84,20 +118,65 @@ export function FilterSidebar({
           <h5 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-4">
             {showBudgetRange ? budgetLabel : rateLabel}
           </h5>
-          <input
-            type="range"
-            className="w-full accent-secondary"
-            min={showBudgetRange ? 0 : 50}
-            max={showBudgetRange ? 100000 : 500}
-            step={showBudgetRange ? 1000 : 10}
-            onChange={(e) => {
-              const key = showBudgetRange ? "maxBudget" : "maxRate";
-              updateParams(key, e.target.value);
-            }}
-          />
+          <div className="mb-3 rounded-2xl liquid-glass-vivid liquid-panel px-4 py-3">
+            <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-on-surface-variant/70">
+              {selectedRangeLabel}
+            </div>
+            <div className="mt-2 flex items-center justify-between text-sm font-bold text-on-surface">
+              <span>{formatValue(safeMin)}</span>
+              <span className="text-on-surface-variant">-</span>
+              <span>{formatValue(safeMax)}</span>
+            </div>
+          </div>
+          <div className="relative px-1 pb-8 pt-10">
+            <div className="absolute left-1 right-1 top-[3.05rem] h-1.5 rounded-full bg-surface-container-highest" />
+            <div
+              className="absolute top-[3.05rem] h-1.5 rounded-full bg-secondary"
+              style={{
+                left: `calc(${minPercent}% + 0.25rem)`,
+                right: `calc(${100 - maxPercent}% + 0.25rem)`,
+              }}
+            />
+            <div
+              className="absolute top-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-on-primary shadow-lg"
+              style={{ left: `calc(${minPercent}% - 1.5rem)` }}
+            >
+              {formatValue(safeMin)}
+            </div>
+            <div
+              className="absolute top-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-on-primary shadow-lg"
+              style={{ left: `calc(${maxPercent}% - 1.5rem)` }}
+            >
+              {formatValue(safeMax)}
+            </div>
+            <input
+              type="range"
+              className="pointer-events-none absolute left-0 right-0 top-9 h-6 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-7px] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-secondary [&::-webkit-slider-thumb]:shadow-md"
+              min={minAllowed}
+              max={maxAllowed}
+              step={step}
+              value={safeMin}
+              onChange={(e) => {
+                const nextMin = Math.min(Number(e.target.value), safeMax - step);
+                updateRangeParams(nextMin, safeMax);
+              }}
+            />
+            <input
+              type="range"
+              className="pointer-events-none absolute left-0 right-0 top-9 h-6 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-7px] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-md"
+              min={minAllowed}
+              max={maxAllowed}
+              step={step}
+              value={safeMax}
+              onChange={(e) => {
+                const nextMax = Math.max(Number(e.target.value), safeMin + step);
+                updateRangeParams(safeMin, nextMax);
+              }}
+            />
+          </div>
           <div className="flex justify-between text-xs text-on-surface-variant mt-2">
-            <span>{showBudgetRange ? "$0" : "$50"}</span>
-            <span>{showBudgetRange ? "$100k+" : "$500+"}</span>
+            <span>{formatValue(minAllowed)}</span>
+            <span>{showBudgetRange ? "$100,000+" : "$500+"}</span>
           </div>
         </div>
       )}

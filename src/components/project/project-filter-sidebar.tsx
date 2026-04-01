@@ -60,6 +60,7 @@ export function ProjectFilterSidebar() {
       showBudgetRange
       budgetLabel={t("budgetRange")}
       applyLabel={t("resetFilters")}
+      selectedRangeLabel={t("selectedRange")}
     />
   );
 }
