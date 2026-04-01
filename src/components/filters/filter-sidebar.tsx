@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "@/i18n/navigation";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface FilterCategory {
@@ -19,6 +19,104 @@ interface FilterSidebarProps {
   rateLabel?: string;
   applyLabel?: string;
   selectedRangeLabel?: string;
+}
+
+interface RangeControlProps {
+  minAllowed: number;
+  maxAllowed: number;
+  step: number;
+  initialMin: number;
+  initialMax: number;
+  formatValue: (value: number) => string;
+  label: string;
+  isBudgetRange?: boolean;
+  onCommit: (nextMin: number, nextMax: number) => void;
+}
+
+function RangeControl({
+  minAllowed,
+  maxAllowed,
+  step,
+  initialMin,
+  initialMax,
+  formatValue,
+  label,
+  isBudgetRange,
+  onCommit,
+}: RangeControlProps) {
+  const [localMin, setLocalMin] = useState(initialMin);
+  const [localMax, setLocalMax] = useState(initialMax);
+  const minPercent = ((localMin - minAllowed) / (maxAllowed - minAllowed)) * 100;
+  const maxPercent = ((localMax - minAllowed) / (maxAllowed - minAllowed)) * 100;
+
+  return (
+    <>
+      <div className="mb-3 rounded-2xl liquid-glass-vivid liquid-panel px-4 py-3">
+        <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-on-surface-variant/70">
+          {label}
+        </div>
+        <div className="mt-2 flex items-center justify-between text-sm font-bold text-on-surface">
+          <span>{formatValue(localMin)}</span>
+          <span className="text-on-surface-variant">-</span>
+          <span>{formatValue(localMax)}</span>
+        </div>
+      </div>
+      <div className="relative px-1 pb-8 pt-10">
+        <div className="absolute left-1 right-1 top-[3.05rem] h-1.5 rounded-full bg-surface-container-highest" />
+        <div
+          className="absolute top-[3.05rem] h-1.5 rounded-full bg-secondary"
+          style={{
+            left: `calc(${minPercent}% + 0.25rem)`,
+            right: `calc(${100 - maxPercent}% + 0.25rem)`,
+          }}
+        />
+        <div
+          className="absolute top-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-on-primary shadow-lg"
+          style={{ left: `calc(${minPercent}% - 1.5rem)` }}
+        >
+          {formatValue(localMin)}
+        </div>
+        <div
+          className="absolute top-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-on-primary shadow-lg"
+          style={{ left: `calc(${maxPercent}% - 1.5rem)` }}
+        >
+          {formatValue(localMax)}
+        </div>
+        <input
+          type="range"
+          className="pointer-events-none absolute left-0 right-0 top-9 h-6 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-7px] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-secondary [&::-webkit-slider-thumb]:shadow-md"
+          min={minAllowed}
+          max={maxAllowed}
+          step={step}
+          value={localMin}
+          onChange={(e) => {
+            const nextMin = Math.min(Number(e.target.value), localMax - step);
+            setLocalMin(nextMin);
+          }}
+          onMouseUp={() => onCommit(localMin, localMax)}
+          onTouchEnd={() => onCommit(localMin, localMax)}
+        />
+        <input
+          type="range"
+          className="pointer-events-none absolute left-0 right-0 top-9 h-6 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-7px] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-md"
+          min={minAllowed}
+          max={maxAllowed}
+          step={step}
+          value={localMax}
+          onChange={(e) => {
+            const nextMax = Math.max(Number(e.target.value), localMin + step);
+            setLocalMax(nextMax);
+          }}
+          onMouseUp={() => onCommit(localMin, localMax)}
+          onTouchEnd={() => onCommit(localMin, localMax)}
+        />
+      </div>
+      <div className="mt-2 flex justify-between text-xs text-on-surface-variant">
+        <span>{formatValue(minAllowed)}</span>
+        <span>{isBudgetRange ? "$100,000+" : "$500+"}</span>
+      </div>
+    </>
+  );
 }
 
 export function FilterSidebar({
@@ -49,8 +147,6 @@ export function FilterSidebar({
     : maxAllowed;
   const safeMin = Math.min(currentMin, currentMax);
   const safeMax = Math.max(currentMin, currentMax);
-  const minPercent = ((safeMin - minAllowed) / (maxAllowed - minAllowed)) * 100;
-  const maxPercent = ((safeMax - minAllowed) / (maxAllowed - minAllowed)) * 100;
   const formatValue = (value: number) =>
     showBudgetRange
       ? `$${value.toLocaleString()}`
@@ -118,66 +214,18 @@ export function FilterSidebar({
           <h5 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-4">
             {showBudgetRange ? budgetLabel : rateLabel}
           </h5>
-          <div className="mb-3 rounded-2xl liquid-glass-vivid liquid-panel px-4 py-3">
-            <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-on-surface-variant/70">
-              {selectedRangeLabel}
-            </div>
-            <div className="mt-2 flex items-center justify-between text-sm font-bold text-on-surface">
-              <span>{formatValue(safeMin)}</span>
-              <span className="text-on-surface-variant">-</span>
-              <span>{formatValue(safeMax)}</span>
-            </div>
-          </div>
-          <div className="relative px-1 pb-8 pt-10">
-            <div className="absolute left-1 right-1 top-[3.05rem] h-1.5 rounded-full bg-surface-container-highest" />
-            <div
-              className="absolute top-[3.05rem] h-1.5 rounded-full bg-secondary"
-              style={{
-                left: `calc(${minPercent}% + 0.25rem)`,
-                right: `calc(${100 - maxPercent}% + 0.25rem)`,
-              }}
-            />
-            <div
-              className="absolute top-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-on-primary shadow-lg"
-              style={{ left: `calc(${minPercent}% - 1.5rem)` }}
-            >
-              {formatValue(safeMin)}
-            </div>
-            <div
-              className="absolute top-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-on-primary shadow-lg"
-              style={{ left: `calc(${maxPercent}% - 1.5rem)` }}
-            >
-              {formatValue(safeMax)}
-            </div>
-            <input
-              type="range"
-              className="pointer-events-none absolute left-0 right-0 top-9 h-6 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-7px] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-secondary [&::-webkit-slider-thumb]:shadow-md"
-              min={minAllowed}
-              max={maxAllowed}
-              step={step}
-              value={safeMin}
-              onChange={(e) => {
-                const nextMin = Math.min(Number(e.target.value), safeMax - step);
-                updateRangeParams(nextMin, safeMax);
-              }}
-            />
-            <input
-              type="range"
-              className="pointer-events-none absolute left-0 right-0 top-9 h-6 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-7px] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-md"
-              min={minAllowed}
-              max={maxAllowed}
-              step={step}
-              value={safeMax}
-              onChange={(e) => {
-                const nextMax = Math.max(Number(e.target.value), safeMin + step);
-                updateRangeParams(safeMin, nextMax);
-              }}
-            />
-          </div>
-          <div className="flex justify-between text-xs text-on-surface-variant mt-2">
-            <span>{formatValue(minAllowed)}</span>
-            <span>{showBudgetRange ? "$100,000+" : "$500+"}</span>
-          </div>
+          <RangeControl
+            key={`${minKey}:${maxKey}:${safeMin}:${safeMax}`}
+            minAllowed={minAllowed}
+            maxAllowed={maxAllowed}
+            step={step}
+            initialMin={safeMin}
+            initialMax={safeMax}
+            formatValue={formatValue}
+            label={selectedRangeLabel}
+            isBudgetRange={showBudgetRange}
+            onCommit={updateRangeParams}
+          />
         </div>
       )}
 
