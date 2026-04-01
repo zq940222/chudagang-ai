@@ -115,6 +115,7 @@ export function ExpertMatchChat() {
             {message.parts.map((part, i) => {
               switch (part.type) {
                 case "text":
+                  if (!part.text.trim()) return null;
                   return (
                     <MessageBubble
                       key={`${message.id}-text-${i}`}
@@ -123,6 +124,8 @@ export function ExpertMatchChat() {
                       {part.text}
                     </MessageBubble>
                   );
+                case "reasoning":
+                  return null;
                 case "tool-searchDevelopers":
                   if (part.state === "output-available") {
                     const result = part.output as {

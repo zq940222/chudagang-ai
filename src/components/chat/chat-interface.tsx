@@ -160,6 +160,7 @@ export function ChatInterface({
             {message.parts.map((part, i) => {
               switch (part.type) {
                 case "text":
+                  if (!part.text.trim()) return null;
                   return (
                     <MessageBubble
                       key={`${message.id}-text-${i}`}
@@ -168,6 +169,8 @@ export function ChatInterface({
                       {part.text}
                     </MessageBubble>
                   );
+                case "reasoning":
+                  return null;
                 case "tool-extractRequirements":
                   if (part.state === "output-available") {
                     return (
