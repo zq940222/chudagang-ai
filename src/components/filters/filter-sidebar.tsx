@@ -51,40 +51,43 @@ function RangeControl({
 
   return (
     <>
-      <div className="mb-3 rounded-2xl liquid-glass-vivid liquid-panel px-4 py-3">
+      <div className="mb-4 rounded-[1.4rem] liquid-glass-vivid liquid-panel px-4 py-3">
         <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-on-surface-variant/70">
           {label}
         </div>
         <div className="mt-2 flex items-center justify-between text-sm font-bold text-on-surface">
-          <span>{formatValue(localMin)}</span>
-          <span className="text-on-surface-variant">-</span>
-          <span>{formatValue(localMax)}</span>
+          <span className="text-secondary">{formatValue(localMin)}</span>
+          <span className="text-on-surface-variant">—</span>
+          <span className="text-primary">{formatValue(localMax)}</span>
         </div>
       </div>
-      <div className="relative px-1 pb-8 pt-10">
-        <div className="absolute left-1 right-1 top-[3.05rem] h-1.5 rounded-full bg-surface-container-highest" />
+
+      <div className="relative px-1 pb-10 pt-12">
+        <div className="absolute left-1 right-1 top-[3.75rem] h-2 rounded-full bg-[linear-gradient(90deg,rgba(236,229,220,0.95),rgba(219,210,198,0.72))]" />
         <div
-          className="absolute top-[3.05rem] h-1.5 rounded-full bg-secondary"
+          className="absolute top-[3.75rem] h-2 rounded-full bg-[linear-gradient(90deg,#9ad7cf_0%,#d4b185_100%)] shadow-[0_0_20px_rgba(154,215,207,0.5)]"
           style={{
             left: `calc(${minPercent}% + 0.25rem)`,
             right: `calc(${100 - maxPercent}% + 0.25rem)`,
           }}
         />
+
         <div
-          className="absolute top-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-on-primary shadow-lg"
-          style={{ left: `calc(${minPercent}% - 1.5rem)` }}
+          className="absolute top-0 rounded-xl bg-[linear-gradient(145deg,#223245,#101820)] px-2.5 py-1 text-[11px] font-bold text-on-primary shadow-[0_10px_20px_rgba(18,21,28,0.18)]"
+          style={{ left: `calc(${minPercent}% - 1.75rem)` }}
         >
           {formatValue(localMin)}
         </div>
         <div
-          className="absolute top-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-on-primary shadow-lg"
-          style={{ left: `calc(${maxPercent}% - 1.5rem)` }}
+          className="absolute top-0 rounded-xl bg-[linear-gradient(145deg,#cfb489,#a98660)] px-2.5 py-1 text-[11px] font-bold text-on-primary shadow-[0_10px_20px_rgba(18,21,28,0.18)]"
+          style={{ left: `calc(${maxPercent}% - 1.75rem)` }}
         >
           {formatValue(localMax)}
         </div>
+
         <input
           type="range"
-          className="pointer-events-none absolute left-0 right-0 top-9 h-6 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-7px] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-secondary [&::-webkit-slider-thumb]:shadow-md"
+          className="pointer-events-none absolute left-0 right-0 top-[3.45rem] h-8 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-8px] [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[linear-gradient(145deg,#9ad7cf,#5f756d)] [&::-webkit-slider-thumb]:shadow-[0_10px_24px_rgba(18,21,28,0.18)]"
           min={minAllowed}
           max={maxAllowed}
           step={step}
@@ -98,7 +101,7 @@ function RangeControl({
         />
         <input
           type="range"
-          className="pointer-events-none absolute left-0 right-0 top-9 h-6 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-7px] [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-md"
+          className="pointer-events-none absolute left-0 right-0 top-[3.45rem] h-8 w-full appearance-none bg-transparent [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-8px] [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[linear-gradient(145deg,#d4b185,#cf8a7a)] [&::-webkit-slider-thumb]:shadow-[0_10px_24px_rgba(18,21,28,0.18)]"
           min={minAllowed}
           max={maxAllowed}
           step={step}
@@ -111,9 +114,10 @@ function RangeControl({
           onTouchEnd={() => onCommit(localMin, localMax)}
         />
       </div>
+
       <div className="mt-2 flex justify-between text-xs text-on-surface-variant">
         <span>{formatValue(minAllowed)}</span>
-        <span>{isBudgetRange ? "$100,000+" : "$500+"}</span>
+        <span>{isBudgetRange ? "¥100,000+" : "$500+"}</span>
       </div>
     </>
   );
@@ -148,9 +152,7 @@ export function FilterSidebar({
   const safeMin = Math.min(currentMin, currentMax);
   const safeMax = Math.max(currentMin, currentMax);
   const formatValue = (value: number) =>
-    showBudgetRange
-      ? `¥${value.toLocaleString()}`
-      : `$${value}`;
+    showBudgetRange ? `¥${value.toLocaleString()}` : `$${value}`;
 
   const updateParams = useCallback(
     (key: string, value: string | null) => {
@@ -179,9 +181,8 @@ export function FilterSidebar({
 
   return (
     <aside className="hidden lg:flex flex-col w-64 bg-surface-container-low/50 border-r border-outline-variant/10 shrink-0 p-6 space-y-8">
-      {/* Categories */}
       <div>
-        <h5 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-4">
+        <h5 className="mb-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant/60">
           Marketplace Filters
         </h5>
         <nav className="space-y-1">
@@ -189,15 +190,12 @@ export function FilterSidebar({
             <button
               key={cat.value}
               onClick={() => {
-                updateParams(
-                  "category",
-                  cat.value === "all" ? null : cat.value
-                );
+                updateParams("category", cat.value === "all" ? null : cat.value);
               }}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm w-full text-left transition-all",
+                "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all",
                 activeCategory === cat.value
-                  ? "bg-surface-container-lowest text-accent-cyan shadow-sm"
+                  ? "bg-[linear-gradient(135deg,rgba(154,215,207,0.22),rgba(212,177,133,0.18))] text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_10px_24px_rgba(18,21,28,0.06)]"
                   : "text-on-surface-variant hover:bg-surface-container/50"
               )}
             >
@@ -208,10 +206,9 @@ export function FilterSidebar({
         </nav>
       </div>
 
-      {/* Budget/Rate Range */}
       {(showBudgetRange || showRateRange) && (
-        <div className="pt-4 border-t border-outline-variant/10">
-          <h5 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-4">
+        <div className="border-t border-outline-variant/10 pt-4">
+          <h5 className="mb-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant/60">
             {showBudgetRange ? budgetLabel : rateLabel}
           </h5>
           <RangeControl
@@ -229,10 +226,9 @@ export function FilterSidebar({
         </div>
       )}
 
-      {/* Apply */}
       <button
         onClick={() => router.push(pathname)}
-        className="w-full py-3 bg-primary text-on-primary rounded-xl font-bold text-xs uppercase tracking-widest mt-auto"
+        className="mt-auto w-full rounded-xl bg-primary py-3 text-xs font-bold uppercase tracking-widest text-on-primary"
       >
         {applyLabel}
       </button>
