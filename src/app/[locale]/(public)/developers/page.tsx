@@ -47,26 +47,38 @@ export default async function DevelopersPage({
     <div className="flex min-h-screen">
       <DeveloperFilterSidebar />
 
-      <div className="flex flex-1 min-w-0">
-        {/* Main content */}
-        <main className="flex-1 min-w-0 p-8 lg:p-12">
-          <header className="mb-12">
-            <div className="mb-3 flex flex-wrap items-center gap-3">
-              <Badge variant="accent">{t("marketplaceBadge")}</Badge>
-              <Badge variant="dark">{t("verifiedBadge")}</Badge>
-            </div>
-            <div className="flex flex-wrap items-baseline gap-4">
-              <h1 className="text-4xl font-black tracking-tighter text-on-surface sm:text-5xl">
+      <main className="flex-1 min-w-0">
+        {/* AI Chat — hero area */}
+        <section className="border-b border-outline-variant/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.56),rgba(246,242,236,0.36))]">
+          <div className="mx-auto max-w-4xl px-6 py-8 lg:px-12 lg:py-10">
+            <div className="mb-6 text-center">
+              <div className="mb-3 flex flex-wrap items-center justify-center gap-3">
+                <Badge variant="accent">{t("marketplaceBadge")}</Badge>
+                <Badge variant="dark">{t("verifiedBadge")}</Badge>
+              </div>
+              <h1 className="text-3xl font-black tracking-tighter text-on-surface sm:text-4xl">
                 {t("title")}
               </h1>
-              <span className="text-sm font-medium text-on-surface-variant">
-                {t("availableCount", { count: total })}
-              </span>
+              <p className="mt-2 text-sm leading-relaxed text-on-surface-variant">
+                {t("description")}
+              </p>
             </div>
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-on-surface-variant">
-              {t("description")}
-            </p>
-          </header>
+            <div className="h-[420px] rounded-2xl glass ghost-border overflow-hidden">
+              <ExpertMatchChat />
+            </div>
+          </div>
+        </section>
+
+        {/* Expert cards below */}
+        <section className="p-8 lg:p-12">
+          <div className="flex items-baseline gap-4 mb-8">
+            <h2 className="text-2xl font-black tracking-tight text-on-surface">
+              {t("allExperts")}
+            </h2>
+            <span className="text-sm font-medium text-on-surface-variant">
+              {t("availableCount", { count: total })}
+            </span>
+          </div>
 
           {developers.length === 0 ? (
             <div className="liquid-glass-vivid liquid-panel liquid-float rounded-[2rem] p-10 text-center">
@@ -99,9 +111,9 @@ export default async function DevelopersPage({
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
               {featured && (
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 xl:col-span-3">
                   <FeaturedDeveloperCard developer={featured} locale={locale} labels={featuredLabels} />
                 </div>
               )}
@@ -127,13 +139,8 @@ export default async function DevelopersPage({
               </div>
             </div>
           )}
-        </main>
-
-        {/* AI Chat Panel */}
-        <aside className="hidden xl:flex w-[400px] shrink-0 flex-col border-l border-outline-variant/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.56),rgba(246,242,236,0.36))] sticky top-0 h-screen">
-          <ExpertMatchChat />
-        </aside>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }

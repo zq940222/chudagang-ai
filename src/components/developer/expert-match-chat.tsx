@@ -31,78 +31,75 @@ export function ExpertMatchChat() {
 
   const isEmpty = messages.length === 0;
 
-  return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="flex-shrink-0 flex items-center gap-3 px-5 py-4 border-b border-outline-variant/10">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-xs font-black shadow-lg">
-          AI
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-bold text-on-surface truncate">
-            {t("title")}
-          </h3>
-          <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent-cyan animate-pulse" />
-            <span className="text-[10px] text-on-surface-variant font-medium uppercase tracking-wider">
-              {t("online")}
-            </span>
+  const handleSubmit = (text?: string) => {
+    const value = text ?? input.trim();
+    if (!value) return;
+    sendMessage({ text: value });
+    setInput("");
+  };
+
+  // Empty state: input-first layout
+  if (isEmpty) {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="flex-1 flex flex-col items-center justify-center px-6">
+          {/* Big input */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+            className="w-full max-w-2xl"
+          >
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-accent-cyan/30 to-tertiary/30 rounded-2xl blur opacity-40 group-focus-within:opacity-100 transition-opacity" />
+              <div className="relative flex items-center gap-3 glass rounded-2xl p-3 ghost-border shadow-2xl shadow-primary/5">
+                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-sm font-black shadow-lg">
+                  AI
+                </div>
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder={t("placeholder")}
+                  disabled={isBusy}
+                  autoFocus
+                  className="flex-1 border-none focus-visible:ring-0 bg-transparent text-base py-4 rounded-xl"
+                />
+                <button
+                  type="submit"
+                  disabled={isBusy || !input.trim()}
+                  className="rounded-xl h-10 w-10 flex items-center justify-center shrink-0 bg-gradient-to-r from-primary to-accent-cyan text-on-primary disabled:opacity-40 transition-opacity shadow-lg shadow-primary/20"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          {/* Quick prompts */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 max-w-2xl">
+            {(["prompt1", "prompt2", "prompt3"] as const).map((key) => (
+              <button
+                key={key}
+                onClick={() => handleSubmit(t(key))}
+                className="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors ghost-border text-xs font-medium text-on-surface"
+              >
+                {t(key)}
+              </button>
+            ))}
           </div>
         </div>
       </div>
+    );
+  }
 
+  // Active chat layout
+  return (
+    <div className="flex flex-col h-full">
       {/* Messages */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth">
-        {isEmpty && (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-5 px-2 animate-in fade-in duration-500">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-2xl font-black shadow-xl shadow-primary/20">
-              AI
-            </div>
-            <div className="space-y-2">
-              <h4 className="text-lg font-bold tracking-tight text-on-surface">
-                {t("welcomeTitle")}
-              </h4>
-              <p className="text-xs text-on-surface-variant leading-relaxed">
-                {t("welcomeDesc")}
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 w-full">
-              {[
-                { key: "prompt1", icon: "mobile" },
-                { key: "prompt2", icon: "ai" },
-                { key: "prompt3", icon: "web" },
-              ].map(({ key, icon }) => (
-                <button
-                  key={key}
-                  onClick={() => sendMessage({ text: t(key) })}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors ghost-border text-left"
-                >
-                  <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                    {icon === "mobile" && (
-                      <svg className="w-4 h-4 text-accent-cyan" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                      </svg>
-                    )}
-                    {icon === "ai" && (
-                      <svg className="w-4 h-4 text-secondary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
-                      </svg>
-                    )}
-                    {icon === "web" && (
-                      <svg className="w-4 h-4 text-violet-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
-                      </svg>
-                    )}
-                  </span>
-                  <span className="text-xs font-medium text-on-surface">
-                    {t(key)}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-6 py-4 space-y-4 scroll-smooth">
         {messages.map((message) => (
           <div key={message.id} className="space-y-2">
             {message.parts.map((part, i) => {
@@ -148,9 +145,9 @@ export function ExpertMatchChat() {
                     return (
                       <div
                         key={`${message.id}-tool-${i}`}
-                        className="rounded-xl bg-accent-cyan/5 border border-accent-cyan/20 p-3 space-y-2"
+                        className="rounded-xl bg-accent-cyan/5 border border-accent-cyan/20 p-4 space-y-2"
                       >
-                        <p className="text-xs font-bold text-secondary">{result.title}</p>
+                        <p className="text-sm font-bold text-secondary">{result.title}</p>
                         <p className="text-xs text-on-surface-variant leading-relaxed">{result.description}</p>
                         {result.skills?.length > 0 && (
                           <div className="flex flex-wrap gap-1">
@@ -172,10 +169,10 @@ export function ExpertMatchChat() {
 
         {isBusy && (
           <div className="flex gap-2 justify-start">
-            <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-[10px] font-bold">
+            <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-[10px] font-bold">
               AI
             </div>
-            <div className="rounded-xl rounded-bl-md bg-surface-container-highest px-3 py-2">
+            <div className="rounded-xl rounded-bl-md bg-surface-container-highest px-3 py-2.5">
               <div className="flex gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-on-surface-variant/40 animate-bounce [animation-delay:0ms]" />
                 <span className="w-1.5 h-1.5 rounded-full bg-on-surface-variant/40 animate-bounce [animation-delay:150ms]" />
@@ -192,33 +189,34 @@ export function ExpertMatchChat() {
         )}
       </div>
 
-      {/* Input */}
+      {/* Sticky input bar */}
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          if (!input.trim()) return;
-          sendMessage({ text: input });
-          setInput("");
+          handleSubmit();
         }}
-        className="flex-shrink-0 p-3 border-t border-outline-variant/10"
+        className="flex-shrink-0 px-6 py-4 border-t border-outline-variant/10"
       >
-        <div className="flex items-center gap-2 glass rounded-xl p-1.5 ghost-border">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={t("placeholder")}
-            disabled={isBusy}
-            className="flex-1 border-none focus-visible:ring-0 bg-transparent text-sm py-3 rounded-xl"
-          />
-          <button
-            type="submit"
-            disabled={isBusy || !input.trim()}
-            className="rounded-lg h-9 w-9 flex items-center justify-center shrink-0 bg-gradient-to-r from-primary to-accent-cyan text-on-primary disabled:opacity-40 transition-opacity"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-            </svg>
-          </button>
+        <div className="relative group max-w-2xl mx-auto">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-accent-cyan/20 to-tertiary/20 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity" />
+          <div className="relative flex items-center gap-2 glass rounded-xl p-2 ghost-border">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={t("placeholder")}
+              disabled={isBusy}
+              className="flex-1 border-none focus-visible:ring-0 bg-transparent text-sm py-3 rounded-xl"
+            />
+            <button
+              type="submit"
+              disabled={isBusy || !input.trim()}
+              className="rounded-lg h-9 w-9 flex items-center justify-center shrink-0 bg-gradient-to-r from-primary to-accent-cyan text-on-primary disabled:opacity-40 transition-opacity"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+              </svg>
+            </button>
+          </div>
         </div>
       </form>
     </div>
