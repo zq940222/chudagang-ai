@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import { useRouter } from "@/i18n/navigation";
+import { useChatSidebar } from "./chat-sidebar-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -21,8 +23,11 @@ export function ChatInterface({
   locale = "en",
   className,
 }: ChatInterfaceProps) {
+  const router = useRouter();
+  const { toggle } = useChatSidebar();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
+  const hadMessages = useRef(false);
 
   const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({
@@ -41,6 +46,14 @@ export function ChatInterface({
     }
   }, [messages]);
 
+  // Refresh layout (sidebar) when a new conversation starts
+  useEffect(() => {
+    if (messages.length > 0 && !hadMessages.current) {
+      hadMessages.current = true;
+      router.refresh();
+    }
+  }, [messages, router]);
+
   const isEmpty = messages.length === 0;
 
   return (
@@ -48,6 +61,14 @@ export function ChatInterface({
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between px-6 py-4 glass ghost-border-b bg-surface/50 z-10">
         <div className="flex items-center gap-3">
+          <button
+            onClick={toggle}
+            className="lg:hidden p-1.5 -ml-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-xs font-black">
             AI
           </div>
@@ -68,63 +89,63 @@ export function ChatInterface({
       {/* Message list */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth">
         {isEmpty && (
-          <div className=”flex flex-col items-center justify-center h-full text-center space-y-8 max-w-md mx-auto animate-in fade-in zoom-in-95 duration-700”>
-            <div className=”w-24 h-24 rounded-3xl bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-4xl font-black shadow-2xl shadow-primary/20”>
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-8 max-w-md mx-auto animate-in fade-in zoom-in-95 duration-700">
+            <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-4xl font-black shadow-2xl shadow-primary/20">
               AI
             </div>
-            <div className=”space-y-3”>
-              <h2 className=”text-3xl font-extrabold tracking-tight text-on-surface”>
-                {locale === “zh”
-                  ? “准备好开始了吗？”
-                  : “Ready to start?”}
+            <div className="space-y-3">
+              <h2 className="text-3xl font-extrabold tracking-tight text-on-surface">
+                {locale === "zh"
+                  ? "准备好开始了吗？"
+                  : "Ready to start?"}
               </h2>
-              <p className=”text-sm text-on-surface-variant leading-relaxed”>
-                {locale === “zh”
-                  ? “描述您的项目构思，我将为您精准提取需求并匹配顶尖开发者。”
-                  : “Describe your project idea, and I'll extract requirements and find the best developers for you.”}
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                {locale === "zh"
+                  ? "描述您的项目构思，我将为您精准提取需求并匹配顶尖开发者。"
+                  : "Describe your project idea, and I'll extract requirements and find the best developers for you."}
               </p>
             </div>
-            <div className=”grid grid-cols-1 sm:grid-cols-3 gap-3 w-full pt-2”>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full pt-2">
               <button
-                onClick={() => sendMessage({ text: locale === “zh” ? “我想做一个移动应用” : “I want to build a mobile app” })}
-                className=”flex flex-col items-start gap-2 px-4 py-4 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors ghost-border text-left”
+                onClick={() => sendMessage({ text: locale === "zh" ? "我想做一个移动应用" : "I want to build a mobile app" })}
+                className="flex flex-col items-start gap-2 px-4 py-4 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors ghost-border text-left"
               >
-                <svg className=”w-5 h-5 text-accent-cyan” fill=”none” viewBox=”0 0 24 24” strokeWidth={1.5} stroke=”currentColor”>
-                  <path strokeLinecap=”round” strokeLinejoin=”round” d=”M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3” />
+                <svg className="w-5 h-5 text-accent-cyan" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
                 </svg>
-                <span className=”text-xs font-bold text-on-surface”>
-                  {locale === “zh” ? “移动应用” : “Mobile App”}
+                <span className="text-xs font-bold text-on-surface">
+                  {locale === "zh" ? "移动应用" : "Mobile App"}
                 </span>
-                <span className=”text-[11px] text-on-surface-variant leading-snug”>
-                  {locale === “zh” ? “构建 iOS 或 Android 应用” : “Build an iOS or Android app”}
+                <span className="text-[11px] text-on-surface-variant leading-snug">
+                  {locale === "zh" ? "构建 iOS 或 Android 应用" : "Build an iOS or Android app"}
                 </span>
               </button>
               <button
-                onClick={() => sendMessage({ text: locale === “zh” ? “我需要一个网站” : “I need a website” })}
-                className=”flex flex-col items-start gap-2 px-4 py-4 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors ghost-border text-left”
+                onClick={() => sendMessage({ text: locale === "zh" ? "我需要一个网站" : "I need a website" })}
+                className="flex flex-col items-start gap-2 px-4 py-4 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors ghost-border text-left"
               >
-                <svg className=”w-5 h-5 text-violet-500” fill=”none” viewBox=”0 0 24 24” strokeWidth={1.5} stroke=”currentColor”>
-                  <path strokeLinecap=”round” strokeLinejoin=”round” d=”M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418” />
+                <svg className="w-5 h-5 text-violet-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
                 </svg>
-                <span className=”text-xs font-bold text-on-surface”>
-                  {locale === “zh” ? “网站开发” : “Website”}
+                <span className="text-xs font-bold text-on-surface">
+                  {locale === "zh" ? "网站开发" : "Website"}
                 </span>
-                <span className=”text-[11px] text-on-surface-variant leading-snug”>
-                  {locale === “zh” ? “设计并开发现代网站” : “Design and build a modern website”}
+                <span className="text-[11px] text-on-surface-variant leading-snug">
+                  {locale === "zh" ? "设计并开发现代网站" : "Design and build a modern website"}
                 </span>
               </button>
               <button
-                onClick={() => sendMessage({ text: locale === “zh” ? “我需要 AI 技术咨询” : “I need AI technical consulting” })}
-                className=”flex flex-col items-start gap-2 px-4 py-4 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors ghost-border text-left”
+                onClick={() => sendMessage({ text: locale === "zh" ? "我需要 AI 技术咨询" : "I need AI technical consulting" })}
+                className="flex flex-col items-start gap-2 px-4 py-4 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors ghost-border text-left"
               >
-                <svg className=”w-5 h-5 text-secondary” fill=”none” viewBox=”0 0 24 24” strokeWidth={1.5} stroke=”currentColor”>
-                  <path strokeLinecap=”round” strokeLinejoin=”round” d=”M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z” />
+                <svg className="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
                 </svg>
-                <span className=”text-xs font-bold text-on-surface”>
-                  {locale === “zh” ? “AI 咨询” : “AI Guidance”}
+                <span className="text-xs font-bold text-on-surface">
+                  {locale === "zh" ? "AI 咨询" : "AI Guidance"}
                 </span>
-                <span className=”text-[11px] text-on-surface-variant leading-snug”>
-                  {locale === “zh” ? “获取 AI 技术方案建议” : “Get AI technical consulting”}
+                <span className="text-[11px] text-on-surface-variant leading-snug">
+                  {locale === "zh" ? "获取 AI 技术方案建议" : "Get AI technical consulting"}
                 </span>
               </button>
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, Link } from "@/i18n/navigation";
+import { useChatSidebar } from "./chat-sidebar-context";
 
 interface Conversation {
   id: string;
@@ -55,6 +56,7 @@ export function ChatSidebarClient({
   conversations: Conversation[];
 }) {
   const pathname = usePathname();
+  const { open, close } = useChatSidebar();
   const activeId = pathname.startsWith("/chat/")
     ? pathname.split("/")[2]
     : undefined;
@@ -74,6 +76,7 @@ export function ChatSidebarClient({
             <Link
               key={c.id}
               href={`/chat/${c.id}`}
+              onClick={close}
               className={`flex items-start gap-3 px-4 py-3 rounded-xl mx-2 transition-colors ${
                 isActive
                   ? "bg-surface-container"
@@ -99,8 +102,8 @@ export function ChatSidebarClient({
     );
   };
 
-  return (
-    <aside className="hidden lg:flex w-72 flex-col bg-surface-container-lowest ghost-border shrink-0">
+  const sidebarContent = (
+    <>
       {/* Header */}
       <div className="flex items-center gap-3 px-5 py-5">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent-cyan flex items-center justify-center text-on-primary text-xs font-black shadow-lg">
@@ -115,6 +118,7 @@ export function ChatSidebarClient({
       <div className="px-4 pb-2">
         <Link
           href="/chat"
+          onClick={close}
           className="flex items-center justify-center gap-2 w-full rounded-xl bg-primary text-on-primary text-sm font-bold py-2.5 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
         >
           <svg
@@ -148,6 +152,28 @@ export function ChatSidebarClient({
           </>
         )}
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:flex w-72 flex-col bg-surface-container-lowest ghost-border shrink-0">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile overlay */}
+      {open && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+            onClick={close}
+          />
+          <aside className="fixed inset-y-0 left-0 z-50 w-72 flex flex-col bg-surface-container-lowest shadow-2xl lg:hidden animate-in slide-in-from-left duration-200">
+            {sidebarContent}
+          </aside>
+        </>
+      )}
+    </>
   );
 }
