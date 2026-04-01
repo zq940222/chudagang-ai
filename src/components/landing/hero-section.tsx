@@ -72,11 +72,11 @@ export function HeroSection({ t }: HeroSectionProps) {
 
         <div className="relative hidden lg:block">
           <div className="liquid-glass-vivid liquid-panel liquid-float liquid-refract rounded-[2.25rem] p-3">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.8rem] bg-[linear-gradient(145deg,rgba(245,239,230,0.92)_0%,rgba(223,214,199,0.7)_52%,rgba(201,185,164,0.54)_100%)] p-6">
+            <div className="relative flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-[1.8rem] bg-[linear-gradient(145deg,rgba(245,239,230,0.92)_0%,rgba(223,214,199,0.7)_52%,rgba(201,185,164,0.54)_100%)] p-6">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.62),transparent_24%),radial-gradient(circle_at_82%_28%,rgba(154,215,207,0.24),transparent_18%),radial-gradient(circle_at_65%_85%,rgba(190,164,181,0.18),transparent_22%)]" />
               <div className="absolute inset-3 rounded-[1.5rem] border border-white/45" />
-              <div className="absolute inset-x-7 top-7 flex items-start justify-between gap-4">
-                <div className="liquid-glass-vivid liquid-float rounded-[1.4rem] px-4 py-3">
+              <div className="relative z-10 flex items-start justify-between gap-4">
+                <div className="liquid-glass-vivid liquid-float max-w-[52%] rounded-[1.4rem] px-4 py-3">
                   <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
                     {t("heroPoolLabel")}
                   </div>
@@ -94,7 +94,9 @@ export function HeroSection({ t }: HeroSectionProps) {
                 </div>
               </div>
 
-              <div className="absolute inset-x-6 bottom-6 space-y-4 rounded-[1.8rem] liquid-glass-dark-vivid liquid-refract p-5">
+              <div className="pointer-events-none absolute bottom-24 right-10 h-28 w-28 rounded-full border border-white/50 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.92),rgba(255,255,255,0.18)_56%,transparent_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_24px_48px_rgba(94,85,72,0.14)]" />
+
+              <div className="relative z-10 mt-8 space-y-4 rounded-[1.8rem] liquid-glass-dark-vivid liquid-refract p-5">
                 <div className="flex items-center gap-4">
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/12 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
                     <svg className="h-5 w-5 text-[color:var(--color-accent-gold)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -130,8 +132,6 @@ export function HeroSection({ t }: HeroSectionProps) {
                   </div>
                 </div>
               </div>
-
-              <div className="absolute bottom-24 right-10 h-28 w-28 rounded-full border border-white/50 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.92),rgba(255,255,255,0.18)_56%,transparent_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.88),0_24px_48px_rgba(94,85,72,0.14)]" />
             </div>
           </div>
         </div>
