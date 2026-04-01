@@ -170,11 +170,11 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
               <select
                 id="currency"
                 name="currency"
-                defaultValue={initialData?.currency ?? "USD"}
+                defaultValue={initialData?.currency ?? "CNY"}
                 className="flex h-10 w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:bg-surface-container-high focus:outline-none focus:ring-1 focus:ring-accent-cyan/50"
               >
-                <option value="USD">USD ($)</option>
                 <option value="CNY">CNY (&yen;)</option>
+                <option value="USD">USD ($)</option>
                 <option value="EUR">EUR (&euro;)</option>
               </select>
             </div>

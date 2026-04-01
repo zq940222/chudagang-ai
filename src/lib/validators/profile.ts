@@ -7,7 +7,7 @@ export const profileCreateSchema = z.object({
   githubUrl: z.string().url().optional().or(z.literal("")),
   portfolioUrl: z.string().url().optional().or(z.literal("")),
   hourlyRate: z.coerce.number().min(0).max(1000).optional(),
-  currency: z.enum(["USD", "CNY", "EUR"]).default("USD"),
+  currency: z.enum(["USD", "CNY", "EUR"]).default("CNY"),
   skillTagIds: z.array(z.string()).min(1, "Select at least one skill"),
 });
 

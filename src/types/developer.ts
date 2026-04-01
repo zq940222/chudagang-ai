@@ -22,6 +22,7 @@ export type DeveloperCardData = {
 export type DeveloperSearchParams = {
   query?: string;
   skills?: string[];
+  category?: string;
   minRate?: number;
   maxRate?: number;
   available?: boolean;

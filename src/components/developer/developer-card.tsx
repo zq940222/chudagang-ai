@@ -1,23 +1,22 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
+import { formatCurrencyAmount } from "@/lib/currency";
 import type { DeveloperCardData } from "@/types/developer";
 
 export function DeveloperCard({ developer }: { developer: DeveloperCardData }) {
   const locale = useLocale();
+  const t = useTranslations("developers");
 
   const initial = developer.displayName.charAt(0).toUpperCase();
   const skillsToShow = developer.skills.slice(0, 5);
   const hasMore = developer.skills.length > 5;
-  const currencySymbol =
-    developer.currency === "CNY" ? "\u00A5" : developer.currency === "EUR" ? "\u20AC" : "$";
 
   return (
-    <Link href={`/developers/${developer.id}`} className="block group">
+    <Link href={`/developers/${developer.id}`} className="block group h-full">
       <div className="glass rounded-xl p-6 ghost-border hover:ring-1 hover:ring-accent-cyan/30 transition-all flex flex-col h-full">
-        {/* Top: Avatar + rating */}
         <div className="flex justify-between items-start mb-6">
           <div className="relative">
             <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-primary-container to-primary flex items-center justify-center text-on-primary text-2xl font-black">
@@ -43,7 +42,6 @@ export function DeveloperCard({ developer }: { developer: DeveloperCardData }) {
           )}
         </div>
 
-        {/* Name + title */}
         <h3 className="text-xl font-bold tracking-tight mb-1 text-on-surface group-hover:text-secondary transition-colors">
           {developer.displayName}
         </h3>
@@ -53,7 +51,6 @@ export function DeveloperCard({ developer }: { developer: DeveloperCardData }) {
           </p>
         )}
 
-        {/* Skills */}
         {skillsToShow.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
             {skillsToShow.map((skill) => (
@@ -67,20 +64,19 @@ export function DeveloperCard({ developer }: { developer: DeveloperCardData }) {
           </div>
         )}
 
-        {/* Footer: Rate + actions */}
         <div className="mt-auto pt-6 border-t border-outline-variant/5 flex items-center justify-between">
           {developer.hourlyRate !== null ? (
             <div>
               <span className="block text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-0.5">
-                Rate starts at
+                {t("rateStartsAt")}
               </span>
               <span className="text-lg font-black text-on-surface">
-                {currencySymbol}{developer.hourlyRate}
-                <span className="text-xs font-normal text-on-surface-variant">/hr</span>
+                {formatCurrencyAmount(developer.hourlyRate, "CNY")}
+                <span className="text-xs font-normal text-on-surface-variant">{t("perHour")}</span>
               </span>
             </div>
           ) : (
-            <span className="text-sm text-on-surface-variant">Rate negotiable</span>
+            <span className="text-sm text-on-surface-variant">{t("rateNegotiable")}</span>
           )}
           <div className="flex gap-2">
             <span className="p-2 rounded-lg bg-surface-container-highest text-on-surface">
@@ -89,7 +85,7 @@ export function DeveloperCard({ developer }: { developer: DeveloperCardData }) {
               </svg>
             </span>
             <span className="px-4 py-2 bg-primary text-on-primary rounded-lg text-xs font-bold tracking-widest uppercase">
-              View Profile
+              {t("viewProfile")}
             </span>
           </div>
         </div>

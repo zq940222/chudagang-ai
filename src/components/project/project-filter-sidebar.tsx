@@ -104,10 +104,7 @@ export function ProjectFilterSidebar() {
   return (
     <FilterSidebar
       categories={categories}
-      showBudgetRange
-      budgetLabel={t("budgetRange")}
-      applyLabel={t("resetFilters")}
-      selectedRangeLabel={t("selectedRange")}
+      showResetButton={false}
     />
   );
 }

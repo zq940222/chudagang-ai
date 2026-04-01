@@ -19,6 +19,7 @@ interface FilterSidebarProps {
   rateLabel?: string;
   applyLabel?: string;
   selectedRangeLabel?: string;
+  showResetButton?: boolean;
 }
 
 interface RangeControlProps {
@@ -168,6 +169,7 @@ export function FilterSidebar({
   rateLabel = "Hourly Rate",
   applyLabel = "Apply Filters",
   selectedRangeLabel = "Selected Range",
+  showResetButton = true,
 }: FilterSidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -276,12 +278,14 @@ export function FilterSidebar({
         </div>
       )}
 
-      <button
-        onClick={() => router.push(pathname)}
-        className="mt-auto w-full rounded-xl bg-primary py-3 text-xs font-bold uppercase tracking-widest text-on-primary"
-      >
-        {applyLabel}
-      </button>
+      {showResetButton && (
+        <button
+          onClick={() => router.push(pathname)}
+          className="mt-auto w-full rounded-xl bg-primary py-3 text-xs font-bold uppercase tracking-widest text-on-primary"
+        >
+          {applyLabel}
+        </button>
+      )}
     </aside>
   );
 }

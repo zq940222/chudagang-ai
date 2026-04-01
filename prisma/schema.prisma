@@ -81,7 +81,7 @@ model DeveloperProfile {
   githubUrl              String?
   portfolioUrl           String?
   hourlyRate             Decimal?      @db.Decimal(10, 2)
-  currency               String        @default("USD")
+  currency               String        @default("CNY")
   aiRating               Decimal?      @db.Decimal(3, 2)
   verifiedAt             DateTime?
   status                 ProfileStatus @default(PENDING_REVIEW)

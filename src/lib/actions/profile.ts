@@ -17,7 +17,7 @@ export async function createProfile(formData: FormData) {
     githubUrl: formData.get("githubUrl"),
     portfolioUrl: formData.get("portfolioUrl"),
     hourlyRate: formData.get("hourlyRate"),
-    currency: formData.get("currency"),
+    currency: formData.get("currency") || "CNY",
     skillTagIds: formData.getAll("skillTagIds"),
   };
 

@@ -186,5 +186,47 @@
       "COMPLETED": "Completed",
       "CANCELLED": "Cancelled"
     }
+  },
+  "developers": {
+    "marketplaceBadge": "Expert Marketplace",
+    "verifiedBadge": "Verified Talent",
+    "title": "Find Experts",
+    "description": "Browse verified AI experts across LLMs, RAG, computer vision, deployment, and more.",
+    "availableCount": "{count, plural, =0 {No experts available} one {# expert available} other {# experts available}}",
+    "emptyTitle": "No matching experts yet",
+    "emptyDescription": "Try switching categories, widening your rate range, or browsing all experts.",
+    "emptyPrimaryCta": "Browse All Experts",
+    "emptySecondaryCta": "Post a Project",
+    "categoryPlaceholder": "Select a category",
+    "rateStartsAt": "Rate starts at",
+    "rateNegotiable": "Rate negotiable",
+    "perHour": "/hr",
+    "viewProfile": "View Profile",
+    "portfolio": "Portfolio",
+    "verifiedExpert": "Verified Expert",
+    "featuredLabel": "Featured Expert",
+    "allExperts": "All Experts",
+    "expertise": "Expertise",
+    "about": "About",
+    "rateLabel": "Hourly Rate",
+    "nextAvailable": "Next Available",
+    "externalProof": "External Proof",
+    "directMessage": "Direct Message",
+    "clearFilters": "Clear Filters",
+    "resultsFound": "{count} results found",
+    "githubProfile": "GitHub Profile",
+    "aiScore": "AI Score",
+    "expertTip": "Expert Tip",
+    "categories": {
+      "ai": "AI / Machine Learning",
+      "language": "Languages",
+      "framework": "Frameworks",
+      "frontend": "Frontend",
+      "devops": "DevOps",
+      "cloud": "Cloud",
+      "database": "Database",
+      "api": "API / Backend",
+      "other": "Other"
+    }
   }
 }

@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
   const result = await searchDevelopers({
     query: searchParams.get("query") || undefined,
     skills: searchParams.get("skills")?.split(",").filter(Boolean) || undefined,
+    category: searchParams.get("category") || undefined,
     minRate: searchParams.get("minRate") ? Number(searchParams.get("minRate")) : undefined,
     maxRate: searchParams.get("maxRate") ? Number(searchParams.get("maxRate")) : undefined,
     page: searchParams.get("page") ? Number(searchParams.get("page")) : 1,
