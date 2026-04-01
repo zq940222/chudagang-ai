@@ -240,5 +240,16 @@
     "prompt3": "我需要搭建一个网站",
     "recommended": "推荐专家",
     "viewDetail": "查看详情"
+  },
+  "projectChat": {
+    "badge": "AI 驱动",
+    "pageTitle": "发布项目",
+    "pageDesc": "向 AI 助手描述您的需求，它会帮您梳理需求、估算预算，并自动发布项目。",
+    "welcomeTitle": "开始创建您的项目",
+    "welcomeDesc": "告诉我您的项目想法，我会帮您整理需求、估算费用并完成发布。",
+    "placeholder": "描述您的项目想法...",
+    "prompt1": "我想做一个 AI 聊天机器人",
+    "prompt2": "我需要一个数据分析平台",
+    "prompt3": "帮我做一个移动应用"
   }
 }

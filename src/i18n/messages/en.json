@@ -240,5 +240,16 @@
     "prompt3": "I need a website built",
     "recommended": "Recommended Experts",
     "viewDetail": "View Details"
+  },
+  "projectChat": {
+    "badge": "AI-Powered",
+    "pageTitle": "Publish Your Project",
+    "pageDesc": "Describe your needs to the AI assistant. It will help you clarify requirements, estimate budget, and publish your project automatically.",
+    "welcomeTitle": "Let's Create Your Project",
+    "welcomeDesc": "Tell me about your project and I'll help you define requirements, estimate costs, and publish it.",
+    "placeholder": "Describe your project idea...",
+    "prompt1": "I want to build an AI chatbot",
+    "prompt2": "I need a data analysis platform",
+    "prompt3": "Help me build a mobile app"
   }
 }
