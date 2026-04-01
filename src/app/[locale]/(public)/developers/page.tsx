@@ -145,7 +145,7 @@ function FeaturedDeveloperCard({
   };
 }) {
   const initial = developer.displayName.charAt(0).toUpperCase();
-  const displayRate = formatCurrencyAmount(developer.hourlyRate ?? 0, "CNY");
+  const displayRate = formatCurrencyAmount(developer.hourlyRate ?? 0, developer.currency);
 
   return (
     <Link href={`/developers/${developer.id}`} className="group block">

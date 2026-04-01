@@ -29,7 +29,7 @@ export default async function DeveloperDetailPage({
 
   const initial = profile.displayName.charAt(0).toUpperCase();
   const displayRate = profile.hourlyRate
-    ? formatCurrencyAmount(Number(profile.hourlyRate), "CNY")
+    ? formatCurrencyAmount(Number(profile.hourlyRate), profile.currency)
     : null;
 
   return (

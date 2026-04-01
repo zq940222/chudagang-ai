@@ -71,7 +71,7 @@ export function DeveloperCard({ developer }: { developer: DeveloperCardData }) {
                 {t("rateStartsAt")}
               </span>
               <span className="text-lg font-black text-on-surface">
-                {formatCurrencyAmount(developer.hourlyRate, "CNY")}
+                {formatCurrencyAmount(developer.hourlyRate, developer.currency)}
                 <span className="text-xs font-normal text-on-surface-variant">{t("perHour")}</span>
               </span>
             </div>
