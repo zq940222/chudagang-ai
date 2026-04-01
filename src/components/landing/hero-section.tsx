@@ -36,15 +36,15 @@ export function HeroSection({ t }: HeroSectionProps) {
           <div className="flex flex-wrap gap-3">
             <div className="liquid-glass-subtle liquid-panel rounded-2xl px-4 py-3">
               <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
-                Match Accuracy
+                {t("heroMetricAccuracyLabel")}
               </div>
-              <div className="mt-1 text-2xl font-black text-on-surface">92%</div>
+              <div className="mt-1 text-2xl font-black text-on-surface">{t("heroMetricAccuracyValue")}</div>
             </div>
             <div className="liquid-glass-subtle liquid-panel rounded-2xl px-4 py-3">
               <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
-                Median Time
+                {t("heroMetricTimeLabel")}
               </div>
-              <div className="mt-1 text-2xl font-black text-on-surface">48h</div>
+              <div className="mt-1 text-2xl font-black text-on-surface">{t("heroMetricTimeValue")}</div>
             </div>
           </div>
 
@@ -73,12 +73,12 @@ export function HeroSection({ t }: HeroSectionProps) {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(0,229,255,0.18),transparent_18%),radial-gradient(circle_at_78%_72%,rgba(157,0,255,0.18),transparent_20%)]" />
               <div className="absolute left-6 right-6 top-6 flex items-center justify-between gap-4">
                 <div className="liquid-glass-dark rounded-2xl px-4 py-3">
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-white/60">Active Talent Pool</div>
-                  <div className="mt-1 text-lg font-black text-white">1,280 specialists</div>
+                  <div className="text-[10px] uppercase tracking-[0.24em] text-white/60">{t("heroPoolLabel")}</div>
+                  <div className="mt-1 text-lg font-black text-white">{t("heroPoolValue")}</div>
                 </div>
                 <div className="liquid-glass-subtle rounded-2xl px-4 py-3 text-right">
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-on-surface-variant">Signal Score</div>
-                  <div className="mt-1 text-lg font-black text-on-surface">8.9/10</div>
+                  <div className="text-[10px] uppercase tracking-[0.24em] text-on-surface-variant">{t("heroSignalLabel")}</div>
+                  <div className="mt-1 text-lg font-black text-on-surface">{t("heroSignalValue")}</div>
                 </div>
               </div>
 
@@ -91,8 +91,8 @@ export function HeroSection({ t }: HeroSectionProps) {
                       </svg>
                     </div>
                     <div>
-                      <div className="text-[10px] font-black uppercase tracking-widest text-white/70">Active Model Deployment</div>
-                      <div className="text-sm font-bold text-white">Fine-tuned Llama-3-70B</div>
+                      <div className="text-[10px] font-black uppercase tracking-widest text-white/70">{t("heroDeploymentLabel")}</div>
+                      <div className="text-sm font-bold text-white">{t("heroDeploymentValue")}</div>
                     </div>
                   </div>
 
@@ -102,16 +102,16 @@ export function HeroSection({ t }: HeroSectionProps) {
 
                   <div className="grid grid-cols-3 gap-3">
                     <div className="rounded-2xl bg-white/6 p-3">
-                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">Latency</div>
-                      <div className="mt-1 text-sm font-bold text-white">120ms</div>
+                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">{t("heroLatencyLabel")}</div>
+                      <div className="mt-1 text-sm font-bold text-white">{t("heroLatencyValue")}</div>
                     </div>
                     <div className="rounded-2xl bg-white/6 p-3">
-                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">Shortlist</div>
-                      <div className="mt-1 text-sm font-bold text-white">6 experts</div>
+                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">{t("heroShortlistLabel")}</div>
+                      <div className="mt-1 text-sm font-bold text-white">{t("heroShortlistValue")}</div>
                     </div>
                     <div className="rounded-2xl bg-white/6 p-3">
-                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">Readiness</div>
-                      <div className="mt-1 text-sm font-bold text-white">Live</div>
+                      <div className="text-[10px] uppercase tracking-[0.24em] text-white/55">{t("heroReadinessLabel")}</div>
+                      <div className="mt-1 text-sm font-bold text-white">{t("heroReadinessValue")}</div>
                     </div>
                   </div>
                 </div>

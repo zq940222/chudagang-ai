@@ -11,8 +11,7 @@ const experts = [
     rate: 180,
     skills: ["Llama-3", "RLHF", "PyTorch"],
     achievementKey: "expertAchievement",
-    achievementText:
-      "Reduced inference latency by 45% for a Fortune 500 fintech deployment using custom quantization techniques.",
+    achievementTextKey: "expertArisAchievementText",
   },
   {
     name: "Elena Vance",
@@ -20,8 +19,7 @@ const experts = [
     rate: 165,
     skills: ["YOLOv8", "TensorRT", "C++"],
     achievementKey: "expertExpertise",
-    achievementText:
-      "Built the primary visual navigation system for a major autonomous drone startup using custom CNN architectures.",
+    achievementTextKey: "expertElenaAchievementText",
   },
 ];
 
@@ -76,7 +74,7 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
                 <div className="text-2xl font-black text-secondary">
                   ${expert.rate}
                   <span className="text-xs text-on-surface-variant font-normal">
-                    /hr
+                    {t("rateSuffix")}
                   </span>
                 </div>
               </div>
@@ -98,7 +96,7 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
                 </svg>
               </div>
               <p className="text-sm text-on-surface leading-relaxed font-medium">
-                {expert.achievementText}
+                {t(expert.achievementTextKey)}
               </p>
             </div>
 
