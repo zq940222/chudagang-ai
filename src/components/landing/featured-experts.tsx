@@ -53,11 +53,11 @@ export function FeaturedExperts({ t }: FeaturedExpertsProps) {
             >
               <div className="mb-8 flex items-start justify-between">
                 <div className="flex items-center gap-5">
-                  <div className="relative h-16 w-16 overflow-hidden rounded-full ring-4 ring-white/45">
-                    <div className={`flex h-full w-full items-center justify-center text-lg font-bold text-on-primary ${index === 0 ? "bg-[linear-gradient(145deg,#1b2635,#45566d)]" : "bg-[linear-gradient(145deg,#6b5b64,#2d394b)]"}`}>
+                  <div className="relative h-16 w-16 ring-4 ring-white/45 rounded-full">
+                    <div className={`flex h-full w-full items-center justify-center overflow-hidden rounded-full text-lg font-bold text-on-primary ${index === 0 ? "bg-[linear-gradient(145deg,#1b2635,#45566d)]" : "bg-[linear-gradient(145deg,#6b5b64,#2d394b)]"}`}>
                       {expert.name.charAt(0)}
                     </div>
-                    <div className="absolute bottom-0 right-0 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-[color:var(--color-accent-gold)] text-[color:var(--color-primary)]">
+                    <div className="absolute -bottom-0.5 -right-0.5 z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-[color:var(--color-accent-gold)] text-[color:var(--color-primary)] shadow-[0_4px_10px_rgba(31,34,39,0.16)]">
                       <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
                       </svg>
