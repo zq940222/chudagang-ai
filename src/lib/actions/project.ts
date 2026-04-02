@@ -109,7 +109,7 @@ export async function createProjectFromAI(input: {
       currency: input.currency ?? "CNY",
       category: input.category,
       clientId: session.user.id,
-      status: "PUBLISHED",
+      status: "DRAFT",
       skills: {
         create: input.skillTagIds.map((skillTagId) => ({ skillTagId })),
       },

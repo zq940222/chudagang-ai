@@ -216,10 +216,64 @@ export const presentForm = tool({
   },
 });
 
+export const reviewProject = tool({
+  description:
+    "Review a project draft for quality and compliance. Call this immediately after createProjectDraft. Checks title clarity, description completeness, skill relevance, and content policy. If approved, auto-publishes the project.",
+  inputSchema: z.object({
+    projectId: z.string().describe("The project ID returned by createProjectDraft"),
+    title: z.string().describe("Project title to review"),
+    description: z.string().describe("Project description to review"),
+    skills: z.array(z.string()).describe("Skill/technology names"),
+  }),
+  execute: async ({ projectId, title, description, skills }) => {
+    const issues: string[] = [];
+
+    // Title check
+    if (title.length < 5) issues.push("标题太短，至少需要5个字符");
+    if (title.length > 80) issues.push("标题过长，建议控制在80字符以内");
+
+    // Description check
+    if (description.length < 20) issues.push("描述太简短，请补充项目需求细节");
+    if (description.length > 5000) issues.push("描述过长，建议精简到5000字符以内");
+
+    // Skills check
+    if (skills.length === 0) issues.push("缺少技术栈要求，请补充所需技能");
+
+    // Content policy: basic keyword filter
+    const blockedPatterns = [/赌博/i, /gambling/i, /色情/i, /pornograph/i, /毒品/i, /drug trafficking/i];
+    const allText = `${title} ${description}`.toLowerCase();
+    for (const pattern of blockedPatterns) {
+      if (pattern.test(allText)) {
+        issues.push("内容包含违规信息，请修改后重新提交");
+        break;
+      }
+    }
+
+    const approved = issues.length === 0;
+
+    if (approved) {
+      await db.project.update({
+        where: { id: projectId },
+        data: { status: "PUBLISHED" },
+      });
+    }
+
+    return {
+      approved,
+      projectId,
+      issues,
+      message: approved
+        ? "审核通过，项目已发布！"
+        : `审核未通过，请修改以下问题：${issues.join("；")}`,
+    };
+  },
+});
+
 export const aiTools = {
   extractRequirements,
   resolveSkills,
   createProjectDraft,
+  reviewProject,
   searchDevelopers: searchDevelopersTool,
   estimateBudget,
   presentOptions,

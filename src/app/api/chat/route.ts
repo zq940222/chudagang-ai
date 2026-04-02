@@ -109,10 +109,16 @@ export async function POST(req: Request) {
         ) {
           newStatus = "CONFIRMATION";
         } else if (
-          toolNames.includes("createProjectDraft") &&
+          toolNames.includes("reviewProject") &&
           phase === "CONFIRMATION"
         ) {
-          newStatus = "MATCHING";
+          // Only advance to MATCHING if review approved
+          const reviewCall = toolCalls.find(
+            (tc: { toolName: string }) => tc.toolName === "reviewProject"
+          );
+          if (reviewCall) {
+            newStatus = "MATCHING";
+          }
         } else if (
           toolNames.includes("searchDevelopers") &&
           phase === "CONFIRMATION"
