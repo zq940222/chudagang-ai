@@ -257,6 +257,17 @@
     "pageTitle": "成为开发者",
     "pageDesc": "填写您的专业信息，通过 AI 认证后即可接收项目邀请和匹配推荐。"
   },
+  "devSidebar": {
+    "overview": "总览",
+    "profile": "个人资料",
+    "contracts": "我的合同",
+    "earnings": "收入",
+    "calendar": "日程"
+  },
+  "clientSidebar": {
+    "overview": "总览",
+    "projects": "我的项目"
+  },
   "devDashboard": {
     "title": "开发者面板",
     "becomeTitle": "成为开发者",

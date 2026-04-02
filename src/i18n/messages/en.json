@@ -257,6 +257,17 @@
     "pageTitle": "Become a Developer",
     "pageDesc": "Fill in your professional information. Once certified by AI, you'll start receiving project invitations and matches."
   },
+  "devSidebar": {
+    "overview": "Overview",
+    "profile": "Profile",
+    "contracts": "My Contracts",
+    "earnings": "Earnings",
+    "calendar": "Calendar"
+  },
+  "clientSidebar": {
+    "overview": "Overview",
+    "projects": "My Projects"
+  },
   "devDashboard": {
     "title": "Dashboard",
     "becomeTitle": "Become a Developer",

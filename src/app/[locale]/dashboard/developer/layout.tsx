@@ -9,7 +9,7 @@ export default function DeveloperDashboardLayout({
   return (
     <>
       <Nav />
-      <div className="mx-auto flex max-w-7xl flex-1 gap-6 px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-screen-2xl flex-1 gap-10 px-6 py-12 lg:px-16">
         <DeveloperSidebar />
         <main className="min-w-0 flex-1">{children}</main>
       </div>
