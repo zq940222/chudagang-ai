@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { createProfile, updateProfile } from "@/lib/actions/profile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +36,7 @@ interface ProfileFormProps {
 
 export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) {
   const router = useRouter();
+  const t = useTranslations("profileForm");
   const [selectedSkills, setSelectedSkills] = useState<string[]>(
     initialData?.skills?.map((s) => s.skillTagId) ?? []
   );
@@ -62,7 +64,7 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
     <Card>
       <CardHeader>
         <CardTitle>
-          {mode === "create" ? "Create Developer Profile" : "Edit Profile"}
+          {mode === "create" ? t("createTitle") : t("editTitle")}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -76,7 +78,7 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
           {/* Display Name */}
           <div className="space-y-1.5">
             <label htmlFor="displayName" className="text-sm font-medium text-on-surface">
-              Display Name *
+              {t("displayName")} {t("displayNameRequired")}
             </label>
             <Input
               id="displayName"
@@ -91,13 +93,13 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
           {/* Title */}
           <div className="space-y-1.5">
             <label htmlFor="title" className="text-sm font-medium text-on-surface">
-              Title
+              {t("title")}
             </label>
             <Input
               id="title"
               name="title"
               maxLength={200}
-              placeholder="e.g. Full-Stack Developer"
+              placeholder={t("titlePlaceholder")}
               defaultValue={initialData?.title ?? ""}
             />
           </div>
@@ -105,14 +107,14 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
           {/* Bio */}
           <div className="space-y-1.5">
             <label htmlFor="bio" className="text-sm font-medium text-on-surface">
-              Bio
+              {t("bio")}
             </label>
             <textarea
               id="bio"
               name="bio"
               rows={4}
               maxLength={2000}
-              placeholder="Tell clients about yourself..."
+              placeholder={t("bioPlaceholder")}
               defaultValue={initialData?.bio ?? ""}
               className="flex w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:bg-surface-container-high focus:outline-none focus:ring-1 focus:ring-accent-cyan/50 disabled:cursor-not-allowed disabled:opacity-50"
             />
@@ -121,13 +123,13 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
           {/* GitHub URL */}
           <div className="space-y-1.5">
             <label htmlFor="githubUrl" className="text-sm font-medium text-on-surface">
-              GitHub URL
+              {t("githubUrl")}
             </label>
             <Input
               id="githubUrl"
               name="githubUrl"
               type="url"
-              placeholder="https://github.com/username"
+              placeholder={t("githubPlaceholder")}
               defaultValue={initialData?.githubUrl ?? ""}
             />
           </div>
@@ -135,13 +137,13 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
           {/* Portfolio URL */}
           <div className="space-y-1.5">
             <label htmlFor="portfolioUrl" className="text-sm font-medium text-on-surface">
-              Portfolio URL
+              {t("portfolioUrl")}
             </label>
             <Input
               id="portfolioUrl"
               name="portfolioUrl"
               type="url"
-              placeholder="https://yourportfolio.com"
+              placeholder={t("portfolioPlaceholder")}
               defaultValue={initialData?.portfolioUrl ?? ""}
             />
           </div>
@@ -150,7 +152,7 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label htmlFor="hourlyRate" className="text-sm font-medium text-on-surface">
-                Hourly Rate
+                {t("hourlyRate")}
               </label>
               <Input
                 id="hourlyRate"
@@ -165,7 +167,7 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
             </div>
             <div className="space-y-1.5">
               <label htmlFor="currency" className="text-sm font-medium text-on-surface">
-                Currency
+                {t("currency")}
               </label>
               <select
                 id="currency"
@@ -183,7 +185,7 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
           {/* Skills */}
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-on-surface">
-              Skills *
+              {t("skills")} {t("skillsRequired")}
             </label>
             <SkillSelector
               skills={skillTags}
@@ -196,10 +198,10 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
           {/* Submit */}
           <Button type="submit" disabled={pending} className="w-full">
             {pending
-              ? "Saving..."
+              ? t("saving")
               : mode === "create"
-                ? "Create Profile"
-                : "Save Changes"}
+                ? t("createSubmit")
+                : t("editSubmit")}
           </Button>
         </form>
       </CardContent>

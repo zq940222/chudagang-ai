@@ -256,5 +256,26 @@
     "badge": "Developer Certification",
     "pageTitle": "Become a Developer",
     "pageDesc": "Fill in your professional information. Once certified by AI, you'll start receiving project invitations and matches."
+  },
+  "profileForm": {
+    "createTitle": "Create Developer Profile",
+    "editTitle": "Edit Profile",
+    "displayName": "Display Name",
+    "displayNameRequired": "*",
+    "title": "Title",
+    "titlePlaceholder": "e.g. Full-Stack Developer",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell clients about yourself...",
+    "githubUrl": "GitHub URL",
+    "githubPlaceholder": "https://github.com/username",
+    "portfolioUrl": "Portfolio URL",
+    "portfolioPlaceholder": "https://yourportfolio.com",
+    "hourlyRate": "Hourly Rate",
+    "currency": "Currency",
+    "skills": "Skills",
+    "skillsRequired": "*",
+    "saving": "Saving...",
+    "createSubmit": "Create Profile",
+    "editSubmit": "Save Changes"
   }
 }
