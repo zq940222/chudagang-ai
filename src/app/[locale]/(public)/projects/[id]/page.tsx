@@ -17,8 +17,10 @@ export default async function ProjectDetailPage({
   const { id, locale } = await params;
   const t = await getTranslations("projects");
 
+  const session = await auth();
+
   const project = await db.project.findUnique({
-    where: { id, status: "PUBLISHED" },
+    where: { id },
     include: {
       client: { select: { id: true, name: true } },
       skills: { include: { skillTag: true } },
@@ -26,9 +28,10 @@ export default async function ProjectDetailPage({
     },
   });
 
-  if (!project) notFound();
-
-  const session = await auth();
+  // Allow project owner to view any status; others can only see PUBLISHED
+  if (!project || (project.status !== "PUBLISHED" && project.clientId !== session?.user?.id)) {
+    notFound();
+  }
   const hasDeveloperProfile = session?.user?.id
     ? !!(await db.developerProfile.findUnique({
         where: { userId: session.user.id },
