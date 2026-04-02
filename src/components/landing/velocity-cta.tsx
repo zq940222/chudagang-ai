@@ -43,7 +43,7 @@ export function VelocityCta({ t }: VelocityCtaProps) {
             {t("recruitDesc")}
           </p>
           <Link
-            href="/register"
+            href="/dashboard/developer/apply"
             className="inline-flex rounded-[1.4rem] bg-[linear-gradient(145deg,#f7f0e6,#dcc8ab)] px-10 py-4 text-xs font-black uppercase tracking-[0.2em] text-primary transition-all hover:scale-[1.02]"
           >
             {t("recruitCta")}

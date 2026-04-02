@@ -109,7 +109,7 @@
     "velStep4Desc": "交付经过验证的代码，或直接以容器形式部署到你的基础设施。",
     "recruitTitle": "你是 AI 专家吗？",
     "recruitDesc": "加入全球高水平研究者与工程师网络，为顶级团队交付高影响力成果。",
-    "recruitCta": "申请成为开发者",
+    "recruitCta": "认证成为开发者",
     "howTitle": "平台流程",
     "step1Title": "描述你的项目",
     "step1Desc": "和 AI 助手对话，或直接手动发布。系统会帮助你澄清需求并估算预算。",
@@ -251,5 +251,10 @@
     "prompt1": "我想做一个 AI 聊天机器人",
     "prompt2": "我需要一个数据分析平台",
     "prompt3": "帮我做一个移动应用"
+  },
+  "developerApply": {
+    "badge": "开发者认证",
+    "pageTitle": "成为开发者",
+    "pageDesc": "填写您的专业信息，通过 AI 认证后即可接收项目邀请和匹配推荐。"
   }
 }

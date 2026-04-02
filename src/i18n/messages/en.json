@@ -109,7 +109,7 @@
     "velStep4Desc": "Verified code hand-off or direct container deployment to your infrastructure.",
     "recruitTitle": "Are you an AI Expert?",
     "recruitDesc": "Join the world's most sophisticated network of researchers and engineers. High-impact contributions for elite teams.",
-    "recruitCta": "Apply as Developer",
+    "recruitCta": "Get Certified as Developer",
     "howTitle": "How It Works",
     "step1Title": "Describe Your Project",
     "step1Desc": "Chat with our AI assistant or post manually. The AI helps you clarify requirements and estimate budgets.",
@@ -251,5 +251,10 @@
     "prompt1": "I want to build an AI chatbot",
     "prompt2": "I need a data analysis platform",
     "prompt3": "Help me build a mobile app"
+  },
+  "developerApply": {
+    "badge": "Developer Certification",
+    "pageTitle": "Become a Developer",
+    "pageDesc": "Fill in your professional information. Once certified by AI, you'll start receiving project invitations and matches."
   }
 }

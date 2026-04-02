@@ -24,7 +24,7 @@ export default async function DeveloperDashboardPage() {
           earning on the platform.
         </p>
         <Button asChild>
-          <Link href="/dashboard/developer/profile">Create Profile</Link>
+          <Link href="/dashboard/developer/apply">Create Profile</Link>
         </Button>
       </div>
     );
