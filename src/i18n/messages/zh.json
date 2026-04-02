@@ -257,6 +257,25 @@
     "pageTitle": "成为开发者",
     "pageDesc": "填写您的专业信息，通过 AI 认证后即可接收项目邀请和匹配推荐。"
   },
+  "devDashboard": {
+    "title": "开发者面板",
+    "becomeTitle": "成为开发者",
+    "becomeDesc": "创建开发者资料，开始接收项目匹配并在平台上赚取收入。",
+    "createProfile": "创建资料",
+    "status": "状态",
+    "profileStatus": "资料状态",
+    "statusApproved": "已认证",
+    "statusPending": "审核中",
+    "statusRejected": "未通过",
+    "aiRating": "AI 评分",
+    "outOf5": "满分 5.0",
+    "skills": "技能",
+    "skillTags": "技能标签",
+    "recentContracts": "最近合同",
+    "noContracts": "暂无合同",
+    "recentNotifications": "最近通知",
+    "noNotifications": "暂无通知"
+  },
   "profileForm": {
     "createTitle": "创建开发者资料",
     "editTitle": "编辑资料",

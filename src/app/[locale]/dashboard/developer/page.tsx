@@ -6,25 +6,26 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { StatsCard } from "@/components/dashboard/stats-card";
 import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 
 export default async function DeveloperDashboardPage() {
   const session = await auth();
   if (!session) redirect("/en/login");
 
+  const t = await getTranslations("devDashboard");
   const profile = await getMyProfile();
 
   if (!profile) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
         <h1 className="text-2xl font-bold text-on-surface">
-          Become a Developer
+          {t("becomeTitle")}
         </h1>
         <p className="max-w-md text-on-surface-variant">
-          Create your developer profile to start receiving project matches and
-          earning on the platform.
+          {t("becomeDesc")}
         </p>
         <Button asChild>
-          <Link href="/dashboard/developer/apply">Create Profile</Link>
+          <Link href="/dashboard/developer/apply">{t("createProfile")}</Link>
         </Button>
       </div>
     );
@@ -32,10 +33,12 @@ export default async function DeveloperDashboardPage() {
 
   const statusLabel =
     profile.status === "APPROVED"
-      ? "Approved"
+      ? t("statusApproved")
       : profile.status === "PENDING_REVIEW"
-        ? "Pending Review"
-        : profile.status;
+        ? t("statusPending")
+        : profile.status === "REJECTED"
+          ? t("statusRejected")
+          : profile.status;
 
   const [recentContracts, recentNotifications] = await Promise.all([
     db.contract.findMany({
@@ -53,33 +56,33 @@ export default async function DeveloperDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-on-surface">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-on-surface">{t("title")}</h1>
       <div className="grid gap-4 sm:grid-cols-3">
         <StatsCard
-          title="Status"
+          title={t("status")}
           value={statusLabel}
-          subtitle="Profile status"
+          subtitle={t("profileStatus")}
         />
         <StatsCard
-          title="AI Rating"
+          title={t("aiRating")}
           value={profile.aiRating ? Number(profile.aiRating).toFixed(1) : "--"}
-          subtitle="Out of 5.0"
+          subtitle={t("outOf5")}
         />
         <StatsCard
-          title="Skills"
+          title={t("skills")}
           value={profile.skills.length}
-          subtitle="Skill tags"
+          subtitle={t("skillTags")}
         />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Recent Contracts</CardTitle>
+            <CardTitle>{t("recentContracts")}</CardTitle>
           </CardHeader>
           <CardContent>
             {recentContracts.length === 0 ? (
-              <p className="text-sm text-on-surface-variant">No contracts yet</p>
+              <p className="text-sm text-on-surface-variant">{t("noContracts")}</p>
             ) : (
               <div className="space-y-3">
                 {recentContracts.map((c) => (
@@ -104,11 +107,11 @@ export default async function DeveloperDashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Recent Notifications</CardTitle>
+            <CardTitle>{t("recentNotifications")}</CardTitle>
           </CardHeader>
           <CardContent>
             {recentNotifications.length === 0 ? (
-              <p className="text-sm text-on-surface-variant">No notifications</p>
+              <p className="text-sm text-on-surface-variant">{t("noNotifications")}</p>
             ) : (
               <div className="space-y-3">
                 {recentNotifications.map((n) => (

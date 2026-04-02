@@ -257,6 +257,25 @@
     "pageTitle": "Become a Developer",
     "pageDesc": "Fill in your professional information. Once certified by AI, you'll start receiving project invitations and matches."
   },
+  "devDashboard": {
+    "title": "Dashboard",
+    "becomeTitle": "Become a Developer",
+    "becomeDesc": "Create your developer profile to start receiving project matches and earning on the platform.",
+    "createProfile": "Create Profile",
+    "status": "Status",
+    "profileStatus": "Profile status",
+    "statusApproved": "Approved",
+    "statusPending": "Pending Review",
+    "statusRejected": "Rejected",
+    "aiRating": "AI Rating",
+    "outOf5": "Out of 5.0",
+    "skills": "Skills",
+    "skillTags": "Skill tags",
+    "recentContracts": "Recent Contracts",
+    "noContracts": "No contracts yet",
+    "recentNotifications": "Recent Notifications",
+    "noNotifications": "No notifications"
+  },
   "profileForm": {
     "createTitle": "Create Developer Profile",
     "editTitle": "Edit Profile",
