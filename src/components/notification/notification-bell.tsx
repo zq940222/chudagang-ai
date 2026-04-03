@@ -1,34 +1,55 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { getUnreadCount } from "@/lib/actions/notification";
 import { NotificationDropdown } from "./notification-dropdown";
-
-const POLL_INTERVAL = 30_000; // 30 seconds
 
 export function NotificationBell() {
   const [count, setCount] = useState(0);
   const [open, setOpen] = useState(false);
+  const [flash, setFlash] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const eventSourceRef = useRef<EventSource | null>(null);
 
-  const fetchCount = useCallback(() => {
-    getUnreadCount().then((result) => {
-      if (result.data != null) setCount(result.data);
+  // SSE connection for real-time notifications
+  useEffect(() => {
+    const es = new EventSource("/api/notifications/stream");
+    eventSourceRef.current = es;
+
+    es.addEventListener("count", (e) => {
+      const data = JSON.parse(e.data);
+      setCount((prev) => {
+        if (data.count > prev) setFlash(true);
+        return data.count;
+      });
     });
+
+    es.addEventListener("notification", () => {
+      // Flash the bell when new notification arrives
+      setFlash(true);
+    });
+
+    es.onerror = () => {
+      // Reconnect is handled automatically by EventSource
+    };
+
+    return () => {
+      es.close();
+      eventSourceRef.current = null;
+    };
   }, []);
 
-  // Initial fetch + polling
+  // Clear flash animation
   useEffect(() => {
-    fetchCount();
-    const timer = setInterval(fetchCount, POLL_INTERVAL);
-    return () => clearInterval(timer);
-  }, [fetchCount]);
+    if (flash) {
+      const timer = setTimeout(() => setFlash(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [flash]);
 
-  // Refresh count when dropdown closes
   const handleClose = useCallback(() => {
     setOpen(false);
-    fetchCount();
-  }, [fetchCount]);
+    // Count will update via SSE automatically after markAsRead
+  }, []);
 
   // Close on outside click
   useEffect(() => {
@@ -45,7 +66,7 @@ export function NotificationBell() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface"
+        className={`relative rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface ${flash ? "animate-wiggle" : ""}`}
         aria-label="Notifications"
       >
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
