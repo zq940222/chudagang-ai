@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import {
   getMyNotifications,
@@ -43,8 +43,11 @@ export function NotificationDropdown({ onClose }: { onClose?: () => void }) {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   }
 
+  // Capture current time once per render cycle to avoid impure Date.now() calls
+  const now = useMemo(() => Date.now(), [notifications]);
+
   function timeAgo(dateStr: string) {
-    const diff = Date.now() - new Date(dateStr).getTime();
+    const diff = now - new Date(dateStr).getTime();
     const mins = Math.floor(diff / 60000);
     if (mins < 1) return "just now";
     if (mins < 60) return `${mins}m`;

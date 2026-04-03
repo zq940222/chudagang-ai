@@ -4,18 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
 import { MessageBubble } from "@/components/chat/message-bubble";
 import { OptionsCard, FormCard } from "@/components/chat/interactive-options";
 import { ProjectSummaryCard } from "@/components/chat/project-summary-card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 export function ProjectPublishChat() {
   const locale = useLocale();
   const t = useTranslations("projectChat");
-  const router = useRouter();
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [input, setInput] = useState("");
