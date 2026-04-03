@@ -15,7 +15,8 @@ export default async function ProjectDetailPage({
   params: Promise<{ id: string; locale: string }>;
 }) {
   const { id, locale } = await params;
-  const t = await getTranslations("projects");
+  const t = await getTranslations("projectDetail");
+  const tProjects = await getTranslations("projects");
 
   const session = await auth();
 
@@ -44,7 +45,7 @@ export default async function ProjectDetailPage({
       <div className="flex-1 space-y-12">
         {/* Hero Header */}
         <section className="space-y-6">
-          <Badge variant="accent">Active Listing</Badge>
+          <Badge variant="accent">{t("activeListing")}</Badge>
           <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tighter text-on-surface leading-tight max-w-3xl">
             {project.title}
           </h1>
@@ -52,7 +53,7 @@ export default async function ProjectDetailPage({
             {project.budget !== null && (
               <div className="flex flex-col">
                 <span className="text-xs font-mono uppercase tracking-widest text-on-surface-variant mb-1">
-                  Budget
+                  {t("budget")}
                 </span>
                 <span className="text-2xl font-bold text-secondary">
                   {formatCurrencyAmount(Number(project.budget), project.currency)}
@@ -61,7 +62,7 @@ export default async function ProjectDetailPage({
             )}
             <div className="flex flex-col">
               <span className="text-xs font-mono uppercase tracking-widest text-on-surface-variant mb-1">
-                Applicants
+                {t("applicants")}
               </span>
               <span className="text-2xl font-bold text-on-surface">
                 {project._count.applications}
@@ -70,10 +71,10 @@ export default async function ProjectDetailPage({
             {project.category && (
               <div className="flex flex-col">
                 <span className="text-xs font-mono uppercase tracking-widest text-on-surface-variant mb-1">
-                  Category
+                  {t("category")}
                 </span>
                 <span className="text-2xl font-bold text-on-surface">
-                  {getProjectCategoryLabel(project.category, t) ?? project.category}
+                  {getProjectCategoryLabel(project.category, tProjects) ?? project.category}
                 </span>
               </div>
             )}
@@ -87,7 +88,7 @@ export default async function ProjectDetailPage({
               <svg className="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
               </svg>
-              Project Overview
+              {t("overview")}
             </h2>
             <p className="text-on-surface-variant leading-relaxed whitespace-pre-line">
               {project.description}
@@ -101,7 +102,7 @@ export default async function ProjectDetailPage({
                 <svg className="w-5 h-5 text-accent-cyan" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
                 </svg>
-                AI Analysis
+                {t("aiAnalysis")}
               </h2>
               <p className="text-sm text-on-surface-variant leading-relaxed">
                 {project.aiSummary}
@@ -112,7 +113,7 @@ export default async function ProjectDetailPage({
           {/* Technical Requirements */}
           {project.skills.length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold">Technical Requirements</h2>
+              <h2 className="text-xl font-bold">{t("techRequirements")}</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {project.skills.map((s) => (
                   <div
@@ -128,7 +129,7 @@ export default async function ProjectDetailPage({
                       {locale === "zh" ? s.skillTag.localeZh : s.skillTag.localeEn}
                     </h4>
                     <p className="text-xs text-on-surface-variant">
-                      {s.skillTag.category || "Required skill"}
+                      {s.skillTag.category || t("requiredSkill")}
                     </p>
                   </div>
                 ))}
@@ -152,7 +153,7 @@ export default async function ProjectDetailPage({
               asChild
             >
               <Link href={`/${locale}/login`}>
-                {session?.user ? "Create Developer Profile" : "Sign in to Apply"}
+                {session?.user ? t("createProfile") : t("signInToApply")}
               </Link>
             </Button>
           )}
@@ -160,7 +161,7 @@ export default async function ProjectDetailPage({
           {/* Client Info */}
           <div className="space-y-6">
             <h3 className="text-xs font-mono uppercase tracking-widest text-on-surface-variant border-b border-outline-variant/10 pb-2">
-              Client Information
+              {t("clientInfo")}
             </h3>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-surface-container-high rounded-lg flex items-center justify-center">
@@ -170,24 +171,24 @@ export default async function ProjectDetailPage({
               </div>
               <div>
                 <div className="font-bold">
-                  {project.client.name || "Anonymous Client"}
+                  {project.client.name || t("anonymousClient")}
                 </div>
-                <div className="text-xs text-on-surface-variant">Project Owner</div>
+                <div className="text-xs text-on-surface-variant">{t("projectOwner")}</div>
               </div>
             </div>
 
             <div className="space-y-4 pt-4">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-on-surface-variant">Status</span>
+                <span className="text-on-surface-variant">{t("status")}</span>
                 <Badge variant="status">{project.status}</Badge>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-on-surface-variant">Applications</span>
+                <span className="text-on-surface-variant">{t("applications")}</span>
                 <span className="font-bold">{project._count.applications}</span>
               </div>
               {project.budget !== null && (
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-on-surface-variant">Budget</span>
+                  <span className="text-on-surface-variant">{t("budget")}</span>
                   <span className="font-bold text-secondary">
                     {formatCurrencyAmount(Number(project.budget), project.currency)}
                   </span>
@@ -202,10 +203,10 @@ export default async function ProjectDetailPage({
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>
-              <span className="text-xs font-bold uppercase tracking-widest">Expert Tip</span>
+              <span className="text-xs font-bold uppercase tracking-widest">{t("expertTip")}</span>
             </div>
             <p className="text-xs leading-relaxed text-on-surface-variant">
-              Include relevant case studies or portfolio links in your proposal to increase your chances of being selected.
+              {t("tipContent")}
             </p>
           </div>
         </div>

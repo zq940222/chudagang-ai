@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { applyToProject } from "@/lib/actions/application";
 
 export function ApplicationForm({ projectId }: { projectId: string }) {
+  const t = useTranslations("applicationForm");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +40,7 @@ export function ApplicationForm({ projectId }: { projectId: string }) {
       <Card>
         <CardContent>
           <p className="text-accent-cyan font-medium py-4">
-            Application submitted successfully!
+            {t("submitted")}
           </p>
         </CardContent>
       </Card>
@@ -48,26 +50,26 @@ export function ApplicationForm({ projectId }: { projectId: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Apply to this Project</CardTitle>
+        <CardTitle>{t("title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-sm font-medium text-on-surface">Cover Letter</label>
+            <label className="text-sm font-medium text-on-surface">{t("coverLetter")}</label>
             <textarea
               name="coverLetter"
               rows={5}
-              placeholder="Describe why you're a good fit for this project..."
+              placeholder={t("coverLetterPlaceholder")}
               className="mt-1 w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent-cyan/50"
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-on-surface">Proposed Rate (USD/hr)</label>
-            <Input name="proposedRate" type="number" min={0} step={0.01} placeholder="e.g. 80" className="mt-1" />
+            <label className="text-sm font-medium text-on-surface">{t("proposedRate")}</label>
+            <Input name="proposedRate" type="number" min={0} step={0.01} placeholder={t("ratePlaceholder")} className="mt-1" />
           </div>
           {error && <p className="text-sm text-error">{error}</p>}
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Submitting..." : "Submit Application"}
+            {loading ? t("submitting") : t("submit")}
           </Button>
         </form>
       </CardContent>

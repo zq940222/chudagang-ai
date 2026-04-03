@@ -363,5 +363,34 @@
   "devContracts": {
     "title": "我的合同",
     "empty": "暂无合同。浏览项目并申请吧！"
+  },
+  "projectDetail": {
+    "activeListing": "正在招募",
+    "budget": "预算",
+    "applicants": "申请人数",
+    "category": "分类",
+    "overview": "项目概述",
+    "aiAnalysis": "AI 分析",
+    "techRequirements": "技术要求",
+    "requiredSkill": "必需技能",
+    "createProfile": "创建开发者资料",
+    "signInToApply": "登录后申请",
+    "clientInfo": "客户信息",
+    "projectOwner": "项目发布者",
+    "anonymousClient": "匿名客户",
+    "status": "状态",
+    "applications": "申请数",
+    "expertTip": "专家建议",
+    "tipContent": "在申请中附上相关案例或作品集链接，可以提高被选中的概率。"
+  },
+  "applicationForm": {
+    "title": "申请该项目",
+    "coverLetter": "申请信",
+    "coverLetterPlaceholder": "描述你为什么适合这个项目...",
+    "proposedRate": "期望时薪（元/小时）",
+    "ratePlaceholder": "例如：200",
+    "submitting": "提交中...",
+    "submit": "提交申请",
+    "submitted": "申请已提交！"
   }
 }

@@ -363,5 +363,34 @@
   "devContracts": {
     "title": "My Contracts",
     "empty": "No contracts yet. Browse projects and apply!"
+  },
+  "projectDetail": {
+    "activeListing": "Active Listing",
+    "budget": "Budget",
+    "applicants": "Applicants",
+    "category": "Category",
+    "overview": "Project Overview",
+    "aiAnalysis": "AI Analysis",
+    "techRequirements": "Technical Requirements",
+    "requiredSkill": "Required skill",
+    "createProfile": "Create Developer Profile",
+    "signInToApply": "Sign in to Apply",
+    "clientInfo": "Client Information",
+    "projectOwner": "Project Owner",
+    "anonymousClient": "Anonymous Client",
+    "status": "Status",
+    "applications": "Applications",
+    "expertTip": "Expert Tip",
+    "tipContent": "Include relevant case studies or portfolio links in your proposal to increase your chances of being selected."
+  },
+  "applicationForm": {
+    "title": "Apply to this Project",
+    "coverLetter": "Cover Letter",
+    "coverLetterPlaceholder": "Describe why you're a good fit for this project...",
+    "proposedRate": "Proposed Rate (USD/hr)",
+    "ratePlaceholder": "e.g. 80",
+    "submitting": "Submitting...",
+    "submit": "Submit Application",
+    "submitted": "Application submitted successfully!"
   }
 }
