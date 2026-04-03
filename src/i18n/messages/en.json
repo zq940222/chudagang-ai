@@ -307,5 +307,61 @@
     "saving": "Saving...",
     "createSubmit": "Create Profile",
     "editSubmit": "Save Changes"
+  },
+  "contract": {
+    "client": "Client",
+    "developer": "Developer",
+    "amount": "Amount",
+    "signed": "Signature",
+    "clientSigned": "Client: {status}",
+    "devSigned": "Developer: {status}",
+    "signedYes": "Signed",
+    "signedNo": "Not signed",
+    "statusDRAFT": "Draft",
+    "statusPENDING_SIGN": "Pending Signature",
+    "statusACTIVE": "Active",
+    "statusDELIVERED": "Delivered",
+    "statusCOMPLETED": "Completed",
+    "statusDISPUTED": "Disputed",
+    "statusCANCELLED": "Cancelled",
+    "sign": "Sign Contract",
+    "pay": "Pay (Escrow)",
+    "acceptRelease": "Accept & Release Payment",
+    "requestRevision": "Request Revision",
+    "dispute": "Dispute"
+  },
+  "delivery": {
+    "title": "Submit Deliverable",
+    "nameLabel": "Title",
+    "namePlaceholder": "e.g. Final RAG Chatbot v1.0",
+    "descLabel": "Description",
+    "descPlaceholder": "Describe what you're delivering...",
+    "fileLabel": "File URL",
+    "filePlaceholder": "https://github.com/...",
+    "submitting": "Submitting...",
+    "submit": "Submit Deliverable",
+    "submitted": "Deliverable submitted! The client will be notified.",
+    "deliverables": "Deliverables",
+    "viewFile": "View file",
+    "accept": "Accept",
+    "reject": "Reject",
+    "rejectReason": "Reason for rejection:",
+    "review": "Review: "
+  },
+  "application": {
+    "applications": "Applications",
+    "noApplications": "No applications yet.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "createContract": "Create Contract"
+  },
+  "clientProjects": {
+    "title": "My Projects",
+    "newProject": "New Project",
+    "empty": "You haven't created any projects yet."
+  },
+  "devContracts": {
+    "title": "My Contracts",
+    "empty": "No contracts yet. Browse projects and apply!"
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { signContract, transitionContract } from "@/lib/actions/contract";
 
@@ -21,6 +22,7 @@ export function ContractActions({
   signedByClient,
   signedByDeveloper,
 }: Props) {
+  const t = useTranslations("contract");
   const [loading, setLoading] = useState(false);
 
   async function handleSign() {
@@ -61,24 +63,24 @@ export function ContractActions({
   return (
     <div className="flex flex-wrap gap-2">
       {canSign && (
-        <Button onClick={handleSign} disabled={loading}>Sign Contract</Button>
+        <Button onClick={handleSign} disabled={loading}>{t("sign")}</Button>
       )}
       {canPay && (
-        <Button onClick={handlePay} disabled={loading}>Pay (Escrow)</Button>
+        <Button onClick={handlePay} disabled={loading}>{t("pay")}</Button>
       )}
       {canAccept && (
         <Button onClick={() => handleTransition("COMPLETED")} disabled={loading}>
-          Accept & Release Payment
+          {t("acceptRelease")}
         </Button>
       )}
       {canRequestRevision && (
         <Button variant="secondary" onClick={() => handleTransition("ACTIVE")} disabled={loading}>
-          Request Revision
+          {t("requestRevision")}
         </Button>
       )}
       {canDispute && (
         <Button variant="destructive" onClick={() => handleTransition("DISPUTED")} disabled={loading}>
-          Dispute
+          {t("dispute")}
         </Button>
       )}
     </div>

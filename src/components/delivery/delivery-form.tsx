@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { submitDeliverable } from "@/lib/actions/delivery";
 
 export function DeliveryForm({ contractId }: { contractId: string }) {
+  const t = useTranslations("delivery");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +39,7 @@ export function DeliveryForm({ contractId }: { contractId: string }) {
       <Card>
         <CardContent>
           <p className="text-accent-cyan font-medium py-4">
-            Deliverable submitted! The client will be notified.
+            {t("submitted")}
           </p>
         </CardContent>
       </Card>
@@ -47,30 +49,30 @@ export function DeliveryForm({ contractId }: { contractId: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Submit Deliverable</CardTitle>
+        <CardTitle>{t("title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-sm font-medium text-on-surface">Title *</label>
-            <Input name="title" required placeholder="e.g. Final RAG Chatbot v1.0" className="mt-1" />
+            <label className="text-sm font-medium text-on-surface">{t("nameLabel")} *</label>
+            <Input name="title" required placeholder={t("namePlaceholder")} className="mt-1" />
           </div>
           <div>
-            <label className="text-sm font-medium text-on-surface">Description</label>
+            <label className="text-sm font-medium text-on-surface">{t("descLabel")}</label>
             <textarea
               name="description"
               rows={4}
-              placeholder="Describe what you're delivering..."
+              placeholder={t("descPlaceholder")}
               className="mt-1 w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent-cyan/50"
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-on-surface">File URL</label>
-            <Input name="fileUrl" type="url" placeholder="https://github.com/..." className="mt-1" />
+            <label className="text-sm font-medium text-on-surface">{t("fileLabel")}</label>
+            <Input name="fileUrl" type="url" placeholder={t("filePlaceholder")} className="mt-1" />
           </div>
           {error && <p className="text-sm text-error">{error}</p>}
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Submitting..." : "Submit Deliverable"}
+            {loading ? t("submitting") : t("submit")}
           </Button>
         </form>
       </CardContent>

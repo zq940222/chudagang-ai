@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { reviewDeliverable } from "@/lib/actions/delivery";
 
@@ -13,12 +14,13 @@ interface Props {
 }
 
 export function DeliverableReview({ deliverableId, title, description, fileUrl, status }: Props) {
+  const t = useTranslations("delivery");
   const [currentStatus, setCurrentStatus] = useState(status);
   const [loading, setLoading] = useState(false);
 
   async function handleReview(action: "ACCEPTED" | "REJECTED") {
     setLoading(true);
-    const comment = action === "REJECTED" ? prompt("Reason for rejection:") : undefined;
+    const comment = action === "REJECTED" ? prompt(t("rejectReason")) : undefined;
     await reviewDeliverable({
       deliverableId,
       status: action,
@@ -39,13 +41,13 @@ export function DeliverableReview({ deliverableId, title, description, fileUrl, 
       </div>
       {fileUrl && (
         <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-accent-cyan underline">
-          View file
+          {t("viewFile")}
         </a>
       )}
       {currentStatus === "SUBMITTED" && (
         <div className="mt-2 flex gap-2">
-          <Button size="sm" onClick={() => handleReview("ACCEPTED")} disabled={loading}>Accept</Button>
-          <Button size="sm" variant="destructive" onClick={() => handleReview("REJECTED")} disabled={loading}>Reject</Button>
+          <Button size="sm" onClick={() => handleReview("ACCEPTED")} disabled={loading}>{t("accept")}</Button>
+          <Button size="sm" variant="destructive" onClick={() => handleReview("REJECTED")} disabled={loading}>{t("reject")}</Button>
         </div>
       )}
     </div>

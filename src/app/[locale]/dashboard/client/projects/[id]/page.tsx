@@ -7,6 +7,7 @@ import { ApplicationList } from "@/components/application/application-list";
 import { ContractView } from "@/components/contract/contract-view";
 import { ContractActions } from "@/components/contract/contract-actions";
 import { DeliverableReview } from "@/components/delivery/deliverable-review";
+import { getTranslations } from "next-intl/server";
 
 export default async function ClientProjectDetailPage({
   params,
@@ -17,6 +18,7 @@ export default async function ClientProjectDetailPage({
   if (!session?.user?.id) redirect("/en/login");
 
   const { id } = await params;
+  const t = await getTranslations();
 
   const project = await db.project.findUnique({
     where: { id },
@@ -64,7 +66,7 @@ export default async function ClientProjectDetailPage({
           {contract.deliverables.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Deliverables</CardTitle>
+                <CardTitle>{t("delivery.deliverables")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {contract.deliverables.map((d) => (
@@ -84,7 +86,7 @@ export default async function ClientProjectDetailPage({
       ) : (
         <div>
           <h2 className="text-lg font-semibold text-on-surface mb-4">
-            Applications ({applications.length})
+            {t("application.applications")} ({applications.length})
           </h2>
           <ApplicationList applications={applications} isOwner={true} />
         </div>

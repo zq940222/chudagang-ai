@@ -3,22 +3,24 @@ import { redirect } from "next/navigation";
 import { getMyContracts } from "@/lib/actions/contract";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 
 export default async function DeveloperProjectsPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/en/login");
 
+  const t = await getTranslations("devContracts");
   const result = await getMyContracts("developer");
   const contracts = result.data ?? [];
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-on-surface mb-6">My Contracts</h1>
+      <h1 className="text-2xl font-bold text-on-surface mb-6">{t("title")}</h1>
 
       {contracts.length === 0 ? (
         <div className="rounded-xl bg-surface-container-low p-8 text-center">
           <p className="text-on-surface-variant">
-            No contracts yet. Browse projects and apply!
+            {t("empty")}
           </p>
         </div>
       ) : (

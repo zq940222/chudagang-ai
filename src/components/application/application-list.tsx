@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { updateApplicationStatus } from "@/lib/actions/application";
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export function ApplicationList({ applications, isOwner }: Props) {
+  const t = useTranslations("application");
   const [items, setItems] = useState(applications);
   const [loading, setLoading] = useState<string | null>(null);
 
@@ -50,7 +52,7 @@ export function ApplicationList({ applications, isOwner }: Props) {
 
   if (items.length === 0) {
     return (
-      <p className="text-sm text-on-surface-variant py-4">No applications yet.</p>
+      <p className="text-sm text-on-surface-variant py-4">{t("noApplications")}</p>
     );
   }
 
@@ -75,10 +77,10 @@ export function ApplicationList({ applications, isOwner }: Props) {
             {isOwner && app.status === "PENDING" && (
               <div className="mt-3 flex gap-2">
                 <Button size="sm" onClick={() => handleAction(app.id, "ACCEPTED")} disabled={loading === app.id}>
-                  Accept
+                  {t("accept")}
                 </Button>
                 <Button size="sm" variant="secondary" onClick={() => handleAction(app.id, "REJECTED")} disabled={loading === app.id}>
-                  Reject
+                  {t("reject")}
                 </Button>
               </div>
             )}
@@ -86,7 +88,7 @@ export function ApplicationList({ applications, isOwner }: Props) {
             {isOwner && app.status === "ACCEPTED" && (
               <div className="mt-3">
                 <Button size="sm" onClick={() => handleAction(app.id, "contract")} disabled={loading === app.id}>
-                  Create Contract
+                  {t("createContract")}
                 </Button>
               </div>
             )}

@@ -4,6 +4,7 @@ import { getContract } from "@/lib/actions/contract";
 import { ContractView } from "@/components/contract/contract-view";
 import { ContractActions } from "@/components/contract/contract-actions";
 import { DeliveryForm } from "@/components/delivery/delivery-form";
+import { getTranslations } from "next-intl/server";
 
 export default async function DeveloperContractDetailPage({
   params,
@@ -14,6 +15,7 @@ export default async function DeveloperContractDetailPage({
   if (!session?.user?.id) redirect("/en/login");
 
   const { id } = await params;
+  const t = await getTranslations("delivery");
   const result = await getContract(id);
 
   if (result.error || !result.data) notFound();
@@ -40,7 +42,7 @@ export default async function DeveloperContractDetailPage({
 
       {contract.deliverables.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-on-surface">Deliverables</h3>
+          <h3 className="text-lg font-semibold text-on-surface">{t("deliverables")}</h3>
           {contract.deliverables.map((d) => (
             <div key={d.id} className="rounded-lg bg-surface-container-lowest p-3 ghost-border">
               <div className="flex items-start justify-between">
@@ -53,7 +55,7 @@ export default async function DeveloperContractDetailPage({
                 <span className="text-xs text-accent-cyan">{d.status}</span>
               </div>
               {d.reviewComment && (
-                <p className="mt-2 text-xs text-error">Review: {d.reviewComment}</p>
+                <p className="mt-2 text-xs text-error">{t("review")}{d.reviewComment}</p>
               )}
             </div>
           ))}

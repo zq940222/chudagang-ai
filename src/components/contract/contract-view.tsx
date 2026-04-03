@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import type { ContractWithDetails } from "@/types/contract";
 
@@ -12,7 +15,10 @@ const statusColors: Record<string, string> = {
 };
 
 export function ContractView({ contract }: { contract: ContractWithDetails }) {
+  const t = useTranslations("contract");
   const terms = contract.terms as Record<string, string>;
+
+  const statusLabel = t(`status${contract.status}` as Parameters<typeof t>[0]);
 
   return (
     <Card>
@@ -20,31 +26,33 @@ export function ContractView({ contract }: { contract: ContractWithDetails }) {
         <div className="flex items-start justify-between">
           <CardTitle>{contract.title}</CardTitle>
           <span className={`rounded-full px-3 py-1 text-xs font-medium ${statusColors[contract.status] ?? ""}`}>
-            {contract.status}
+            {statusLabel}
           </span>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <p className="text-on-surface-variant">Client</p>
+            <p className="text-on-surface-variant">{t("client")}</p>
             <p className="font-medium text-on-surface">{contract.client.name ?? "Anonymous"}</p>
           </div>
           <div>
-            <p className="text-on-surface-variant">Developer</p>
+            <p className="text-on-surface-variant">{t("developer")}</p>
             <p className="font-medium text-on-surface">{contract.developer.name ?? "Anonymous"}</p>
           </div>
           <div>
-            <p className="text-on-surface-variant">Amount</p>
+            <p className="text-on-surface-variant">{t("amount")}</p>
             <p className="font-medium text-on-surface">
               {contract.currency === "CNY" ? "\u00A5" : "$"}
               {Number(contract.totalAmount).toLocaleString()}
             </p>
           </div>
           <div>
-            <p className="text-on-surface-variant">Signed</p>
+            <p className="text-on-surface-variant">{t("signed")}</p>
             <p className="font-medium text-on-surface">
-              Client: {contract.signedByClient ? "Yes" : "No"} / Dev: {contract.signedByDeveloper ? "Yes" : "No"}
+              {t("clientSigned", { status: contract.signedByClient ? t("signedYes") : t("signedNo") })}
+              {" / "}
+              {t("devSigned", { status: contract.signedByDeveloper ? t("signedYes") : t("signedNo") })}
             </p>
           </div>
         </div>
