@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import {
   getMyNotifications,
@@ -43,22 +43,24 @@ export function NotificationDropdown({ onClose }: { onClose?: () => void }) {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   }
 
-  // Store render timestamp in a ref to avoid impure Date.now() in render
-  const renderTime = useRef(Date.now());
+  // Compute relative time labels in an effect to avoid impure Date.now() in render
+  const [timeLabels, setTimeLabels] = useState<Record<string, string>>({});
   useEffect(() => {
-    renderTime.current = Date.now();
+    const now = Date.now();
+    const labels: Record<string, string> = {};
+    for (const n of notifications) {
+      const diff = now - new Date(n.createdAt).getTime();
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) { labels[n.id] = "just now"; }
+      else if (mins < 60) { labels[n.id] = `${mins}m`; }
+      else {
+        const hours = Math.floor(mins / 60);
+        if (hours < 24) { labels[n.id] = `${hours}h`; }
+        else { labels[n.id] = `${Math.floor(hours / 24)}d`; }
+      }
+    }
+    setTimeLabels(labels);
   }, [notifications]);
-
-  function timeAgo(dateStr: string) {
-    const diff = renderTime.current - new Date(dateStr).getTime();
-    const mins = Math.floor(diff / 60000);
-    if (mins < 1) return "just now";
-    if (mins < 60) return `${mins}m`;
-    const hours = Math.floor(mins / 60);
-    if (hours < 24) return `${hours}h`;
-    const days = Math.floor(hours / 24);
-    return `${days}d`;
-  }
 
   return (
     <div className="absolute right-0 top-full mt-2 w-80 rounded-xl bg-surface-container-low shadow-xl ghost-border z-50">
@@ -89,7 +91,7 @@ export function NotificationDropdown({ onClose }: { onClose?: () => void }) {
             >
               <div className="flex items-start justify-between gap-2">
                 <p className={`text-sm ${!n.read ? "font-semibold" : "font-medium"} text-on-surface`}>{n.title}</p>
-                <span className="text-[10px] text-on-surface-variant/60 whitespace-nowrap">{timeAgo(n.createdAt)}</span>
+                <span className="text-[10px] text-on-surface-variant/60 whitespace-nowrap">{timeLabels[n.id] ?? ""}</span>
               </div>
               <p className="mt-0.5 text-xs text-on-surface-variant line-clamp-2">{n.body}</p>
               {!n.read && (
