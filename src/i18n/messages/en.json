@@ -29,6 +29,7 @@
     "loginSubtitle": "Sign in to your account",
     "registerTitle": "Get Started",
     "registerSubtitle": "Create your account",
+    "name": "Name",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
@@ -363,6 +364,23 @@
   "devContracts": {
     "title": "My Contracts",
     "empty": "No contracts yet. Browse projects and apply!"
+  },
+  "earnings": {
+    "title": "Earnings",
+    "totalEarned": "Total Earned",
+    "released": "Released payments",
+    "inEscrow": "In Escrow",
+    "pendingRelease": "Pending release",
+    "completed": "Completed",
+    "setupPayouts": "Set up payouts",
+    "setupPayoutsDesc": "Connect your Stripe account to receive payments.",
+    "connectStripe": "Connect Stripe",
+    "connecting": "Connecting...",
+    "paymentHistory": "Payment History"
+  },
+  "calendar": {
+    "title": "Availability Calendar",
+    "comingSoon": "Calendar management is coming soon. You will be able to set your available time slots here so clients can book meetings with you."
   },
   "projectDetail": {
     "activeListing": "Active Listing",

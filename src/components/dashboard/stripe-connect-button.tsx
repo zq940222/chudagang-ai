@@ -1,9 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 
 export function StripeConnectButton() {
+  const t = useTranslations("earnings");
   const [loading, setLoading] = useState(false);
 
   const handleConnect = async () => {
@@ -22,7 +24,7 @@ export function StripeConnectButton() {
 
   return (
     <Button onClick={handleConnect} disabled={loading}>
-      {loading ? "Connecting..." : "Connect Stripe"}
+      {loading ? t("connecting") : t("connectStripe")}
     </Button>
   );
 }

@@ -4,10 +4,13 @@ import { db } from "@/lib/db";
 import { StatsCard } from "@/components/dashboard/stats-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { StripeConnectButton } from "@/components/dashboard/stripe-connect-button";
+import { getTranslations } from "next-intl/server";
 
 export default async function DeveloperEarningsPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/en/login");
+
+  const t = await getTranslations("earnings");
 
   const contracts = await db.contract.findMany({
     where: { developerId: session.user.id },
@@ -33,20 +36,20 @@ export default async function DeveloperEarningsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-on-surface">Earnings</h1>
+      <h1 className="text-2xl font-bold text-on-surface">{t("title")}</h1>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatsCard title="Total Earned" value={`$${totalEarned.toLocaleString()}`} subtitle="Released payments" />
-        <StatsCard title="In Escrow" value={`$${totalHeld.toLocaleString()}`} subtitle="Pending release" />
-        <StatsCard title="Completed" value={contracts.filter((c) => c.status === "COMPLETED").length} />
+        <StatsCard title={t("totalEarned")} value={`$${totalEarned.toLocaleString()}`} subtitle={t("released")} />
+        <StatsCard title={t("inEscrow")} value={`$${totalHeld.toLocaleString()}`} subtitle={t("pendingRelease")} />
+        <StatsCard title={t("completed")} value={contracts.filter((c) => c.status === "COMPLETED").length} />
       </div>
 
       {!profile?.stripeConnectAccountId && (
         <Card>
           <CardContent className="flex items-center justify-between py-4">
             <div>
-              <p className="font-medium text-on-surface">Set up payouts</p>
-              <p className="text-sm text-on-surface-variant">Connect your Stripe account to receive payments.</p>
+              <p className="font-medium text-on-surface">{t("setupPayouts")}</p>
+              <p className="text-sm text-on-surface-variant">{t("setupPayoutsDesc")}</p>
             </div>
             <StripeConnectButton />
           </CardContent>
@@ -54,7 +57,7 @@ export default async function DeveloperEarningsPage() {
       )}
 
       <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-on-surface">Payment History</h2>
+        <h2 className="text-lg font-semibold text-on-surface">{t("paymentHistory")}</h2>
         {contracts.flatMap((c) =>
           c.payments.map((p) => (
             <div key={p.id} className="flex items-center justify-between rounded-lg bg-surface-container-lowest p-3 ghost-border">

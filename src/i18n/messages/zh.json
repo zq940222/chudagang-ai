@@ -29,6 +29,7 @@
     "loginSubtitle": "登录你的账号",
     "registerTitle": "开始使用",
     "registerSubtitle": "创建你的账号",
+    "name": "姓名",
     "email": "邮箱",
     "password": "密码",
     "confirmPassword": "确认密码",
@@ -363,6 +364,23 @@
   "devContracts": {
     "title": "我的合同",
     "empty": "暂无合同。浏览项目并申请吧！"
+  },
+  "earnings": {
+    "title": "收入",
+    "totalEarned": "总收入",
+    "released": "已释放",
+    "inEscrow": "托管中",
+    "pendingRelease": "待释放",
+    "completed": "已完成",
+    "setupPayouts": "设置收款方式",
+    "setupPayoutsDesc": "连接你的 Stripe 账户以接收付款。",
+    "connectStripe": "连接 Stripe",
+    "connecting": "连接中...",
+    "paymentHistory": "支付记录"
+  },
+  "calendar": {
+    "title": "日程管理",
+    "comingSoon": "日程管理功能即将上线。届时你可以在此设置可用时间段，方便客户预约沟通。"
   },
   "projectDetail": {
     "activeListing": "正在招募",

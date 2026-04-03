@@ -130,7 +130,7 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="name" className="text-sm font-medium text-on-surface">
-              Name
+              {t("name")}
             </label>
             <Input
               id="name"
