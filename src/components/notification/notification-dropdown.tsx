@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import {
   getMyNotifications,
   markAsRead,
@@ -19,6 +20,7 @@ interface Notification {
 }
 
 export function NotificationDropdown({ onClose }: { onClose?: () => void }) {
+  const t = useTranslations("notifications");
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,20 +43,31 @@ export function NotificationDropdown({ onClose }: { onClose?: () => void }) {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   }
 
+  function timeAgo(dateStr: string) {
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return "just now";
+    if (mins < 60) return `${mins}m`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `${hours}h`;
+    const days = Math.floor(hours / 24);
+    return `${days}d`;
+  }
+
   return (
     <div className="absolute right-0 top-full mt-2 w-80 rounded-xl bg-surface-container-low shadow-xl ghost-border z-50">
       <div className="flex items-center justify-between border-b border-outline-variant/10 px-4 py-3">
-        <h3 className="text-sm font-semibold text-on-surface">Notifications</h3>
+        <h3 className="text-sm font-semibold text-on-surface">{t("title")}</h3>
         <Button variant="tertiary" size="sm" onClick={handleMarkAll}>
-          Mark all read
+          {t("markAllRead")}
         </Button>
       </div>
 
       <div className="max-h-80 overflow-y-auto">
         {loading ? (
-          <p className="p-4 text-center text-sm text-on-surface-variant">Loading...</p>
+          <p className="p-4 text-center text-sm text-on-surface-variant">{t("loading")}</p>
         ) : notifications.length === 0 ? (
-          <p className="p-4 text-center text-sm text-on-surface-variant">No notifications</p>
+          <p className="p-4 text-center text-sm text-on-surface-variant">{t("empty")}</p>
         ) : (
           notifications.map((n) => (
             <a
@@ -68,11 +81,14 @@ export function NotificationDropdown({ onClose }: { onClose?: () => void }) {
                 !n.read ? "bg-accent-cyan/5" : ""
               }`}
             >
-              <p className="text-sm font-medium text-on-surface">{n.title}</p>
+              <div className="flex items-start justify-between gap-2">
+                <p className={`text-sm ${!n.read ? "font-semibold" : "font-medium"} text-on-surface`}>{n.title}</p>
+                <span className="text-[10px] text-on-surface-variant/60 whitespace-nowrap">{timeAgo(n.createdAt)}</span>
+              </div>
               <p className="mt-0.5 text-xs text-on-surface-variant line-clamp-2">{n.body}</p>
-              <p className="mt-1 text-xs text-on-surface-variant/60">
-                {new Date(n.createdAt).toLocaleDateString()}
-              </p>
+              {!n.read && (
+                <span className="mt-1 inline-block h-1.5 w-1.5 rounded-full bg-accent-cyan" />
+              )}
             </a>
           ))
         )}

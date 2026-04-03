@@ -2,9 +2,10 @@ import { Link } from "@/i18n/navigation";
 
 interface HeroSectionProps {
   t: (key: string) => string;
+  stats?: { developerCount: number; projectCount: number; completedCount: number };
 }
 
-export function HeroSection({ t }: HeroSectionProps) {
+export function HeroSection({ t, stats }: HeroSectionProps) {
   return (
     <section className="section-shell relative overflow-hidden px-8 py-24 sm:py-28">
       <div className="absolute inset-0 pointer-events-none">
@@ -81,15 +82,15 @@ export function HeroSection({ t }: HeroSectionProps) {
                     {t("heroPoolLabel")}
                   </div>
                   <div className="mt-1 text-lg font-black tracking-tight text-on-surface">
-                    {t("heroPoolValue")}
+                    {stats && stats.developerCount > 0 ? `${stats.developerCount.toLocaleString()} ${t("heroPoolUnit")}` : t("heroPoolValue")}
                   </div>
                 </div>
                 <div className="liquid-glass-vivid liquid-float rounded-[1.4rem] px-4 py-3">
                   <div className="text-[10px] font-black uppercase tracking-[0.24em] text-on-surface-variant">
-                    {t("heroSignalLabel")}
+                    {t("heroProjectsLabel")}
                   </div>
                   <div className="mt-1 text-lg font-black tracking-tight text-on-surface">
-                    {t("heroSignalValue")}
+                    {stats && stats.projectCount > 0 ? stats.projectCount.toLocaleString() : t("heroSignalValue")}
                   </div>
                 </div>
               </div>

@@ -62,6 +62,8 @@
     "heroMetricTimeValue": "48h",
     "heroPoolLabel": "Active Talent Pool",
     "heroPoolValue": "1,280 specialists",
+    "heroPoolUnit": "specialists",
+    "heroProjectsLabel": "Published Projects",
     "heroSignalLabel": "Signal Score",
     "heroSignalValue": "8.9/10",
     "heroDeploymentLabel": "Active Model Deployment",
@@ -364,6 +366,12 @@
   "devContracts": {
     "title": "My Contracts",
     "empty": "No contracts yet. Browse projects and apply!"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "loading": "Loading...",
+    "empty": "No notifications"
   },
   "earnings": {
     "title": "Earnings",

@@ -62,6 +62,8 @@
     "heroMetricTimeValue": "48 小时",
     "heroPoolLabel": "活跃人才池",
     "heroPoolValue": "1,280 位专家",
+    "heroPoolUnit": "位专家",
+    "heroProjectsLabel": "已发布项目",
     "heroSignalLabel": "信号评分",
     "heroSignalValue": "8.9/10",
     "heroDeploymentLabel": "在线模型部署",
@@ -364,6 +366,12 @@
   "devContracts": {
     "title": "我的合同",
     "empty": "暂无合同。浏览项目并申请吧！"
+  },
+  "notifications": {
+    "title": "通知",
+    "markAllRead": "全部已读",
+    "loading": "加载中...",
+    "empty": "暂无通知"
   },
   "earnings": {
     "title": "收入",
