@@ -3,7 +3,6 @@ import { db } from "@/lib/db";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { HeroSection } from "@/components/landing/hero-section";
-import { TrustedBySection } from "@/components/landing/trusted-by-section";
 import { CategoriesBento } from "@/components/landing/categories-bento";
 import { FeaturesSection } from "@/components/landing/features-section";
 import { FeaturedExperts } from "@/components/landing/featured-experts";
@@ -62,8 +61,7 @@ export default async function LandingPage({
         <div className="liquid-orb right-[-8rem] top-[28rem] h-96 w-96 bg-tertiary/16" />
         <div className="liquid-orb left-[35%] top-[65rem] h-96 w-96 bg-[color:rgba(207,180,137,0.18)]" />
         <HeroSection t={(key) => t(key)} stats={stats} />
-        <TrustedBySection t={(key) => t(key)} />
-        <CategoriesBento t={(key) => t(key)} />
+<CategoriesBento t={(key) => t(key)} />
         <FeaturesSection t={(key) => t(key)} />
         <FeaturedExperts t={(key) => t(key)} experts={experts} locale={locale} />
         <VelocityCta t={(key) => t(key)} />
