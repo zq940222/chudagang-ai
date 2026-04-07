@@ -73,9 +73,10 @@ export function DeliveryForm({ contractId }: { contractId: string }) {
       } else {
         setSuccess(true);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setError(t("uploadError") || err.message || "Upload failed. Please try again.");
+      const msg = err instanceof Error ? err.message : "Upload failed. Please try again.";
+      setError(t("uploadError") || msg);
     } finally {
       setLoading(false);
       setUploading(false);
