@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /d/MyProjectCode/chudagang-ai -name *adapter* -o -name *proxy* -o -name *azure*)",
+      "Bash(find /d/MyProjectCode/chudagang-ai/src/lib -type f -name *.ts)",
+      "Bash(grep -E \"\\\\.\\(env|md\\)$\")",
+      "Bash(gh run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(xargs wc:*)",
+      "Bash(npx next:*)",
+      "Bash(npx eslint:*)",
+      "Bash(xargs ls:*)",
+      "Bash(xargs grep:*)",
+      "Bash(ls /d/MyProjectCode/chudagang-ai/src/app/[locale]/chat/)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run:*)",
+      "Bash(git show:*)",
+      "Bash(xxd \"src/components/chat/chat-interface.tsx\")",
+      "Bash(python -c ':*)",
+      "Bash(npx prisma:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:linux.do)",
+      "Bash(git fetch:*)",
+      "Bash(git rebase:*)",
+      "Bash(git stash:*)",
+      "Bash(grep:*)",
+      "Bash(xargs basename:*)"
+    ]
+  }
+}
