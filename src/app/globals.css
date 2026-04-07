@@ -3,6 +3,7 @@
 @theme inline {
   --color-primary: #172033;
   --color-primary-container: #22314a;
+  --color-on-primary-container: #dbe7ff;
   --color-primary-fixed: #dbe7ff;
   --color-primary-fixed-dim: #bdcbeb;
 
