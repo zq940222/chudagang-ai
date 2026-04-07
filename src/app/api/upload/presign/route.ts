@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { v4 as uuidv4 } from "uuid";
 
 export async function GET(request: Request) {
@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     const objectPath = `contracts/${contractId}/${uuidv4()}-${safeFilename}`;
 
     // Generate presigned PUT URL valid for 15 minutes (900 seconds)
-    const { data, error } = await supabaseAdmin.storage
+    const { data, error } = await getSupabaseAdmin().storage
       .from("deliverables")
       .createSignedUploadUrl(objectPath);
 

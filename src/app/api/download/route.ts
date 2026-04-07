@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
 export async function GET(request: Request) {
   try {
@@ -38,7 +38,7 @@ export async function GET(request: Request) {
     }
 
     // Generate signed GET URL valid for 60 seconds
-    const { data, error } = await supabaseAdmin.storage
+    const { data, error } = await getSupabaseAdmin().storage
       .from("deliverables")
       .createSignedUrl(path, 60, { download: true });
 
