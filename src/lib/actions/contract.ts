@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { generateContractTerms } from "@/lib/services/contract-generator";
@@ -451,3 +452,67 @@ export async function getMyContracts(
     })),
   };
 }
+
+export async function requestRevision(
+  contractId: string,
+  reviewComment: string
+) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return { error: "Unauthorized" };
+    }
+
+    const contract = await db.contract.findUnique({
+      where: { id: contractId },
+      include: { deliverables: { orderBy: { createdAt: "desc" }, take: 1 } },
+    });
+
+    if (!contract || contract.clientId !== session.user.id) {
+      return { error: "Contract not found or forbidden" };
+    }
+
+    if (contract.status !== "DELIVERED") {
+      return { error: "Contract must be in DELIVERED state" };
+    }
+
+    const latestDeliverable = contract.deliverables[0];
+    if (!latestDeliverable) {
+      return { error: "No deliverable found" };
+    }
+
+    await db.$transaction([
+      // 1. Move contract back to ACTIVE
+      db.contract.update({
+        where: { id: contractId },
+        data: { status: "ACTIVE" },
+      }),
+      // 2. Mark deliverable as REJECTED and save comment
+      db.deliverable.update({
+        where: { id: latestDeliverable.id },
+        data: {
+          status: "REJECTED",
+          reviewComment: reviewComment,
+        },
+      }),
+      // 3. Notify developer
+      db.notification.create({
+        data: {
+          userId: contract.developerId,
+          type: "GENERAL",
+          title: "Revision Requested",
+          body: `The client has requested revisions for contract: ${contract.title}`,
+          link: `/dashboard/developer/projects/${contract.id}`,
+        },
+      }),
+    ]);
+
+    revalidatePath(`/dashboard/client/projects/${contractId}`);
+    revalidatePath(`/dashboard/developer/projects/${contractId}`);
+    return { success: true };
+  } catch (error) {
+    console.error("requestRevision error:", error);
+    return { error: "Failed to request revision" };
+  }
+}
+
