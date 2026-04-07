@@ -386,9 +386,36 @@
     "connecting": "连接中...",
     "paymentHistory": "支付记录"
   },
+  "clientDashboard": {
+    "title": "工作台",
+    "activeProjects": "进行中项目",
+    "activeProjectsDesc": "已发布或进行中",
+    "totalProjects": "全部项目",
+    "totalProjectsDesc": "历史累计",
+    "aiConversations": "AI 对话",
+    "aiConversationsDesc": "与 AI 助手的对话",
+    "aiAssistant": "AI 助手",
+    "postProject": "发布项目"
+  },
   "calendar": {
     "title": "日程管理",
-    "comingSoon": "日程管理功能即将上线。届时你可以在此设置可用时间段，方便客户预约沟通。"
+    "addSlot": "添加时间段",
+    "noSlots": "本月暂无可用时间",
+    "save": "保存",
+    "saving": "保存中...",
+    "delete": "删除",
+    "startTime": "开始时间",
+    "endTime": "结束时间",
+    "status": "状态",
+    "note": "备注",
+    "notePlaceholder": "可选备注...",
+    "statusAvailable": "可用",
+    "statusBusy": "忙碌",
+    "statusTentative": "待定",
+    "statusBlocked": "不可用",
+    "saved": "已保存！",
+    "prevMonth": "上月",
+    "nextMonth": "下月"
   },
   "projectDetail": {
     "activeListing": "正在招募",

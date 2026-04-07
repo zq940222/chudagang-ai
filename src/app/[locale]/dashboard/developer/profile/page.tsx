@@ -1,11 +1,12 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { getMyProfile, getSkillTags } from "@/lib/actions/profile";
 import { ProfileForm } from "@/components/developer/profile-form";
 
 export default async function DeveloperProfilePage() {
-  const session = await auth();
-  if (!session) redirect("/en/login");
+  const [session, locale] = await Promise.all([auth(), getLocale()]);
+  if (!session) redirect(`/${locale}/login`);
 
   const [profile, skillTags] = await Promise.all([
     getMyProfile(),

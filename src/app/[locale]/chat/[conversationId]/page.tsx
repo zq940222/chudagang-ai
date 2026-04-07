@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect, notFound } from "next/navigation";
 import { ChatInterface } from "@/components/chat/chat-interface";
 import { getConversation } from "@/lib/actions/conversation";
@@ -8,10 +9,9 @@ export default async function ChatConversationPage({
 }: {
   params: Promise<{ locale: string; conversationId: string }>;
 }) {
-  const session = await auth();
-  if (!session) redirect("/en/login");
-
   const { locale, conversationId } = await params;
+  const session = await auth();
+  if (!session) redirect(`/${locale}/login`);
 
   const result = await getConversation(conversationId);
   if (result.error || !result.data) notFound();

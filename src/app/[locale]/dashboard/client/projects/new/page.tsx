@@ -1,12 +1,13 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { ProjectPublishChat } from "@/components/project/project-publish-chat";
 import { Badge } from "@/components/ui/badge";
 
 export default async function NewProjectPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/en/login");
+  const [session, locale] = await Promise.all([auth(), getLocale()]);
+  if (!session?.user?.id) redirect(`/${locale}/login`);
 
   const t = await getTranslations("projectChat");
 

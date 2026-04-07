@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { getMyProfile } from "@/lib/actions/profile";
 import { db } from "@/lib/db";
@@ -9,8 +10,8 @@ import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 
 export default async function DeveloperDashboardPage() {
-  const session = await auth();
-  if (!session) redirect("/en/login");
+  const [session, locale] = await Promise.all([auth(), getLocale()]);
+  if (!session) redirect(`/${locale}/login`);
 
   const t = await getTranslations("devDashboard");
   const profile = await getMyProfile();

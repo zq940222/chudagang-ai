@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect, notFound } from "next/navigation";
 import { getContract } from "@/lib/actions/contract";
 import { ContractView } from "@/components/contract/contract-view";
@@ -11,10 +12,8 @@ export default async function DeveloperContractDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/en/login");
-
-  const { id } = await params;
+  const [session, locale, { id }] = await Promise.all([auth(), getLocale(), params]);
+  if (!session?.user?.id) redirect(`/${locale}/login`);
   const t = await getTranslations("delivery");
   const result = await getContract(id);
 

@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect, notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { getProjectApplications } from "@/lib/actions/application";
@@ -14,10 +15,9 @@ export default async function ClientProjectDetailPage({
 }: {
   params: Promise<{ id: string; locale: string }>;
 }) {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/en/login");
-
   const { id, locale } = await params;
+  const session = await auth();
+  if (!session?.user?.id) redirect(`/${locale}/login`);
   const t = await getTranslations();
 
   const project = await db.project.findUnique({

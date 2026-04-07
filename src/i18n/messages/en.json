@@ -386,9 +386,36 @@
     "connecting": "Connecting...",
     "paymentHistory": "Payment History"
   },
+  "clientDashboard": {
+    "title": "Dashboard",
+    "activeProjects": "Active Projects",
+    "activeProjectsDesc": "Published or in progress",
+    "totalProjects": "Total Projects",
+    "totalProjectsDesc": "All time",
+    "aiConversations": "AI Conversations",
+    "aiConversationsDesc": "With AI assistant",
+    "aiAssistant": "AI Assistant",
+    "postProject": "Post Project"
+  },
   "calendar": {
     "title": "Availability Calendar",
-    "comingSoon": "Calendar management is coming soon. You will be able to set your available time slots here so clients can book meetings with you."
+    "addSlot": "Add Time Slot",
+    "noSlots": "No slots set for this month",
+    "save": "Save",
+    "saving": "Saving...",
+    "delete": "Delete",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "status": "Status",
+    "note": "Note",
+    "notePlaceholder": "Optional note...",
+    "statusAvailable": "Available",
+    "statusBusy": "Busy",
+    "statusTentative": "Tentative",
+    "statusBlocked": "Blocked",
+    "saved": "Saved!",
+    "prevMonth": "Prev",
+    "nextMonth": "Next"
   },
   "projectDetail": {
     "activeListing": "Active Listing",

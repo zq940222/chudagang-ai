@@ -1,13 +1,17 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { StatsCard } from "@/components/dashboard/stats-card";
 import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 
 export default async function ClientDashboardPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/en/login");
+  const [session, locale] = await Promise.all([auth(), getLocale()]);
+  if (!session?.user?.id) redirect(`/${locale}/login`);
+
+  const t = await getTranslations("clientDashboard");
 
   const [activeProjects, totalProjects, conversations] = await Promise.all([
     db.project.count({
@@ -23,32 +27,32 @@ export default async function ClientDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-on-surface">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-on-surface">{t("title")}</h1>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <StatsCard
-          title="Active Projects"
+          title={t("activeProjects")}
           value={activeProjects}
-          subtitle="Published or in progress"
+          subtitle={t("activeProjectsDesc")}
         />
         <StatsCard
-          title="Total Projects"
+          title={t("totalProjects")}
           value={totalProjects}
-          subtitle="All time"
+          subtitle={t("totalProjectsDesc")}
         />
         <StatsCard
-          title="AI Conversations"
+          title={t("aiConversations")}
           value={conversations}
-          subtitle="With AI assistant"
+          subtitle={t("aiConversationsDesc")}
         />
       </div>
 
       <div className="flex flex-wrap gap-3">
         <Button asChild>
-          <Link href="/chat">AI Assistant</Link>
+          <Link href="/chat">{t("aiAssistant")}</Link>
         </Button>
         <Button variant="secondary" asChild>
-          <Link href="/dashboard/client/projects/new">Post Project</Link>
+          <Link href="/dashboard/client/projects/new">{t("postProject")}</Link>
         </Button>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { StatsCard } from "@/components/dashboard/stats-card";
@@ -7,8 +8,8 @@ import { StripeConnectButton } from "@/components/dashboard/stripe-connect-butto
 import { getTranslations } from "next-intl/server";
 
 export default async function DeveloperEarningsPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/en/login");
+  const [session, locale] = await Promise.all([auth(), getLocale()]);
+  if (!session?.user?.id) redirect(`/${locale}/login`);
 
   const t = await getTranslations("earnings");
 

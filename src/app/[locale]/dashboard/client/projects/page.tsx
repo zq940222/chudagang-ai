@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { getMyProjects } from "@/lib/actions/project";
 import { ProjectCard } from "@/components/project/project-card";
@@ -7,8 +8,8 @@ import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 
 export default async function ClientProjectsPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/en/login");
+  const [session, locale] = await Promise.all([auth(), getLocale()]);
+  if (!session?.user?.id) redirect(`/${locale}/login`);
 
   const t = await getTranslations("clientProjects");
   const result = await getMyProjects();

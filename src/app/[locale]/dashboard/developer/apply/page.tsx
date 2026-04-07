@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { getMyProfile, getSkillTags } from "@/lib/actions/profile";
 import { getTranslations } from "next-intl/server";
@@ -6,8 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { DeveloperApplyTabs } from "@/components/developer/developer-apply-tabs";
 
 export default async function DeveloperApplyPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/en/login");
+  const [session, locale] = await Promise.all([auth(), getLocale()]);
+  if (!session?.user?.id) redirect(`/${locale}/login`);
 
   // If already has profile, redirect to dashboard
   const profile = await getMyProfile();
