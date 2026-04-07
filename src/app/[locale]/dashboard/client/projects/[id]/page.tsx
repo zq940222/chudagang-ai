@@ -12,12 +12,12 @@ import { getTranslations } from "next-intl/server";
 export default async function ClientProjectDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }) {
   const session = await auth();
   if (!session?.user?.id) redirect("/en/login");
 
-  const { id } = await params;
+  const { id, locale } = await params;
   const t = await getTranslations();
 
   const project = await db.project.findUnique({
@@ -72,11 +72,14 @@ export default async function ClientProjectDetailPage({
                 {contract.deliverables.map((d) => (
                   <DeliverableReview
                     key={d.id}
+                    contractId={contract.id}
                     deliverableId={d.id}
                     title={d.title}
                     description={d.description}
                     fileUrl={d.fileUrl}
                     status={d.status}
+                    isClient={true}
+                    locale={locale}
                   />
                 ))}
               </CardContent>

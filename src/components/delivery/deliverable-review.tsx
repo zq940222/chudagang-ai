@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { reviewDeliverable } from "@/lib/actions/delivery";
+import { RevisionDialog } from "./revision-dialog";
 
 interface Props {
   deliverableId: string;
@@ -13,7 +14,16 @@ interface Props {
   status: string;
 }
 
-export function DeliverableReview({ deliverableId, title, description, fileUrl, status }: Props) {
+export function DeliverableReview({ 
+  contractId,
+  deliverableId, 
+  title, 
+  description, 
+  fileUrl, 
+  status,
+  isClient,
+  locale = "en"
+}: Props & { contractId: string, isClient?: boolean, locale?: string }) {
   const t = useTranslations("delivery");
   const [currentStatus, setCurrentStatus] = useState(status);
   const [loading, setLoading] = useState(false);
@@ -40,14 +50,19 @@ export function DeliverableReview({ deliverableId, title, description, fileUrl, 
         <span className="text-xs text-accent-cyan">{currentStatus}</span>
       </div>
       {fileUrl && (
-        <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-accent-cyan underline">
-          {t("viewFile")}
+        <a href={`/api/download?path=${encodeURIComponent(fileUrl)}&contractId=${contractId}`} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-accent-cyan underline">
+          Download Attachment
         </a>
       )}
       {currentStatus === "SUBMITTED" && (
         <div className="mt-2 flex gap-2">
           <Button size="sm" onClick={() => handleReview("ACCEPTED")} disabled={loading}>{t("accept")}</Button>
           <Button size="sm" variant="destructive" onClick={() => handleReview("REJECTED")} disabled={loading}>{t("reject")}</Button>
+        </div>
+      )}
+      {isClient && status === "PENDING_REVIEW" && (
+        <div className="mt-4 flex gap-3 border-t border-white/5 pt-4">
+          <RevisionDialog contractId={contractId} locale={locale} />
         </div>
       )}
     </div>

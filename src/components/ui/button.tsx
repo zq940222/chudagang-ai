@@ -16,6 +16,10 @@ const buttonVariants = cva(
           "text-on-surface hover:text-accent-cyan bg-transparent rounded-md",
         destructive:
           "bg-error text-on-primary rounded-md hover:opacity-90",
+        outline:
+          "border border-outline text-on-surface bg-transparent hover:bg-surface-container rounded-md",
+        ghost:
+          "text-on-surface bg-transparent hover:bg-surface-container rounded-md",
       },
       size: {
         sm: "h-8 px-3 text-xs",
