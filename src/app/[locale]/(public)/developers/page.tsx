@@ -96,13 +96,13 @@ export default async function DevelopersPage({
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row">
                   <Link
-                    href="/developers"
+                    href="/chat"
                     className="liquid-button rounded-[1.2rem] px-8 py-3 text-sm font-bold text-on-primary"
                   >
                     {t("emptyPrimaryCta")}
                   </Link>
                   <Link
-                    href="/dashboard/client/projects/new"
+                    href="/projects"
                     className="liquid-glass-vivid liquid-float rounded-[1.2rem] px-8 py-3 text-sm font-bold text-on-surface"
                   >
                     {t("emptySecondaryCta")}

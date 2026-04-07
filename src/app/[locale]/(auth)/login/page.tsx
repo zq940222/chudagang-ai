@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
+  const tc = useTranslations("common");
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -27,9 +30,16 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
-      setError("Invalid email or password");
+      setError(t("errorInvalidCredentials"));
     } else {
-      window.location.href = "/";
+      const callbackUrl = searchParams.get("callbackUrl");
+      if (callbackUrl) {
+        window.location.href = callbackUrl;
+      } else {
+        const session = await getSession();
+        const role = session?.user?.role;
+        window.location.href = role === "DEVELOPER" ? "/dashboard/developer" : "/dashboard/client";
+      }
     }
 
     setLoading(false);
@@ -78,7 +88,7 @@ export default function LoginPage() {
           )}
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "..." : t("loginTitle")}
+            {loading ? tc("loading") : tc("login")}
           </Button>
         </form>
 
@@ -116,7 +126,7 @@ export default function LoginPage() {
             href="/register"
             className="font-medium text-accent-cyan hover:underline"
           >
-            {t("registerTitle")}
+            {tc("register")}
           </Link>
         </p>
       </CardContent>

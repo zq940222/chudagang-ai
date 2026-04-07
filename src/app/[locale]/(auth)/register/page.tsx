@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,8 @@ type Role = "CLIENT" | "DEVELOPER";
 
 export default function RegisterPage() {
   const t = useTranslations("auth");
+  const tc = useTranslations("common");
+  const searchParams = useSearchParams();
   const [step, setStep] = useState<Step>("role");
   const [role, setRole] = useState<Role>("CLIENT");
   const [name, setName] = useState("");
@@ -61,7 +64,8 @@ export default function RegisterPage() {
         return;
       }
 
-      window.location.href = "/";
+      const callbackUrl = searchParams.get("callbackUrl");
+      window.location.href = callbackUrl || (role === "DEVELOPER" ? "/dashboard/developer" : "/dashboard/client");
     } catch {
       setError(t("errorGeneric"));
       setLoading(false);
@@ -173,7 +177,7 @@ export default function RegisterPage() {
           {error && <p className="text-sm text-error">{error}</p>}
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "..." : t("registerTitle")}
+            {loading ? tc("loading") : tc("register")}
           </Button>
 
           <Button
@@ -220,7 +224,7 @@ export default function RegisterPage() {
             href="/login"
             className="font-medium text-accent-cyan hover:underline"
           >
-            {t("loginTitle")}
+            {tc("login")}
           </Link>
         </p>
       </CardContent>

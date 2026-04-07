@@ -7,7 +7,10 @@ import { routing } from "@/i18n/routing";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "杵大岗AI — AI-Powered Developer Marketplace",
+  title: {
+    default: "ChuDaGang AI — AI-Powered Developer Marketplace",
+    template: "%s | ChuDaGang AI",
+  },
   description:
     "Tell our AI what you need. We'll match you with vetted developers, handle contracts, and manage payments.",
 };
