@@ -9,6 +9,8 @@ const sidebarLinks = [
   { href: "/dashboard/client/projects", labelKey: "projects", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
 ] as const;
 
+export const clientSidebarLinks = sidebarLinks;
+
 export function ClientSidebar() {
   const pathname = usePathname();
   const t = useTranslations("clientSidebar");

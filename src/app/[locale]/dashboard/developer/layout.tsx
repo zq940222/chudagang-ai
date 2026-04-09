@@ -1,15 +1,23 @@
 import { Nav } from "@/components/nav";
-import { DeveloperSidebar } from "@/components/dashboard/developer-sidebar";
+import { DeveloperSidebar, developerSidebarLinks } from "@/components/dashboard/developer-sidebar";
+import { getTranslations } from "next-intl/server";
 
-export default function DeveloperDashboardLayout({
+export default async function DeveloperDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const t = await getTranslations("devSidebar");
+
+  const dashboardLinks = developerSidebarLinks.map((link) => ({
+    href: link.href,
+    label: t(link.labelKey),
+  }));
+
   return (
     <>
-      <Nav />
-      <div className="mx-auto flex max-w-screen-2xl flex-1 gap-10 px-6 py-12 lg:px-16">
+      <Nav dashboardLinks={dashboardLinks} />
+      <div className="mx-auto flex max-w-screen-2xl flex-1 gap-10 px-4 py-6 md:px-6 md:py-12 lg:px-16">
         <DeveloperSidebar />
         <main className="min-w-0 flex-1">{children}</main>
       </div>
