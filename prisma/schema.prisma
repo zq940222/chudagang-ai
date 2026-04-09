@@ -63,6 +63,8 @@ model User {
   devContracts     Contract[]       @relation("DevContracts")
   deliverables     Deliverable[]
   notifications    Notification[]
+  reviewsGiven    Review[]  @relation("ReviewsGiven")
+  reviewsReceived Review[]  @relation("ReviewsReceived")
 }
 
 enum ProfileStatus {
@@ -282,6 +284,7 @@ model Contract {
   milestones   Milestone[]
   payments     Payment[]
   deliverables Deliverable[]
+  reviews      Review[]
 }
 
 enum MilestoneStatus {
@@ -373,6 +376,32 @@ model Deliverable {
   uploader  User       @relation(fields: [uploadedBy], references: [id])
 }
 
+// ==================== Reviews ====================
+
+enum ReviewerRole {
+  CLIENT
+  DEVELOPER
+}
+
+model Review {
+  id           String       @id @default(cuid())
+  contractId   String
+  reviewerId   String
+  revieweeId   String
+  reviewerRole ReviewerRole
+  rating       Int
+  tags         Json
+  comment      String?      @db.Text
+  createdAt    DateTime     @default(now())
+
+  contract Contract @relation(fields: [contractId], references: [id])
+  reviewer User     @relation("ReviewsGiven", fields: [reviewerId], references: [id])
+  reviewee User     @relation("ReviewsReceived", fields: [revieweeId], references: [id])
+
+  @@unique([contractId, reviewerId])
+  @@index([revieweeId, createdAt])
+}
+
 // ==================== Notifications ====================
 
 enum NotificationType {
@@ -382,6 +411,7 @@ enum NotificationType {
   CONTRACT_READY
   PAYMENT_RECEIVED
   DELIVERY_SUBMITTED
+  REVIEW_REQUESTED
   GENERAL
 }
 
