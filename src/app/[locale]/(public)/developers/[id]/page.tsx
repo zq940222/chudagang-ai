@@ -3,6 +3,8 @@ import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { formatCurrencyAmount } from "@/lib/currency";
+import { getDeveloperReviews } from "@/lib/actions/review";
+import { ReviewSummary } from "@/components/review/review-summary";
 
 export default async function DeveloperDetailPage({
   params,
@@ -26,6 +28,9 @@ export default async function DeveloperDetailPage({
   });
 
   if (!profile) notFound();
+
+  const reviewsResult = await getDeveloperReviews(profile.userId);
+  const reviewData = reviewsResult.data;
 
   const initial = profile.displayName.charAt(0).toUpperCase();
   const displayRate = profile.hourlyRate
@@ -90,6 +95,21 @@ export default async function DeveloperDetailPage({
                   </span>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Reviews */}
+          {reviewData && (
+            <div className="space-y-6">
+              <h2 className="text-sm font-black text-on-surface uppercase tracking-[0.2em]">
+                {t("reviews")}
+              </h2>
+              <ReviewSummary
+                averageRating={reviewData.averageRating}
+                totalReviews={reviewData.totalReviews}
+                topTags={reviewData.topTags}
+                reviews={reviewData.reviews}
+              />
             </div>
           )}
         </div>
