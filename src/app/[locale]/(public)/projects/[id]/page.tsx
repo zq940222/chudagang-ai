@@ -40,7 +40,7 @@ export default async function ProjectDetailPage({
     : false;
 
   return (
-    <div className="max-w-screen-2xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-16">
+    <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 py-12 flex flex-col lg:flex-row gap-16">
       {/* Main Content */}
       <div className="flex-1 space-y-12">
         {/* Hero Header */}
@@ -141,7 +141,7 @@ export default async function ProjectDetailPage({
 
       {/* Sidebar */}
       <aside className="w-full lg:w-[380px] space-y-8">
-        <div className="bg-surface-container-lowest p-8 rounded-xl ghost-border shadow-sm sticky top-28">
+        <div className="bg-surface-container-lowest p-8 rounded-xl ghost-border shadow-sm lg:sticky lg:top-28">
           {/* Apply CTA */}
           {hasDeveloperProfile ? (
             <div className="mb-6">

@@ -117,7 +117,7 @@ export default async function DeveloperDetailPage({
         {/* Sidebar (1/3) */}
         <div className="space-y-8">
           {/* Rate & Availability Card */}
-          <div className="sticky top-24 rounded-3xl bg-primary p-8 text-on-primary shadow-2xl shadow-primary/20 space-y-8">
+          <div className="lg:sticky lg:top-24 rounded-3xl bg-primary p-8 text-on-primary shadow-2xl shadow-primary/20 space-y-8">
             {displayRate && (
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-2">{t("rateLabel")}</p>
