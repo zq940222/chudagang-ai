@@ -7,7 +7,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ t, stats }: HeroSectionProps) {
   return (
-    <section className="section-shell relative overflow-hidden px-8 py-24 sm:py-28">
+    <section className="section-shell relative overflow-hidden px-4 py-16 sm:px-8 sm:py-24">
       <div className="absolute inset-0 pointer-events-none">
         <div className="liquid-orb left-[-5rem] top-10 h-[26rem] w-[26rem] bg-accent-cyan/18" />
         <div className="liquid-orb right-[-7rem] top-[-2rem] h-[30rem] w-[30rem] bg-tertiary/16" />
@@ -19,7 +19,7 @@ export function HeroSection({ t, stats }: HeroSectionProps) {
             <span className="liquid-glass-vivid liquid-line liquid-float inline-flex items-center rounded-full px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.28em] text-on-surface-variant">
               {t("heroTagline")}
             </span>
-            <h1 className="max-w-3xl text-5xl leading-[1.02] font-black tracking-[-0.04em] text-on-surface lg:text-7xl">
+            <h1 className="max-w-3xl text-3xl sm:text-5xl leading-[1.02] font-black tracking-[-0.04em] text-on-surface lg:text-7xl">
               {t("heroTitle")}
               <br />
               <span className="animate-text-gradient bg-[linear-gradient(120deg,#1f2735_0%,#5f756d_34%,#b69b74_66%,#83717a_100%)] bg-[length:220%_220%] bg-clip-text text-transparent">

@@ -13,7 +13,7 @@ const steps = [
 
 export function VelocityCta({ t }: VelocityCtaProps) {
   return (
-    <section className="section-shell relative overflow-hidden px-8 py-24">
+    <section className="section-shell relative overflow-hidden px-4 py-16 sm:px-8 sm:py-24">
       <div className="absolute inset-0 pointer-events-none">
         <div className="liquid-orb left-[16%] top-10 h-[24rem] w-[24rem] bg-accent-cyan/16" />
         <div className="liquid-orb right-[8%] bottom-[-3rem] h-[20rem] w-[20rem] bg-tertiary/14" />
@@ -21,7 +21,7 @@ export function VelocityCta({ t }: VelocityCtaProps) {
 
       <div className="relative z-10 mx-auto max-w-6xl overflow-hidden rounded-[2.4rem] liquid-glass-vivid liquid-panel liquid-float liquid-refract p-8 sm:p-12">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <h2 className="mb-6 text-4xl font-black tracking-[-0.04em] text-on-surface">{t("velocityTitle")}</h2>
+          <h2 className="mb-6 text-2xl sm:text-4xl font-black tracking-[-0.04em] text-on-surface">{t("velocityTitle")}</h2>
           <p className="leading-8 text-on-surface-variant">{t("velocityDesc")}</p>
         </div>
 

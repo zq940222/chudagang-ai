@@ -5,9 +5,9 @@ export async function Footer() {
   const tc = await getTranslations("common");
 
   return (
-    <footer className="w-full px-8 py-10">
+    <footer className="w-full px-4 sm:px-8 py-10">
       <div className="liquid-glass-subtle liquid-panel mx-auto max-w-6xl rounded-[2rem]">
-        <div className="grid grid-cols-1 gap-12 px-8 py-16 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-12 px-4 py-10 sm:px-8 sm:py-16 md:grid-cols-4">
         {/* Brand */}
           <div className="col-span-1">
             <div className="text-lg font-black tracking-tighter text-on-surface mb-6">
@@ -105,7 +105,7 @@ export async function Footer() {
           </div>
         </div>
 
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 border-t border-white/30 px-8 py-8 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant md:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 border-t border-white/30 px-4 py-6 sm:px-8 sm:py-8 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant md:flex-row">
           <p>
             &copy; {new Date().getFullYear()} {tc("appName")}. {t("copyright")}
           </p>

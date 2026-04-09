@@ -6,7 +6,7 @@ interface CategoriesBentoProps {
 
 export function CategoriesBento({ t }: CategoriesBentoProps) {
   return (
-    <section className="section-shell mx-auto max-w-6xl px-8 py-24">
+    <section className="section-shell mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-24">
       <div className="relative z-10">
         <SectionHeader
           tagline={t("featuresTagline")}

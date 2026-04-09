@@ -53,7 +53,7 @@ export function FeaturedExperts({ t, experts, locale }: FeaturedExpertsProps) {
   const displayExperts = experts.length > 0 ? experts : fallbackExperts;
 
   return (
-    <section className="section-shell mx-auto max-w-6xl px-8 py-24">
+    <section className="section-shell mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-24">
       <div className="relative z-10">
         <div className="mb-12 flex items-center justify-between">
           <h3 className="text-3xl font-black tracking-[-0.04em] text-on-surface">
@@ -71,7 +71,7 @@ export function FeaturedExperts({ t, experts, locale }: FeaturedExpertsProps) {
                 key={expert.id}
                 className="group rounded-[2rem] liquid-glass-vivid liquid-panel liquid-float liquid-refract p-8 transition-all hover:-translate-y-1 hover:shadow-[0_34px_72px_rgba(74,65,57,0.1)]"
               >
-                <div className="mb-8 flex items-start justify-between">
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex items-center gap-5">
                     <div className="relative h-16 w-16 ring-4 ring-white/45 rounded-full">
                       <div className={`flex h-full w-full items-center justify-center overflow-hidden rounded-full text-lg font-bold text-on-primary ${avatarGradients[index % avatarGradients.length]}`}>

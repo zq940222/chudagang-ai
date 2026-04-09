@@ -11,7 +11,7 @@ const steps = [
 
 export function HowItWorksSection({ t }: HowItWorksSectionProps) {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-24 sm:py-32">
+    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
       <div className="flex flex-col items-center text-center mb-16">
         <h2 className="text-3xl font-extrabold text-on-surface sm:text-5xl">
           {t("howTitle")}
