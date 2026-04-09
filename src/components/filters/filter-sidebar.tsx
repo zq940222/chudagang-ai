@@ -218,74 +218,97 @@ export function FilterSidebar({
     [maxKey, minKey, pathname, router, searchParams]
   );
 
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
   return (
-    <aside className="hidden w-64 shrink-0 flex-col space-y-8 border-r border-outline-variant/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.56),rgba(246,242,236,0.36))] p-6 lg:flex">
-      <div>
-        <h5 className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-on-surface-variant/55">
+    <aside className="w-full shrink-0 flex-col space-y-8 border-b border-outline-variant/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.56),rgba(246,242,236,0.36))] p-4 lg:w-64 lg:border-b-0 lg:border-r lg:p-6 flex">
+      {/* Mobile filter toggle */}
+      <button
+        className="flex w-full items-center justify-between lg:hidden"
+        onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
+      >
+        <h5 className="text-xs font-bold uppercase tracking-[0.22em] text-on-surface-variant/55">
           Marketplace Filters
         </h5>
-        <nav className="space-y-1">
-          {categories.map((cat) => {
-            const isActive = activeCategory === cat.value;
+        <svg
+          className={cn("w-5 h-5 text-on-surface-variant transition-transform", mobileFilterOpen && "rotate-180")}
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
 
-            return (
-              <button
-                key={cat.value}
-                onClick={() => {
-                  updateParams("category", cat.value === "all" ? null : cat.value);
-                }}
-                className={cn(
-                  "group flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left text-sm font-medium transition-all duration-200",
-                  isActive
-                    ? `${getCategoryAccentClass(cat.value, true)} border-white/55`
-                    : "border-transparent bg-transparent text-on-surface-variant/70 hover:border-white/40 hover:bg-white/55 hover:text-on-surface"
-                )}
-              >
-                <span
+      <div className={cn("space-y-8", !mobileFilterOpen && "hidden lg:block")}>
+        <div>
+          <h5 className="mb-4 hidden text-xs font-bold uppercase tracking-[0.22em] text-on-surface-variant/55 lg:block">
+            Marketplace Filters
+          </h5>
+          <nav className="space-y-1">
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat.value;
+
+              return (
+                <button
+                  key={cat.value}
+                  onClick={() => {
+                    updateParams("category", cat.value === "all" ? null : cat.value);
+                  }}
                   className={cn(
-                    "flex h-9 w-9 items-center justify-center rounded-xl transition-all",
+                    "group flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left text-sm font-medium transition-all duration-200",
                     isActive
-                      ? "bg-white/65 text-current shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
-                      : "bg-surface-container/60 text-on-surface-variant/50 group-hover:bg-white/70 group-hover:text-on-surface"
+                      ? `${getCategoryAccentClass(cat.value, true)} border-white/55`
+                      : "border-transparent bg-transparent text-on-surface-variant/70 hover:border-white/40 hover:bg-white/55 hover:text-on-surface"
                   )}
                 >
-                  {cat.icon}
-                </span>
-                <span className="flex-1">{cat.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-      </div>
-
-      {(showBudgetRange || showRateRange) && (
-        <div className="border-t border-outline-variant/10 pt-4">
-          <h5 className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-on-surface-variant/55">
-            {showBudgetRange ? budgetLabel : rateLabel}
-          </h5>
-          <RangeControl
-            key={`${minKey}:${maxKey}:${safeMin}:${safeMax}`}
-            minAllowed={minAllowed}
-            maxAllowed={maxAllowed}
-            step={step}
-            initialMin={safeMin}
-            initialMax={safeMax}
-            formatValue={formatValue}
-            label={selectedRangeLabel}
-            isBudgetRange={showBudgetRange}
-            onCommit={updateRangeParams}
-          />
+                  <span
+                    className={cn(
+                      "flex h-9 w-9 items-center justify-center rounded-xl transition-all",
+                      isActive
+                        ? "bg-white/65 text-current shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                        : "bg-surface-container/60 text-on-surface-variant/50 group-hover:bg-white/70 group-hover:text-on-surface"
+                    )}
+                  >
+                    {cat.icon}
+                  </span>
+                  <span className="flex-1">{cat.label}</span>
+                </button>
+              );
+            })}
+          </nav>
         </div>
-      )}
 
-      {showResetButton && (
-        <button
-          onClick={() => router.push(pathname)}
-          className="mt-auto w-full rounded-xl bg-primary py-3 text-xs font-bold uppercase tracking-widest text-on-primary"
-        >
-          {applyLabel}
-        </button>
-      )}
+        {(showBudgetRange || showRateRange) && (
+          <div className="border-t border-outline-variant/10 pt-4">
+            <h5 className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-on-surface-variant/55">
+              {showBudgetRange ? budgetLabel : rateLabel}
+            </h5>
+            <RangeControl
+              key={`${minKey}:${maxKey}:${safeMin}:${safeMax}`}
+              minAllowed={minAllowed}
+              maxAllowed={maxAllowed}
+              step={step}
+              initialMin={safeMin}
+              initialMax={safeMax}
+              formatValue={formatValue}
+              label={selectedRangeLabel}
+              isBudgetRange={showBudgetRange}
+              onCommit={updateRangeParams}
+            />
+          </div>
+        )}
+
+        {showResetButton && (
+          <button
+            onClick={() => router.push(pathname)}
+            className="mt-auto w-full rounded-xl bg-primary py-3 text-xs font-bold uppercase tracking-widest text-on-primary"
+          >
+            {applyLabel}
+          </button>
+        )}
+      </div>
     </aside>
   );
 }
