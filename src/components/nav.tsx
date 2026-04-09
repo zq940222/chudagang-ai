@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -15,6 +16,11 @@ const navLinks = [
   { href: "/dashboard/client/projects/new", labelKey: "howItWorks" },
 ] as const;
 
+type DashboardLink = {
+  href: string;
+  label: string;
+};
+
 function isActiveLink(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
 
@@ -24,11 +30,12 @@ function isActiveLink(pathname: string, href: string) {
   return normalizedPath === normalizedHref || normalizedPath.startsWith(`${normalizedHref}/`);
 }
 
-export function Nav() {
+export function Nav({ dashboardLinks }: { dashboardLinks?: DashboardLink[] }) {
   const t = useTranslations("nav");
   const tc = useTranslations("common");
   const { data: session, status } = useSession();
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
@@ -38,6 +45,7 @@ export function Nav() {
           <Link
             href="/"
             className="flex items-center gap-3 text-xl font-black tracking-tighter text-on-surface"
+            onClick={() => setMobileMenuOpen(false)}
           >
             <span className="flex h-9 w-9 items-center justify-center rounded-2xl liquid-glass-vivid liquid-refract text-xs text-secondary shadow-sm">
               AI
@@ -67,6 +75,26 @@ export function Nav() {
 
         {/* Right: Search + actions + auth */}
         <div className="flex items-center gap-3">
+          {/* Hamburger button — mobile only */}
+          <button
+            className="liquid-glass-vivid rounded-xl p-2 text-on-surface-variant transition-all hover:-translate-y-0.5 hover:text-on-surface md:hidden"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+          >
+            {mobileMenuOpen ? (
+              /* X icon */
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              /* Hamburger icon */
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            )}
+          </button>
+
           {/* Search bar */}
           <div className="relative hidden lg:block">
             <svg
@@ -118,7 +146,7 @@ export function Nav() {
           ) : session?.user ? (
             <UserMenu user={session.user} />
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-2 md:flex">
               <Button variant="tertiary" size="sm" asChild>
                 <Link href="/login">{tc("login")}</Link>
               </Button>
@@ -129,6 +157,79 @@ export function Nav() {
           )}
         </div>
       </nav>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div className="absolute inset-x-3 top-[calc(100%-0.75rem)] z-40 mt-2 md:hidden">
+          <div className="liquid-glass-vivid liquid-panel liquid-line rounded-[1.5rem] px-4 py-5 shadow-lg">
+            {/* Main nav links */}
+            <ul className="flex flex-col gap-1">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    aria-current={isActiveLink(pathname, link.href) ? "page" : undefined}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={cn(
+                      "block rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200",
+                      isActiveLink(pathname, link.href)
+                        ? "bg-primary text-on-primary"
+                        : "text-on-surface-variant hover:bg-white/35 hover:text-on-surface"
+                    )}
+                  >
+                    {t(link.labelKey)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {/* Dashboard links */}
+            {dashboardLinks && dashboardLinks.length > 0 && (
+              <>
+                <div className="my-3 border-t border-white/20" />
+                <ul className="flex flex-col gap-1">
+                  {dashboardLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        aria-current={isActiveLink(pathname, link.href) ? "page" : undefined}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={cn(
+                          "block rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200",
+                          isActiveLink(pathname, link.href)
+                            ? "bg-primary text-on-primary"
+                            : "text-on-surface-variant hover:bg-white/35 hover:text-on-surface"
+                        )}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {/* Login / Register — only for logged-out users */}
+            {status !== "loading" && !session?.user && (
+              <>
+                <div className="my-3 border-t border-white/20" />
+                <div className="flex flex-col gap-2">
+                  <Button variant="tertiary" size="sm" className="w-full justify-center" asChild>
+                    <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                      {tc("login")}
+                    </Link>
+                  </Button>
+                  <Button variant="primary" size="sm" className="w-full justify-center rounded-xl" asChild>
+                    <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
+                      {tc("register")}
+                    </Link>
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
