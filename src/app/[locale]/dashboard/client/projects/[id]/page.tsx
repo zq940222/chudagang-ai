@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { getLocale } from "next-intl/server";
 import { redirect, notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { getProjectApplications } from "@/lib/actions/application";

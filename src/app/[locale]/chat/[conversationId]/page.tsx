@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { getLocale } from "next-intl/server";
 import { redirect, notFound } from "next/navigation";
 import { ChatInterface } from "@/components/chat/chat-interface";
 import { getConversation } from "@/lib/actions/conversation";
