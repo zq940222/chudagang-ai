@@ -6,6 +6,7 @@ import { ContractView } from "@/components/contract/contract-view";
 import { ContractActions } from "@/components/contract/contract-actions";
 import { DeliveryForm } from "@/components/delivery/delivery-form";
 import { getTranslations } from "next-intl/server";
+import { ReviewSection } from "@/components/review/review-section";
 
 export default async function DeveloperContractDetailPage({
   params,
@@ -60,6 +61,11 @@ export default async function DeveloperContractDetailPage({
           ))}
         </div>
       )}
+      <ReviewSection
+        contractId={contract.id}
+        contractStatus={contract.status}
+        isClient={false}
+      />
     </div>
   );
 }

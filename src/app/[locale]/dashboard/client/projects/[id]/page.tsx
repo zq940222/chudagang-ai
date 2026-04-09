@@ -9,6 +9,7 @@ import { ContractView } from "@/components/contract/contract-view";
 import { ContractActions } from "@/components/contract/contract-actions";
 import { DeliverableReview } from "@/components/delivery/deliverable-review";
 import { getTranslations } from "next-intl/server";
+import { ReviewSection } from "@/components/review/review-section";
 
 export default async function ClientProjectDetailPage({
   params,
@@ -85,6 +86,11 @@ export default async function ClientProjectDetailPage({
               </CardContent>
             </Card>
           )}
+          <ReviewSection
+            contractId={contract.id}
+            contractStatus={contract.status}
+            isClient={true}
+          />
         </div>
       ) : (
         <div>
