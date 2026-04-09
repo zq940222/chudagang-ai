@@ -296,6 +296,26 @@ export async function transitionContract(
       where: { id: contract.projectId },
       data: { status: "COMPLETED" },
     });
+
+    // Notify both parties to leave reviews
+    await db.notification.createMany({
+      data: [
+        {
+          userId: contract.clientId,
+          type: "REVIEW_REQUESTED",
+          title: "Leave a Review",
+          body: `Contract for "${contract.project.title}" is completed. Share your experience!`,
+          link: `/dashboard/client/projects/${contract.projectId}`,
+        },
+        {
+          userId: contract.developerId,
+          type: "REVIEW_REQUESTED",
+          title: "Leave a Review",
+          body: `Contract for "${contract.project.title}" is completed. Share your experience!`,
+          link: `/dashboard/developer/projects/${contract.id}`,
+        },
+      ],
+    });
   }
 
   // Notify counterparty
