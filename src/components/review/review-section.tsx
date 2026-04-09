@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useTranslations } from "next-intl";
 import { getContractReviews } from "@/lib/actions/review";
 import { ReviewForm } from "./review-form";
@@ -23,20 +23,23 @@ export function ReviewSection({
 }) {
   const t = useTranslations("review");
   const [state, setState] = useState<ReviewState | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(contractStatus === "COMPLETED");
 
   useEffect(() => {
-    if (contractStatus !== "COMPLETED") {
-      setLoading(false);
-      return;
-    }
+    if (contractStatus !== "COMPLETED") return;
 
+    let cancelled = false;
     getContractReviews(contractId).then((result) => {
+      if (cancelled) return;
       if (result.data) {
         setState(result.data);
       }
       setLoading(false);
     });
+
+    return () => {
+      cancelled = true;
+    };
   }, [contractId, contractStatus]);
 
   if (contractStatus !== "COMPLETED") return null;
