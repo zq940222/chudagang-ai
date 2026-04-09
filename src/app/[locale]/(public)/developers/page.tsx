@@ -44,7 +44,7 @@ export default async function DevelopersPage({
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen flex-col lg:flex-row">
       <DeveloperFilterSidebar />
 
       <main className="flex-1 min-w-0">
@@ -70,7 +70,7 @@ export default async function DevelopersPage({
         </section>
 
         {/* Expert cards below */}
-        <section className="p-8 lg:p-12">
+        <section className="p-4 sm:p-8 lg:p-12">
           <div className="flex items-baseline gap-4 mb-8">
             <h2 className="text-2xl font-black tracking-tight text-on-surface">
               {t("allExperts")}

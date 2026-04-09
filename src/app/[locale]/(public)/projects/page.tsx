@@ -37,10 +37,10 @@ export default async function ProjectsPage({
   const rest = projects.slice(1);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen flex-col lg:flex-row">
       <ProjectFilterSidebar />
 
-      <main className="flex-1 p-8 lg:p-12 max-w-7xl">
+      <main className="flex-1 p-4 sm:p-8 lg:p-12 max-w-7xl">
         <div className="mb-12">
           <Badge variant="accent" className="mb-4">
             {t("marketplaceBadge")}
