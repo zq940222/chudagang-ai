@@ -30,7 +30,7 @@ export type InitialData = {
 
 interface ProfileFormProps {
   skillTags: SkillTag[];
-  initialData?: InitialData;
+  initialData?: InitialData | null;
   mode: "create" | "edit";
 }
 

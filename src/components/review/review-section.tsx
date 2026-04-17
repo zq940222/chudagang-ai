@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { getContractReviews } from "@/lib/actions/review";
 import { ReviewForm } from "./review-form";
