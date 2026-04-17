@@ -10,9 +10,6 @@ export default async function DeveloperApplyPage() {
   const [session, locale] = await Promise.all([auth(), getLocale()]);
   if (!session?.user?.id) redirect(`/${locale}/login`);
 
-  // If already has profile, redirect to dashboard
-  const profile = await getMyProfile();
-  if (profile) redirect("/dashboard/developer");
 
   const t = await getTranslations("developerApply");
   const skillTags = await getSkillTags();
