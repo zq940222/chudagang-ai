@@ -7,12 +7,24 @@ import { Badge } from "@/components/ui/badge";
 import { DeveloperApplyTabs } from "@/components/developer/developer-apply-tabs";
 
 export default async function DeveloperApplyPage() {
-  const [session, locale] = await Promise.all([auth(), getLocale()]);
+  const [session, locale, profile] = await Promise.all([auth(), getLocale(), getMyProfile()]);
   if (!session?.user?.id) redirect(`/${locale}/login`);
 
 
   const t = await getTranslations("developerApply");
   const skillTags = await getSkillTags();
+
+  // Convert profile to a serializable object for the client component
+  const serializableProfile = profile ? {
+    displayName: profile.displayName,
+    title: profile.title,
+    bio: profile.bio,
+    githubUrl: profile.githubUrl,
+    portfolioUrl: profile.portfolioUrl,
+    hourlyRate: profile.hourlyRate ? Number(profile.hourlyRate) : null,
+    currency: profile.currency,
+    skills: profile.skills.map(s => ({ skillTagId: s.skillTagId }))
+  } : null;
 
   return (
     <div className="fixed inset-0 top-16 z-10 flex flex-col overflow-y-auto bg-surface">
@@ -29,7 +41,7 @@ export default async function DeveloperApplyPage() {
               {t("pageDesc")}
             </p>
           </div>
-          <DeveloperApplyTabs skillTags={skillTags} />
+          <DeveloperApplyTabs skillTags={skillTags} profile={serializableProfile} />
         </div>
       </section>
     </div>

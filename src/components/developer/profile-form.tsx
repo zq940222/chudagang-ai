@@ -17,7 +17,7 @@ type SkillTag = {
   localeEn: string;
 };
 
-type InitialData = {
+export type InitialData = {
   displayName: string;
   title?: string | null;
   bio?: string | null;

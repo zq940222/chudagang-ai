@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLocale } from "next-intl";
-import { ProfileForm } from "@/components/developer/profile-form";
+import { ProfileForm, type InitialData } from "@/components/developer/profile-form";
 import { DeveloperApplyChat } from "@/components/developer/developer-apply-chat";
 
 type SkillTag = {
@@ -15,9 +15,10 @@ type SkillTag = {
 
 interface DeveloperApplyTabsProps {
   skillTags: SkillTag[];
+  profile: InitialData | null;
 }
 
-export function DeveloperApplyTabs({ skillTags }: DeveloperApplyTabsProps) {
+export function DeveloperApplyTabs({ skillTags, profile }: DeveloperApplyTabsProps) {
   const locale = useLocale();
   const [activeTab, setActiveTab] = useState<"chat" | "form">("chat");
 
@@ -54,7 +55,7 @@ export function DeveloperApplyTabs({ skillTags }: DeveloperApplyTabsProps) {
         </div>
       ) : (
         <div className="max-w-2xl mx-auto">
-          <ProfileForm skillTags={skillTags} mode="create" />
+          <ProfileForm skillTags={skillTags} initialData={profile} mode={profile ? "edit" : "create"} />
         </div>
       )}
     </div>
