@@ -476,5 +476,18 @@
     "tagTimelyPayment": "付款及时",
     "tagRespectsExpertise": "尊重专业意见",
     "tagPromptFeedback": "反馈及时"
+  },
+  "settings": {
+    "title": "账户设置",
+    "profileSection": "个人资料",
+    "passwordSection": "修改密码",
+    "name": "显示名称",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "changePassword": "修改密码",
+    "saved": "保存成功",
+    "passwordChanged": "密码已修改",
+    "wrongPassword": "当前密码不正确",
+    "error": "操作失败，请重试"
   }
 }

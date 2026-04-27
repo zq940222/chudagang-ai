@@ -476,5 +476,18 @@
     "tagTimelyPayment": "Timely Payment",
     "tagRespectsExpertise": "Respects Expertise",
     "tagPromptFeedback": "Prompt Feedback"
+  },
+  "settings": {
+    "title": "Account Settings",
+    "profileSection": "Profile",
+    "passwordSection": "Change Password",
+    "name": "Display Name",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "changePassword": "Change Password",
+    "saved": "Saved successfully",
+    "passwordChanged": "Password changed",
+    "wrongPassword": "Current password is incorrect",
+    "error": "Something went wrong, please try again"
   }
 }
