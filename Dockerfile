@@ -37,17 +37,15 @@ COPY --from=builder /app/public ./public
 
 RUN mkdir .next && chown nextjs:nodejs .next
 
-# standalone output (set via output: 'standalone' in next.config)
+# standalone output + generated prisma client
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Prisma: schema, config, generated binaries, all @prisma/* packages, CLI, dotenv
-COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/dotenv ./node_modules/dotenv
+
+# Migration tooling: full node_modules from deps stage in a separate path
+COPY --from=deps --chown=nextjs:nodejs /app/node_modules /prisma_deps/node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/prisma /prisma_deps/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts /prisma_deps/prisma.config.ts
 
 USER nextjs
 
@@ -55,5 +53,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Run migrations then start the server
-CMD ["sh", "-c", "node node_modules/prisma/build/index.js migrate deploy && node server.js"]
+# Run migrations with full deps, then start the server
+CMD ["sh", "-c", "cd /prisma_deps && node node_modules/prisma/build/index.js migrate deploy && cd /app && node server.js"]
