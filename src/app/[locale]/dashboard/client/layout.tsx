@@ -1,5 +1,6 @@
 import { Nav } from "@/components/nav";
-import { ClientSidebar, clientSidebarLinks } from "@/components/dashboard/client-sidebar";
+import { ClientSidebar } from "@/components/dashboard/client-sidebar";
+import { clientSidebarLinks } from "@/components/dashboard/client-sidebar-links";
 import { getTranslations } from "next-intl/server";
 
 export default async function ClientDashboardLayout({
