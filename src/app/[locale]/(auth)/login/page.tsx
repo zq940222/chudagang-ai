@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn, getSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,8 @@ export default function LoginPage() {
   const t = useTranslations("auth");
   const tc = useTranslations("common");
   const searchParams = useSearchParams();
+  const params = useParams();
+  const locale = params.locale as string;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -38,7 +40,8 @@ export default function LoginPage() {
       } else {
         const session = await getSession();
         const role = session?.user?.role;
-        window.location.href = role === "DEVELOPER" ? "/dashboard/developer" : "/dashboard/client";
+        window.location.href =
+          role === "DEVELOPER" ? `/${locale}/dashboard/developer` : `/${locale}/dashboard/client`;
       }
     }
 
@@ -107,14 +110,22 @@ export default function LoginPage() {
           <Button
             variant="secondary"
             className="w-full"
-            onClick={() => signIn("google", { callbackUrl: "/" })}
+            onClick={() =>
+              signIn("google", {
+                callbackUrl: searchParams.get("callbackUrl") || `/${locale}/redirect`,
+              })
+            }
           >
             {t("google")}
           </Button>
           <Button
             variant="secondary"
             className="w-full"
-            onClick={() => signIn("github", { callbackUrl: "/" })}
+            onClick={() =>
+              signIn("github", {
+                callbackUrl: searchParams.get("callbackUrl") || `/${locale}/redirect`,
+              })
+            }
           >
             {t("github")}
           </Button>

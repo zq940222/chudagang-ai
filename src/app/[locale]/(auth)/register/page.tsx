@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,8 @@ export default function RegisterPage() {
   const t = useTranslations("auth");
   const tc = useTranslations("common");
   const searchParams = useSearchParams();
+  const params = useParams();
+  const locale = params.locale as string;
   const [step, setStep] = useState<Step>("role");
   const [role, setRole] = useState<Role>("CLIENT");
   const [name, setName] = useState("");
@@ -65,7 +67,11 @@ export default function RegisterPage() {
       }
 
       const callbackUrl = searchParams.get("callbackUrl");
-      window.location.href = callbackUrl || (role === "DEVELOPER" ? "/dashboard/developer" : "/dashboard/client");
+      window.location.href =
+        callbackUrl ||
+        (role === "DEVELOPER"
+          ? `/${locale}/dashboard/developer`
+          : `/${locale}/dashboard/client`);
     } catch {
       setError(t("errorGeneric"));
       setLoading(false);
@@ -105,6 +111,44 @@ export default function RegisterPage() {
               {t("roleDeveloperDesc")}
             </p>
           </button>
+
+          <div className="relative my-2">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-outline-variant/20" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-surface-container-lowest px-2 text-on-surface-variant">
+                {t("orContinueWith")}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Button
+              variant="secondary"
+              className="w-full"
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl:
+                    searchParams.get("callbackUrl") || `/${locale}/redirect`,
+                })
+              }
+            >
+              {t("google")}
+            </Button>
+            <Button
+              variant="secondary"
+              className="w-full"
+              onClick={() =>
+                signIn("github", {
+                  callbackUrl:
+                    searchParams.get("callbackUrl") || `/${locale}/redirect`,
+                })
+              }
+            >
+              {t("github")}
+            </Button>
+          </div>
 
           <p className="mt-4 text-center text-sm text-on-surface-variant">
             {t("hasAccount")}{" "}
@@ -189,34 +233,6 @@ export default function RegisterPage() {
             &larr; {t("selectRole")}
           </Button>
         </form>
-
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-outline-variant/20" />
-          </div>
-          <div className="relative flex justify-center text-xs">
-            <span className="bg-surface-container-lowest px-2 text-on-surface-variant">
-              {t("orContinueWith")}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Button
-            variant="secondary"
-            className="w-full"
-            onClick={() => signIn("google", { callbackUrl: "/" })}
-          >
-            {t("google")}
-          </Button>
-          <Button
-            variant="secondary"
-            className="w-full"
-            onClick={() => signIn("github", { callbackUrl: "/" })}
-          >
-            {t("github")}
-          </Button>
-        </div>
 
         <p className="mt-6 text-center text-sm text-on-surface-variant">
           {t("hasAccount")}{" "}
