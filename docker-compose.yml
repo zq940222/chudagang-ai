@@ -1,0 +1,7 @@
+services:
+  app:
+    image: ghcr.io/zq940222/chudagang-ai:latest
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - .env
