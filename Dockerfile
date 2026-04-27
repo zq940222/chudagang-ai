@@ -20,8 +20,6 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Prisma generate runs via postinstall but we need it explicitly here too
-RUN npx prisma generate
 RUN npm run build
 
 # ── runner: minimal production image ────────────────────────────────────────
