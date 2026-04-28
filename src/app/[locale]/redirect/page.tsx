@@ -38,7 +38,7 @@ export default async function RedirectPage({
   }
 
   redirect(
-    session.user.activeRole === "DEVELOPER"
+    session.user.role === "DEVELOPER"
       ? "/dashboard/developer"
       : "/dashboard/client"
   );
