@@ -40,13 +40,24 @@
     "google": "Google",
     "github": "GitHub",
     "selectRole": "我想要...",
+    "selectRoleHint": "选择你的默认入口模式 — 注册后随时可以切换",
     "roleClient": "雇佣 AI 开发者",
     "roleDeveloper": "寻找 AI 项目",
     "roleClientDesc": "发布项目需求，找到最适合的 AI 开发者",
     "roleDeveloperDesc": "展示你的技能，并被匹配到合适项目",
+    "oauthRoleNote": "OAuth 注册将使用上方选择的模式，注册后可随时切换角色",
+    "continueWithEmail": "用邮箱继续注册",
     "errorEmailExists": "该邮箱已被注册",
     "errorInvalidCredentials": "邮箱或密码错误",
     "errorGeneric": "发生错误，请重试"
+  },
+  "roleSwitcher": {
+    "currentClient": "客户",
+    "currentDeveloper": "开发者",
+    "switchToClient": "切换到客户模式",
+    "switchToDeveloper": "切换到开发者模式",
+    "enableClient": "开启客户模式",
+    "enableDeveloper": "开启开发者模式"
   },
   "landing": {
     "heroTagline": "精英人才网络",

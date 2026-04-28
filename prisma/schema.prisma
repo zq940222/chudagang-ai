@@ -48,8 +48,9 @@ model User {
   emailVerified    DateTime?
   name             String?
   avatar           String?
-  role             UserRole  @default(CLIENT)
-  locale           String    @default("en")
+  roles            UserRole[] @default([CLIENT, DEVELOPER])
+  activeRole       UserRole   @default(CLIENT)
+  locale           String     @default("en")
   hashedPassword   String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt

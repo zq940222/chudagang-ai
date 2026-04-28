@@ -28,9 +28,11 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function selectRole(selectedRole: Role) {
-    setRole(selectedRole);
-    setStep("form");
+  function buildOAuthCallbackUrl(selectedRole: Role) {
+    const base = searchParams.get("callbackUrl") || `/${locale}/redirect`;
+    const url = new URL(base, "http://placeholder");
+    url.searchParams.set("activeRole", selectedRole);
+    return url.pathname + url.search;
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -53,7 +55,6 @@ export default function RegisterPage() {
         return;
       }
 
-      // Auto sign in after registration
       const signInRes = await signIn("credentials", {
         email,
         password,
@@ -86,13 +87,17 @@ export default function RegisterPage() {
             {t("registerTitle")}
           </CardTitle>
           <p className="text-center text-sm text-on-surface-variant">
-            {t("selectRole")}
+            {t("selectRoleHint")}
           </p>
         </CardHeader>
         <CardContent className="space-y-3">
           <button
-            onClick={() => selectRole("CLIENT")}
-            className="w-full rounded-xl border border-outline-variant/20 p-4 text-left transition-colors hover:border-accent-cyan hover:bg-surface-container cursor-pointer"
+            onClick={() => setRole("CLIENT")}
+            className={`w-full rounded-xl border p-4 text-left transition-colors cursor-pointer ${
+              role === "CLIENT"
+                ? "border-accent-cyan bg-accent-cyan/5"
+                : "border-outline-variant/20 hover:border-accent-cyan hover:bg-surface-container"
+            }`}
           >
             <p className="font-semibold text-on-surface">{t("roleClient")}</p>
             <p className="mt-1 text-sm text-on-surface-variant">
@@ -101,8 +106,12 @@ export default function RegisterPage() {
           </button>
 
           <button
-            onClick={() => selectRole("DEVELOPER")}
-            className="w-full rounded-xl border border-outline-variant/20 p-4 text-left transition-colors hover:border-accent-violet hover:bg-surface-container cursor-pointer"
+            onClick={() => setRole("DEVELOPER")}
+            className={`w-full rounded-xl border p-4 text-left transition-colors cursor-pointer ${
+              role === "DEVELOPER"
+                ? "border-accent-violet bg-accent-violet/5"
+                : "border-outline-variant/20 hover:border-accent-violet hover:bg-surface-container"
+            }`}
           >
             <p className="font-semibold text-on-surface">
               {t("roleDeveloper")}
@@ -111,6 +120,10 @@ export default function RegisterPage() {
               {t("roleDeveloperDesc")}
             </p>
           </button>
+
+          <Button className="w-full" onClick={() => setStep("form")}>
+            {t("continueWithEmail")} &rarr;
+          </Button>
 
           <div className="relative my-2">
             <div className="absolute inset-0 flex items-center">
@@ -129,8 +142,7 @@ export default function RegisterPage() {
               className="w-full"
               onClick={() =>
                 signIn("google", {
-                  callbackUrl:
-                    searchParams.get("callbackUrl") || `/${locale}/redirect`,
+                  callbackUrl: buildOAuthCallbackUrl(role),
                 })
               }
             >
@@ -141,14 +153,17 @@ export default function RegisterPage() {
               className="w-full"
               onClick={() =>
                 signIn("github", {
-                  callbackUrl:
-                    searchParams.get("callbackUrl") || `/${locale}/redirect`,
+                  callbackUrl: buildOAuthCallbackUrl(role),
                 })
               }
             >
               {t("github")}
             </Button>
           </div>
+
+          <p className="text-center text-xs text-on-surface-variant">
+            {t("oauthRoleNote")}
+          </p>
 
           <p className="mt-4 text-center text-sm text-on-surface-variant">
             {t("hasAccount")}{" "}

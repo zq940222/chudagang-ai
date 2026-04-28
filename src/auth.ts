@@ -16,6 +16,7 @@ declare module "next-auth" {
       name: string | null;
       image: string | null;
       role: UserRole;
+      roles: UserRole[];
       locale: string;
     };
   }
@@ -77,14 +78,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: createAdapter(),
   session: { strategy: "jwt" },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         const dbUser = await db.user.findUnique({
           where: { id: user.id },
-          select: { role: true, locale: true },
+          select: { activeRole: true, roles: true, locale: true },
         });
-        token.role = dbUser?.role ?? "CLIENT";
+        token.role = dbUser?.activeRole ?? "CLIENT";
+        token.roles = dbUser?.roles ?? ["CLIENT", "DEVELOPER"];
         token.locale = dbUser?.locale ?? "en";
+      }
+      if (trigger === "update" && session?.activeRole) {
+        token.role = session.activeRole as UserRole;
+        // Re-read roles from DB in case a new role was just enabled
+        const dbUser = await db.user.findUnique({
+          where: { id: token.sub! },
+          select: { roles: true },
+        });
+        if (dbUser) token.roles = dbUser.roles;
       }
       return token;
     },
@@ -92,6 +103,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         session.user.id = token.sub!;
         session.user.role = token.role as UserRole;
+        session.user.roles = (token.roles as UserRole[]) ?? [token.role as UserRole];
         session.user.locale = token.locale as string;
       }
       return session;

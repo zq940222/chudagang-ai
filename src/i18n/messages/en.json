@@ -40,13 +40,24 @@
     "google": "Google",
     "github": "GitHub",
     "selectRole": "I want to...",
+    "selectRoleHint": "Choose your starting mode — you can switch anytime",
     "roleClient": "Hire AI Developers",
     "roleDeveloper": "Find AI Projects",
     "roleClientDesc": "Post projects and find the perfect AI developer",
     "roleDeveloperDesc": "Showcase your skills and get matched with projects",
+    "oauthRoleNote": "OAuth sign-up uses your selected mode above — switch roles anytime after",
+    "continueWithEmail": "Continue with email",
     "errorEmailExists": "This email is already registered",
     "errorInvalidCredentials": "Invalid email or password",
     "errorGeneric": "Something went wrong, please try again"
+  },
+  "roleSwitcher": {
+    "currentClient": "Client",
+    "currentDeveloper": "Developer",
+    "switchToClient": "Switch to Client",
+    "switchToDeveloper": "Switch to Developer",
+    "enableClient": "Enable Client Mode",
+    "enableDeveloper": "Enable Developer Mode"
   },
   "landing": {
     "heroTagline": "The Expert Network",

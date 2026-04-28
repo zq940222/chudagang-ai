@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const validRole: UserRole = role === "DEVELOPER" ? "DEVELOPER" : "CLIENT";
     console.log("Creating user in database...");
     const user = await db.user.create({
-      data: { email, name, hashedPassword, role: validRole },
+      data: { email, name, hashedPassword, activeRole: validRole },
     });
     
     console.log("User created successfully:", user.id);

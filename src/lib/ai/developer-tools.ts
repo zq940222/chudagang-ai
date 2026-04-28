@@ -75,10 +75,19 @@ export const createDeveloperProfile = tool({
       },
     });
 
-    // Update user role to DEVELOPER
+    // Ensure DEVELOPER is in roles and activate developer mode
+    const currentUser = await db.user.findUnique({
+      where: { id: userId },
+      select: { roles: true },
+    });
     await db.user.update({
       where: { id: userId },
-      data: { role: "DEVELOPER" },
+      data: {
+        activeRole: "DEVELOPER",
+        roles: currentUser?.roles.includes("DEVELOPER")
+          ? undefined
+          : { push: "DEVELOPER" },
+      },
     });
 
     // Trigger AI review in background

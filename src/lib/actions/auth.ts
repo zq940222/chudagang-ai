@@ -35,7 +35,8 @@ export async function register(data: z.infer<typeof registerSchema>) {
         email,
         name,
         hashedPassword,
-        role: role as UserRole,
+        activeRole: role as UserRole,
+        // roles uses schema default [CLIENT, DEVELOPER]
       },
     });
 

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { UserMenu } from "@/components/user-menu";
 import { NotificationBell } from "@/components/notification/notification-bell";
+import { RoleSwitcher } from "@/components/role-switcher";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -117,6 +118,11 @@ export function Nav({ dashboardLinks }: { dashboardLinks?: DashboardLink[] }) {
             />
           </div>
 
+          {/* Role switcher for logged-in users */}
+          {status !== "loading" && session?.user && (
+            <RoleSwitcher />
+          )}
+
           {/* Action icons for logged-in users */}
           {status !== "loading" && session?.user && (
             <>
@@ -206,6 +212,16 @@ export function Nav({ dashboardLinks }: { dashboardLinks?: DashboardLink[] }) {
                     </li>
                   ))}
                 </ul>
+              </>
+            )}
+
+            {/* Role switcher — only for logged-in users */}
+            {status !== "loading" && session?.user && (
+              <>
+                <div className="my-3 border-t border-white/20" />
+                <div className="px-1">
+                  <RoleSwitcher />
+                </div>
               </>
             )}
 

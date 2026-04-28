@@ -36,9 +36,19 @@ export async function createProfile(formData: FormData) {
     },
   });
 
+  // Ensure DEVELOPER is in roles and activate developer mode
+  const currentUser = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { roles: true },
+  });
   await db.user.update({
     where: { id: session.user.id },
-    data: { role: "DEVELOPER" },
+    data: {
+      activeRole: "DEVELOPER",
+      roles: currentUser?.roles.includes("DEVELOPER")
+        ? undefined
+        : { push: "DEVELOPER" },
+    },
   });
 
   // Trigger AI review in background (don't block the response)
