@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { redirect } from "@/i18n/navigation";
+import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 import type { UserRole } from "@prisma/client";
 
 export default async function RedirectPage({
@@ -8,10 +9,10 @@ export default async function RedirectPage({
 }: {
   searchParams: Promise<{ activeRole?: string }>;
 }) {
-  const session = await auth();
+  const [session, locale] = await Promise.all([auth(), getLocale()]);
 
   if (!session?.user) {
-    redirect("/login");
+    redirect(`/${locale}/login`);
   }
 
   const { activeRole: requestedRole } = await searchParams;
@@ -31,15 +32,15 @@ export default async function RedirectPage({
       });
       redirect(
         requestedRole === "DEVELOPER"
-          ? "/dashboard/developer"
-          : "/dashboard/client"
+          ? `/${locale}/dashboard/developer`
+          : `/${locale}/dashboard/client`
       );
     }
   }
 
   redirect(
     session.user.role === "DEVELOPER"
-      ? "/dashboard/developer"
-      : "/dashboard/client"
+      ? `/${locale}/dashboard/developer`
+      : `/${locale}/dashboard/client`
   );
 }
