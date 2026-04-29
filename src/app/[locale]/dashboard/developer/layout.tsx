@@ -1,5 +1,6 @@
 import { Nav } from "@/components/nav";
-import { DeveloperSidebar, developerSidebarLinks } from "@/components/dashboard/developer-sidebar";
+import { DeveloperSidebar } from "@/components/dashboard/developer-sidebar";
+import { developerSidebarLinks } from "@/components/dashboard/developer-sidebar-links";
 import { getTranslations } from "next-intl/server";
 
 export default async function DeveloperDashboardLayout({

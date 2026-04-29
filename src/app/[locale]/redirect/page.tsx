@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/navigation";
 import type { UserRole } from "@prisma/client";
 
 export default async function RedirectPage({
