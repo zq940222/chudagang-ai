@@ -106,18 +106,29 @@ export function AvailabilityCalendar({ initialSlots }: { initialSlots: Slot[] })
 
   function handleAddSlot() {
     if (!selectedDate) return;
+    const existingForDate = slotMap[selectedDate] ?? [];
     startTransition(async () => {
       try {
         await setAvailability({
-          slots: [{
-            date: selectedDate,
-            startTime: newSlot.startTime,
-            endTime: newSlot.endTime,
-            status: newSlot.status,
-            note: newSlot.note || undefined,
-          }],
+          slots: [
+            // preserve all existing slots for this date
+            ...existingForDate.map(s => ({
+              date: selectedDate,
+              startTime: s.startTime,
+              endTime: s.endTime,
+              status: s.status,
+              note: s.note ?? undefined,
+            })),
+            // append the new slot
+            {
+              date: selectedDate,
+              startTime: newSlot.startTime,
+              endTime: newSlot.endTime,
+              status: newSlot.status,
+              note: newSlot.note || undefined,
+            },
+          ],
         });
-        // Optimistic update
         const added: Slot = {
           id: crypto.randomUUID(),
           date: new Date(selectedDate),

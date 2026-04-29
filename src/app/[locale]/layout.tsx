@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { Toaster } from "react-hot-toast";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
@@ -36,6 +37,18 @@ export default async function LocaleLayout({
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
             {children}
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                style: {
+                  background: "var(--color-surface-container-lowest)",
+                  color: "var(--color-on-surface)",
+                  border: "1px solid var(--color-outline-variant)",
+                  borderRadius: "0.75rem",
+                  fontSize: "0.875rem",
+                },
+              }}
+            />
           </NextIntlClientProvider>
         </SessionProvider>
       </body>
