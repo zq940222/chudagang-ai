@@ -28,12 +28,10 @@ export default async function DeveloperProfilePage() {
     : undefined;
 
   return (
-    <div className="max-w-2xl">
-      <ProfileForm
-        skillTags={skillTags}
-        initialData={initialData}
-        mode={mode}
-      />
-    </div>
+    <ProfileForm
+      skillTags={skillTags}
+      initialData={initialData}
+      mode={mode}
+    />
   );
 }

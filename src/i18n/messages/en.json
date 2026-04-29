@@ -305,6 +305,9 @@
   "profileForm": {
     "createTitle": "Create Developer Profile",
     "editTitle": "Edit Profile",
+    "sectionBasic": "Basic Info",
+    "sectionLinks": "Social Links",
+    "sectionRate": "Rate & Currency",
     "displayName": "Display Name",
     "displayNameRequired": "*",
     "title": "Title",

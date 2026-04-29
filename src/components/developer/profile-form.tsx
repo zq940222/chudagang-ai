@@ -60,151 +60,184 @@ export function ProfileForm({ skillTags, initialData, mode }: ProfileFormProps) 
     }
   }
 
+  const labelClass = "text-sm font-medium text-on-surface";
+  const textareaClass =
+    "flex w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:bg-surface-container-high focus:outline-none focus:ring-1 focus:ring-accent-cyan/50 disabled:cursor-not-allowed disabled:opacity-50";
+  const selectClass =
+    "flex h-10 w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:bg-surface-container-high focus:outline-none focus:ring-1 focus:ring-accent-cyan/50";
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-on-surface">
           {mode === "create" ? t("createTitle") : t("editTitle")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form action={handleSubmit} className="space-y-5">
-          {error && (
-            <div className="rounded-md bg-error/10 px-4 py-2 text-sm text-error">
-              {error}
-            </div>
-          )}
+        </h1>
+      </div>
 
-          {/* Display Name */}
-          <div className="space-y-1.5">
-            <label htmlFor="displayName" className="text-sm font-medium text-on-surface">
-              {t("displayName")} {t("displayNameRequired")}
-            </label>
-            <Input
-              id="displayName"
-              name="displayName"
-              required
-              minLength={2}
-              maxLength={100}
-              defaultValue={initialData?.displayName ?? ""}
-            />
+      <form action={handleSubmit} className="space-y-6">
+        {error && (
+          <div className="rounded-xl bg-error/10 px-4 py-3 text-sm text-error ghost-border">
+            {error}
+          </div>
+        )}
+
+        {/* Main grid: 2-col info + 1-col sidebar */}
+        <div className="grid gap-6 lg:grid-cols-3">
+
+          {/* Left 2 cols */}
+          <div className="space-y-6 lg:col-span-2">
+
+            {/* Basic info card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{t("sectionBasic")}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <label htmlFor="displayName" className={labelClass}>
+                      {t("displayName")} {t("displayNameRequired")}
+                    </label>
+                    <Input
+                      id="displayName"
+                      name="displayName"
+                      required
+                      minLength={2}
+                      maxLength={100}
+                      defaultValue={initialData?.displayName ?? ""}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label htmlFor="title" className={labelClass}>
+                      {t("title")}
+                    </label>
+                    <Input
+                      id="title"
+                      name="title"
+                      maxLength={200}
+                      placeholder={t("titlePlaceholder")}
+                      defaultValue={initialData?.title ?? ""}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <label htmlFor="bio" className={labelClass}>
+                    {t("bio")}
+                  </label>
+                  <textarea
+                    id="bio"
+                    name="bio"
+                    rows={5}
+                    maxLength={2000}
+                    placeholder={t("bioPlaceholder")}
+                    defaultValue={initialData?.bio ?? ""}
+                    className={textareaClass}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Links card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{t("sectionLinks")}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-1.5">
+                  <label htmlFor="githubUrl" className={labelClass}>
+                    {t("githubUrl")}
+                  </label>
+                  <Input
+                    id="githubUrl"
+                    name="githubUrl"
+                    type="url"
+                    placeholder={t("githubPlaceholder")}
+                    defaultValue={initialData?.githubUrl ?? ""}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label htmlFor="portfolioUrl" className={labelClass}>
+                    {t("portfolioUrl")}
+                  </label>
+                  <Input
+                    id="portfolioUrl"
+                    name="portfolioUrl"
+                    type="url"
+                    placeholder={t("portfolioPlaceholder")}
+                    defaultValue={initialData?.portfolioUrl ?? ""}
+                  />
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Title */}
-          <div className="space-y-1.5">
-            <label htmlFor="title" className="text-sm font-medium text-on-surface">
-              {t("title")}
-            </label>
-            <Input
-              id="title"
-              name="title"
-              maxLength={200}
-              placeholder={t("titlePlaceholder")}
-              defaultValue={initialData?.title ?? ""}
-            />
-          </div>
+          {/* Right col: rate + save */}
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{t("sectionRate")}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-1.5">
+                  <label htmlFor="hourlyRate" className={labelClass}>
+                    {t("hourlyRate")}
+                  </label>
+                  <Input
+                    id="hourlyRate"
+                    name="hourlyRate"
+                    type="number"
+                    min={0}
+                    max={10000}
+                    step={0.01}
+                    placeholder="200"
+                    defaultValue={initialData?.hourlyRate ?? ""}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label htmlFor="currency" className={labelClass}>
+                    {t("currency")}
+                  </label>
+                  <select
+                    id="currency"
+                    name="currency"
+                    defaultValue={initialData?.currency ?? "CNY"}
+                    className={selectClass}
+                  >
+                    <option value="CNY">CNY (&yen;)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (&euro;)</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
 
-          {/* Bio */}
-          <div className="space-y-1.5">
-            <label htmlFor="bio" className="text-sm font-medium text-on-surface">
-              {t("bio")}
-            </label>
-            <textarea
-              id="bio"
-              name="bio"
-              rows={4}
-              maxLength={2000}
-              placeholder={t("bioPlaceholder")}
-              defaultValue={initialData?.bio ?? ""}
-              className="flex w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:bg-surface-container-high focus:outline-none focus:ring-1 focus:ring-accent-cyan/50 disabled:cursor-not-allowed disabled:opacity-50"
-            />
+            <Button type="submit" disabled={pending} className="w-full">
+              {pending
+                ? t("saving")
+                : mode === "create"
+                  ? t("createSubmit")
+                  : t("editSubmit")}
+            </Button>
           </div>
+        </div>
 
-          {/* GitHub URL */}
-          <div className="space-y-1.5">
-            <label htmlFor="githubUrl" className="text-sm font-medium text-on-surface">
-              {t("githubUrl")}
-            </label>
-            <Input
-              id="githubUrl"
-              name="githubUrl"
-              type="url"
-              placeholder={t("githubPlaceholder")}
-              defaultValue={initialData?.githubUrl ?? ""}
-            />
-          </div>
-
-          {/* Portfolio URL */}
-          <div className="space-y-1.5">
-            <label htmlFor="portfolioUrl" className="text-sm font-medium text-on-surface">
-              {t("portfolioUrl")}
-            </label>
-            <Input
-              id="portfolioUrl"
-              name="portfolioUrl"
-              type="url"
-              placeholder={t("portfolioPlaceholder")}
-              defaultValue={initialData?.portfolioUrl ?? ""}
-            />
-          </div>
-
-          {/* Hourly Rate + Currency */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label htmlFor="hourlyRate" className="text-sm font-medium text-on-surface">
-                {t("hourlyRate")}
-              </label>
-              <Input
-                id="hourlyRate"
-                name="hourlyRate"
-                type="number"
-                min={0}
-                max={1000}
-                step={0.01}
-                placeholder="50"
-                defaultValue={initialData?.hourlyRate ?? ""}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label htmlFor="currency" className="text-sm font-medium text-on-surface">
-                {t("currency")}
-              </label>
-              <select
-                id="currency"
-                name="currency"
-                defaultValue={initialData?.currency ?? "CNY"}
-                className="flex h-10 w-full rounded-md bg-surface-container-lowest px-3 py-2 text-sm text-on-surface focus:bg-surface-container-high focus:outline-none focus:ring-1 focus:ring-accent-cyan/50"
-              >
-                <option value="CNY">CNY (&yen;)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (&euro;)</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Skills */}
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium text-on-surface">
+        {/* Skills — full width */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">
               {t("skills")} {t("skillsRequired")}
-            </label>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <SkillSelector
               skills={skillTags}
               selected={selectedSkills}
               onChange={setSelectedSkills}
               name="skillTagIds"
             />
-          </div>
-
-          {/* Submit */}
-          <Button type="submit" disabled={pending} className="w-full">
-            {pending
-              ? t("saving")
-              : mode === "create"
-                ? t("createSubmit")
-                : t("editSubmit")}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
+      </form>
+    </div>
   );
 }

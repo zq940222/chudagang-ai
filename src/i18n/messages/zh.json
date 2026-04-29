@@ -305,6 +305,9 @@
   "profileForm": {
     "createTitle": "创建开发者资料",
     "editTitle": "编辑资料",
+    "sectionBasic": "基本信息",
+    "sectionLinks": "社交链接",
+    "sectionRate": "时薪设置",
     "displayName": "展示名称",
     "displayNameRequired": "*",
     "title": "职称",
