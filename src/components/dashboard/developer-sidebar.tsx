@@ -10,8 +10,8 @@ export function DeveloperSidebar() {
   const t = useTranslations("devSidebar");
 
   return (
-    <aside className="hidden w-60 shrink-0 lg:block">
-      <nav className="sticky top-24 space-y-1.5">
+    <aside className="hidden w-60 shrink-0 overflow-y-auto py-6 md:py-12 lg:block">
+      <nav className="space-y-1.5">
         {developerSidebarLinks.map((link) => {
           const isActive =
             link.href === "/dashboard/developer"
@@ -30,7 +30,10 @@ export function DeveloperSidebar() {
               )}
             >
               <svg
-                className={cn("h-5 w-5 shrink-0 transition-colors", isActive ? "text-accent-cyan" : "text-on-surface-variant/40")}
+                className={cn(
+                  "h-5 w-5 shrink-0 transition-colors",
+                  isActive ? "text-accent-cyan" : "text-on-surface-variant/40"
+                )}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

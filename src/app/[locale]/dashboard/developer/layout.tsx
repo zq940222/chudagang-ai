@@ -16,12 +16,16 @@ export default async function DeveloperDashboardLayout({
   }));
 
   return (
-    <>
+    <div className="flex h-dvh flex-col overflow-hidden">
       <Nav dashboardLinks={dashboardLinks} />
-      <div className="mx-auto flex max-w-screen-2xl flex-1 gap-10 px-4 py-6 md:px-6 md:py-12 lg:px-16 min-h-[calc(100dvh-5rem)] items-start">
+      {/* flex-1 + overflow-hidden: fills remaining height, no viewport scroll */}
+      <div className="mx-auto flex w-full max-w-screen-2xl flex-1 gap-10 overflow-hidden px-4 md:px-6 lg:px-16">
         <DeveloperSidebar />
-        <main className="min-w-0 flex-1">{children}</main>
+        {/* only this area scrolls independently */}
+        <main className="min-w-0 flex-1 overflow-y-auto py-6 md:py-12">
+          {children}
+        </main>
       </div>
-    </>
+    </div>
   );
 }
