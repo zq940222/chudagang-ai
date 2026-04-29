@@ -15,14 +15,12 @@ export default async function DeveloperProjectsPage() {
   const contracts = result.data ?? [];
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-on-surface mb-6">{t("title")}</h1>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-on-surface">{t("title")}</h1>
 
       {contracts.length === 0 ? (
         <div className="rounded-xl bg-surface-container-low p-8 text-center">
-          <p className="text-on-surface-variant">
-            {t("empty")}
-          </p>
+          <p className="text-on-surface-variant">{t("empty")}</p>
         </div>
       ) : (
         <div className="space-y-3">
